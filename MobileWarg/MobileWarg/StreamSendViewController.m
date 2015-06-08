@@ -9,6 +9,7 @@
 #import "StreamSendViewController.h"
 
 @interface StreamSendViewController ()
+@property (weak, nonatomic) IBOutlet UIImageView *imageStream;
 
 @end
 
