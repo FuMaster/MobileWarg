@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14E26a" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="ufC-wZ-h7g">
+            <objects>
+                <viewController id="vXZ-lx-hvc" customClass="ViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="jyV-Pf-zRb"/>
+                        <viewControllerLayoutGuide type="bottom" id="2fi-mo-0CV"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="kh9-bI-dsS">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
+            </objects>
+        </scene>
+        <!--Stream Send View Controller-->
+        <scene sceneID="JCT-Zq-jba">
+            <objects>
+                <viewController id="qsw-7K-vea" customClass="StreamSendViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Nfb-uy-y5e"/>
+                        <viewControllerLayoutGuide type="bottom" id="WyO-c0-Bn2"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="7kQ-jB-Tka">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ySE-uk-PS3">
+                                <rect key="frame" x="16" y="0.0" width="568" height="600"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="ySE-uk-PS3" firstAttribute="leading" secondItem="7kQ-jB-Tka" secondAttribute="leadingMargin" id="2fE-bx-cLD"/>
+                            <constraint firstItem="ySE-uk-PS3" firstAttribute="top" secondItem="7kQ-jB-Tka" secondAttribute="topMargin" id="iZe-uy-xfc"/>
+                            <constraint firstItem="WyO-c0-Bn2" firstAttribute="top" secondItem="ySE-uk-PS3" secondAttribute="bottom" id="v5e-Xa-fwB"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="ySE-uk-PS3" secondAttribute="trailing" id="yAK-yc-QMz"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="imageStream" destination="ySE-uk-PS3" id="ihf-4U-25f"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="kgz-01-p6R" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1057" y="-115"/>
+        </scene>
+        <!--Stream Receive View Controller-->
+        <scene sceneID="Rnf-gu-6Uu">
+            <objects>
+                <viewController id="15R-VD-ult" customClass="StreamReceiveViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="oiQ-ir-6Sg"/>
+                        <viewControllerLayoutGuide type="bottom" id="Qi9-OR-4ex"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Hle-pO-r8k">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="4ih-fa-IJT">
+                                <rect key="frame" x="16" y="0.0" width="568" height="600"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailingMargin" secondItem="4ih-fa-IJT" secondAttribute="trailing" id="2So-e4-UIs"/>
+                            <constraint firstItem="4ih-fa-IJT" firstAttribute="leading" secondItem="Hle-pO-r8k" secondAttribute="leadingMargin" id="JpB-cw-ymp"/>
+                            <constraint firstItem="Qi9-OR-4ex" firstAttribute="top" secondItem="4ih-fa-IJT" secondAttribute="bottom" id="oCU-FL-rCj"/>
+                            <constraint firstItem="4ih-fa-IJT" firstAttribute="top" secondItem="Hle-pO-r8k" secondAttribute="topMargin" id="zjM-2R-KJt"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="streamImage" destination="4ih-fa-IJT" id="VRm-ND-Krm"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Wtu-FG-MQh" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1057" y="701"/>
+        </scene>
+    </scenes>
+</document>
