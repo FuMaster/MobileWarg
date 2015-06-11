@@ -6,13 +6,13 @@
 //  Copyright (c) 2015 MobileWarg. All rights reserved.
 //
 
-#import "ViewController.h"
+#import "ScannerViewController.h"
 
-@interface ViewController ()
+@interface ScannerViewController ()
 
 @end
 
-@implementation ViewController
+@implementation ScannerViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
