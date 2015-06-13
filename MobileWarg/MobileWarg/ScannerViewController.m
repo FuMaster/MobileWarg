@@ -27,13 +27,18 @@
     [self.appDelegate.mpcHandler setupSession];
     [self.appDelegate.mpcHandler advertiseSelf:true];
     
-    [self searchForPeers];
+    [self search];
     
 }
 
-- (void) searchForPeers {
+- (IBAction)searchForPeers:(id)sender {
+    [self search];
+}
+
+- (void) search {
     if (self.appDelegate.mpcHandler.session != nil) {
         [[self.appDelegate mpcHandler] setupBrowser];
+        [[[self.appDelegate mpcHandler] browser] setDelegate:self];
         
         [self presentViewController:self.appDelegate.mpcHandler.browser
                            animated:YES
@@ -44,6 +49,15 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark MCBrowserViewController Delegates
+- (void)browserViewControllerDidFinish:(MCBrowserViewController *)browserViewController {
+    [self.appDelegate.mpcHandler.browser dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)browserViewControllerWasCancelled:(MCBrowserViewController *)browserViewController {
+    [self.appDelegate.mpcHandler.browser dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

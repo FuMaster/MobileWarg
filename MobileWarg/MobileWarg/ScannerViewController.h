@@ -7,9 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <MultipeerConnectivity/MultipeerConnectivity.h>
 
-@interface ScannerViewController : UIViewController
+@interface ScannerViewController : UIViewController <MCBrowserViewControllerDelegate>
 
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *scanBtn;
+
+- (IBAction)searchForPeers:(id)sender;
 
 @end
 
