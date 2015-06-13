@@ -132,6 +132,7 @@
 #pragma mark MCBrowserViewController Delegates
 - (void)browserViewControllerDidFinish:(MCBrowserViewController *)browserViewController {
     MWMultipeerManager * manager = [MWMultipeerManager sharedManager];
+    self.isConnectionEstablished = YES;
     [manager.browser dismissViewControllerAnimated:YES completion:nil];
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"YES!"
                                                     message:@"You have connected."
