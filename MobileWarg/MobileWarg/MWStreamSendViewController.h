@@ -10,7 +10,7 @@
 #import <AVFoundation/AVFoundation.h>
 #import <MultipeerConnectivity/MultipeerConnectivity.h>
 
-@interface MWStreamSendViewController : UIViewController <MCBrowserViewControllerDelegate>
+@interface MWStreamSendViewController : UIViewController <MCBrowserViewControllerDelegate, AVCaptureVideoDataOutputSampleBufferDelegate>
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *scanBtn;
 - (IBAction)searchForPeers:(id)sender;

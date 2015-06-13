@@ -6,6 +6,7 @@
 //  Copyright (c) 2015 MobileWarg. All rights reserved.
 //
 
+#import "MWMultipeerManager.h"
 #import "MWStreamSendViewController.h"
 #import "MWMultipeerManager.h"
 
@@ -19,6 +20,8 @@
 @property (strong, nonatomic) AVCaptureVideoPreviewLayer *previewLayer;
 @property (strong, nonatomic) NSOutputStream *outputStream;
 @property (assign, nonatomic) BOOL isConnectionEstablished;
+@property (strong, nonatomic) dispatch_queue_t videoQueue;
+
 - (IBAction)sendMessage:(id)sender;
 @end
 
@@ -67,6 +70,9 @@
             // Start running the capture session.
             [self.captureSession startRunning];
             
+            self.videoQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0);
+            
+            [self.outputData setSampleBufferDelegate:self queue:self.videoQueue];
         } else {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Sorry, video input does not exist." delegate:nil cancelButtonTitle:@"Confirm" otherButtonTitles:nil];
             [alert show];
@@ -75,7 +81,7 @@
 }
 
 - (void) setupMultipeerConnectivity {
-    MWMultipeerManager * manager = [MWMultipeerManager sharedManager];
+    MWMultipeerManager *manager = [MWMultipeerManager sharedManager];
     [manager setupPeerWithDisplayName:[UIDevice currentDevice].name];
     [manager setupSession];
     [manager advertiseSelf:true];
@@ -126,6 +132,7 @@
 #pragma mark MCBrowserViewController Delegates
 - (void)browserViewControllerDidFinish:(MCBrowserViewController *)browserViewController {
     MWMultipeerManager * manager = [MWMultipeerManager sharedManager];
+    self.isConnectionEstablished = YES;
     [manager.browser dismissViewControllerAnimated:YES completion:nil];
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"YES!"
                                                     message:@"You have connected."
