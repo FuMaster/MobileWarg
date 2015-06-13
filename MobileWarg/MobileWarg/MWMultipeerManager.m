@@ -26,11 +26,11 @@
 }
 
 - (void)setupPeerWithDisplayName:(NSString *)displayName {
-    self.peerID = [[MCPeerID alloc]  initWithDisplayName:displayName];
+    self.myPeerID = [[MCPeerID alloc]  initWithDisplayName:displayName];
 }
 
 - (void)setupSession {
-    self.session = [[MCSession alloc] initWithPeer:self.peerID];
+    self.session = [[MCSession alloc] initWithPeer:self.myPeerID];
     self.session.delegate = self;
 }
 
@@ -51,15 +51,51 @@
     }
 }
 
+- (void)setupStream {
+    if (self.connectedPeerID) {
+        NSError *error;
+        self.videoStream = [self.session startStreamWithName:@"wargStream"
+                                                      toPeer:self.connectedPeerID
+                                                       error:&error];
+        if(error){
+            NSLog(@"Failed to setuo the output Stream");
+        }
+    } else {
+        NSLog(@"Haven't connected to receiving peer");
+    }
+}
+
 //Called everytime the connection state of a peer changes
 //3 states: not connected, connecting, connected
 - (void)session:(MCSession *)session peer:(MCPeerID *)peerID didChangeState:(MCSessionState)state {
-    NSDictionary *userInfo = @{ @"peerID": peerID,
-                                @"state": @(state) };
-    dispatch_async(dispatch_get_main_queue(),^{
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"MobileWarg_DidChangeStateNotification"
-                                                            object:nil userInfo:userInfo];
-    });
+    
+    switch (state) {
+        case MCSessionStateNotConnected:
+            break;
+            
+        case MCSessionStateConnecting:
+            break;
+            
+        case MCSessionStateConnected: {
+            
+            self.connectedPeerID = peerID;
+            
+            NSDictionary *userInfo = @{@"peerID":peerID, @"state":@(state)};
+            dispatch_async(dispatch_get_main_queue(),^{
+                NSLog(@"Connected to peer");
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"MobileWarg_DidChangeStateNotification"
+                                                                    object:nil userInfo:userInfo];
+            });
+            
+        }
+            break;
+            
+        default:
+            break;
+    }
+    
+    
+    
 }
 
 //Called whenever device receives data from another peer
@@ -81,11 +117,13 @@
     
 }
 
-- (void)session:(MCSession *)session didFinishReceivingResourceWithName:(NSString *)resourceName fromPeer:(MCPeerID *)peerID atURL:(NSURL *)localURL withError:(NSError *)error {
+- (void)session:(MCSession *)session didFinishReceivingResourceWithName:(NSString *)resourceName
+       fromPeer:(MCPeerID *)peerID atURL:(NSURL *)localURL withError:(NSError *)error {
     
 }
 
-- (void)session:(MCSession *)session didReceiveStream:(NSInputStream *)stream withName:(NSString *)streamName fromPeer:(MCPeerID *)peerID {
+- (void)session:(MCSession *)session didReceiveStream:(NSInputStream *)stream
+       withName:(NSString *)streamName fromPeer:(MCPeerID *)peerID {
     
 }
 

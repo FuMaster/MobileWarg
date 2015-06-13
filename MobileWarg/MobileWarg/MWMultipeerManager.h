@@ -11,10 +11,12 @@
 
 @interface MWMultipeerManager : NSObject <MCSessionDelegate>
 
-@property(nonatomic, strong) MCPeerID *peerID;
+@property(nonatomic, strong) MCPeerID *myPeerID;
+@property(nonatomic, strong) MCPeerID *connectedPeerID;
 @property(nonatomic, strong) MCSession *session;
 @property(nonatomic, strong) MCBrowserViewController *browser;
 @property(nonatomic, strong) MCAdvertiserAssistant *advertiser;
+@property(nonatomic, strong) NSOutputStream *videoStream;
 
 + (id)sharedManager;
 - (void)setupPeerWithDisplayName: (NSString *)displayName;
