@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <AVFoundation/AVFoundation.h>
 #import <MultipeerConnectivity/MultipeerConnectivity.h>
 
 @interface MWStreamSendViewController : UIViewController <MCBrowserViewControllerDelegate>

@@ -6,14 +6,10 @@
 //  Copyright (c) 2015 MobileWarg. All rights reserved.
 //
 
-@import AVFoundation;
-#import "AppDelegate.h"
 #import "MWStreamSendViewController.h"
-#import "AppDelegate.h"
 
 @interface MWStreamSendViewController ()
 
-@property (weak, nonatomic) AppDelegate *appDelegate;
 @property (strong, nonatomic) IBOutlet UIView *imageView;
 @property (strong, nonatomic) AVCaptureDevice *videoCaptureDevice;
 @property (strong, nonatomic) AVCaptureDeviceInput *videoInput;
@@ -29,10 +25,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    self.appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     [self setupMultipeerConnectivity];
-    
     [self setupCamera];
 }
 
