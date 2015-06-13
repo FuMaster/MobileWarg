@@ -15,6 +15,8 @@
 		21EBE8351B264943000EACD1 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 21EBE8331B264943000EACD1 /* LaunchScreen.xib */; };
 		21EBE8411B264943000EACD1 /* MobileWargTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 21EBE8401B264943000EACD1 /* MobileWargTests.m */; };
 		21EBE84F1B2651B3000EACD1 /* MPCHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 21EBE84E1B2651B3000EACD1 /* MPCHandler.m */; };
+		CD5278711B2C967C00CBEB69 /* StreamReceiveViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CD52786E1B2C967C00CBEB69 /* StreamReceiveViewController.m */; };
+		CD5278721B2C967C00CBEB69 /* StreamSendViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CD5278701B2C967C00CBEB69 /* StreamSendViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,6 +45,10 @@
 		21EBE8401B264943000EACD1 /* MobileWargTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MobileWargTests.m; sourceTree = "<group>"; };
 		21EBE84D1B2651B3000EACD1 /* MPCHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MPCHandler.h; sourceTree = "<group>"; };
 		21EBE84E1B2651B3000EACD1 /* MPCHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPCHandler.m; sourceTree = "<group>"; };
+		CD52786D1B2C967C00CBEB69 /* StreamReceiveViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StreamReceiveViewController.h; sourceTree = "<group>"; };
+		CD52786E1B2C967C00CBEB69 /* StreamReceiveViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StreamReceiveViewController.m; sourceTree = "<group>"; };
+		CD52786F1B2C967C00CBEB69 /* StreamSendViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StreamSendViewController.h; sourceTree = "<group>"; };
+		CD5278701B2C967C00CBEB69 /* StreamSendViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StreamSendViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,6 +96,10 @@
 				21EBE84E1B2651B3000EACD1 /* MPCHandler.m */,
 				21EBE82B1B264943000EACD1 /* ScannerViewController.h */,
 				21EBE82C1B264943000EACD1 /* ScannerViewController.m */,
+				CD52786D1B2C967C00CBEB69 /* StreamReceiveViewController.h */,
+				CD52786E1B2C967C00CBEB69 /* StreamReceiveViewController.m */,
+				CD52786F1B2C967C00CBEB69 /* StreamSendViewController.h */,
+				CD5278701B2C967C00CBEB69 /* StreamSendViewController.m */,
 				21EBE82E1B264943000EACD1 /* Main.storyboard */,
 				21EBE8311B264943000EACD1 /* Images.xcassets */,
 				21EBE8331B264943000EACD1 /* LaunchScreen.xib */,
@@ -224,7 +234,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CD5278721B2C967C00CBEB69 /* StreamSendViewController.m in Sources */,
 				21EBE82D1B264943000EACD1 /* ScannerViewController.m in Sources */,
+				CD5278711B2C967C00CBEB69 /* StreamReceiveViewController.m in Sources */,
 				21EBE84F1B2651B3000EACD1 /* MPCHandler.m in Sources */,
 				21EBE82A1B264943000EACD1 /* AppDelegate.m in Sources */,
 				21EBE8271B264943000EACD1 /* main.m in Sources */,
@@ -422,6 +434,7 @@
 				21EBE8461B264943000EACD1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		21EBE8471B264943000EACD1 /* Build configuration list for PBXNativeTarget "MobileWargTests" */ = {
 			isa = XCConfigurationList;
@@ -430,6 +443,7 @@
 				21EBE8491B264943000EACD1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
