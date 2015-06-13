@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="OCF-ws-zse">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14D2134" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="OCF-ws-zse">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
@@ -7,7 +7,7 @@
         <!--Stream Send View Controller-->
         <scene sceneID="yZx-ZF-cIQ">
             <objects>
-                <viewController id="IxH-9P-OZT" customClass="StreamSendViewController" sceneMemberID="viewController">
+                <viewController id="IxH-9P-OZT" customClass="MWStreamSendViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="rTc-PH-E6Z"/>
                         <viewControllerLayoutGuide type="bottom" id="FQb-yc-nim"/>
@@ -37,29 +37,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Npu-OA-Snw" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="409" y="317"/>
-        </scene>
-        <!--Stream Receive View Controller-->
-        <scene sceneID="Rnf-gu-6Uu">
-            <objects>
-                <viewController id="15R-VD-ult" customClass="StreamReceiveViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="5bs-F5-oMv"/>
-                        <viewControllerLayoutGuide type="bottom" id="xXo-d9-hLW"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="fuV-tU-xb4">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                    <connections>
-                        <outlet property="imageView" destination="fuV-tU-xb4" id="u2V-Jc-Z0c"/>
-                        <outlet property="view" destination="fuV-tU-xb4" id="9bz-Ug-Rt6"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Wtu-FG-MQh" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1445" y="675"/>
+            <point key="canvasLocation" x="369" y="257"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="wx8-7z-eAp">

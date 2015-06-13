@@ -6,9 +6,25 @@
 //  Copyright (c) 2015 MobileWarg. All rights reserved.
 //
 
-#import "MPCHandler.h"
+#import "MWMultipeerManager.h"
 
-@implementation MPCHandler
+@implementation MWMultipeerManager
+
+
++ (id)sharedManager {
+    static MWMultipeerManager *sharedMyManager = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sharedMyManager = [[self alloc] init];
+    });
+    return sharedMyManager;
+}
+
+- (id)init {
+    if (self = [super init]) {
+    }
+    return self;
+}
 
 - (void)setupPeerWithDisplayName:(NSString *)displayName {
     self.peerID = [[MCPeerID alloc]  initWithDisplayName:displayName];

@@ -8,26 +8,26 @@
 
 @import AVFoundation;
 #import "AppDelegate.h"
-#import "StreamSendViewController.h"
+#import "MWStreamSendViewController.h"
 #import "AppDelegate.h"
 
-@interface StreamSendViewController ()
+@interface MWStreamSendViewController ()
 
 @property (weak, nonatomic) AppDelegate *appDelegate;
 @property (strong, nonatomic) IBOutlet UIView *imageView;
-
 @property (strong, nonatomic) AVCaptureDevice *videoCaptureDevice;
 @property (strong, nonatomic) AVCaptureDeviceInput *videoInput;
 @property (strong, nonatomic) AVCaptureVideoDataOutput *outputData;
 @property (strong, nonatomic) AVCaptureSession *captureSession;
 @property (strong, nonatomic) AVCaptureVideoPreviewLayer *previewLayer;
 @property (strong, nonatomic) NSOutputStream *outputStream;
-- (IBAction)sendMessage:(id)sender;
 @property BOOL isConnectionEstablished;
+- (IBAction)sendMessage:(id)sender;
+
 
 @end
 
-@implementation StreamSendViewController
+@implementation MWStreamSendViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -79,9 +79,10 @@
 }
 
 - (void) setupMultipeerConnectivity {
-    [self.appDelegate.mpcHandler setupPeerWithDisplayName:[UIDevice currentDevice].name];
-    [self.appDelegate.mpcHandler setupSession];
-    [self.appDelegate.mpcHandler advertiseSelf:true];
+    MWMultipeerManager * manager = [MWMultipeerManager sharedManager];
+    [manager setupPeerWithDisplayName:[UIDevice currentDevice].name];
+    [manager setupSession];
+    [manager advertiseSelf:true];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -113,11 +114,14 @@
 }
 
 - (IBAction)searchForPeers:(id)sender {
-    if (self.appDelegate.mpcHandler.session != nil) {
-        [[self.appDelegate mpcHandler] setupBrowser];
-        [[[self.appDelegate mpcHandler] browser] setDelegate:self];
+    
+    MWMultipeerManager * manager = [MWMultipeerManager sharedManager];
+    
+    if (manager.session != nil) {
+        [manager setupBrowser];
+        manager.browser.delegate = self;
         
-        [self presentViewController:self.appDelegate.mpcHandler.browser
+        [self presentViewController:manager.browser
                            animated:YES
                          completion:nil];
     }
@@ -125,28 +129,28 @@
 
 #pragma mark MCBrowserViewController Delegates
 - (void)browserViewControllerDidFinish:(MCBrowserViewController *)browserViewController {
-    [self.appDelegate.mpcHandler.browser dismissViewControllerAnimated:YES completion:nil];
+    MWMultipeerManager * manager = [MWMultipeerManager sharedManager];
+    [manager.browser dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)browserViewControllerWasCancelled:(MCBrowserViewController *)browserViewController {
-    [self.appDelegate.mpcHandler.browser dismissViewControllerAnimated:YES completion:nil];
+    MWMultipeerManager * manager = [MWMultipeerManager sharedManager];
+    [manager.browser dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (IBAction)sendMessage:(id)sender {
     if (self.isConnectionEstablished) {
-        // Reference to app delegate.
-        self.appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        MWMultipeerManager * manager = [MWMultipeerManager sharedManager];
         
         NSData *dataToSend = [@"This is sample text." dataUsingEncoding:NSUTF8StringEncoding];
-        NSArray *allPeers = self.appDelegate.mpcHandler.session.connectedPeers;
+        NSArray *allPeers = manager.session.connectedPeers;
         NSError *error;
         
-        [self.appDelegate.mpcHandler.session sendData:dataToSend
+        [manager.session sendData:dataToSend
                                               toPeers:allPeers
                                              withMode:MCSessionSendDataReliable
                                                 error:&error];
         
-    } else {
     }
 }
 @end
