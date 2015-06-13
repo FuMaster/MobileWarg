@@ -9,7 +9,7 @@
 #import "StreamReceiveViewController.h"
 
 @interface StreamReceiveViewController ()
-@property (weak, nonatomic) IBOutlet UIImageView *imageStream;
+@property (strong, nonatomic) IBOutlet UIView *imageView;
 
 @end
 

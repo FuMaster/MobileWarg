@@ -23,37 +23,28 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="480" y="311"/>
+            <point key="canvasLocation" x="494" y="317"/>
         </scene>
         <!--Stream Send View Controller-->
         <scene sceneID="yZx-ZF-cIQ">
             <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Npu-OA-Snw" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController id="IxH-9P-OZT" customClass="StreamSendViewController" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="B0S-9f-rFk"/>
-                        <viewControllerLayoutGuide type="bottom" id="ld2-C3-QF3"/>
+                        <viewControllerLayoutGuide type="top" id="rTc-PH-E6Z"/>
+                        <viewControllerLayoutGuide type="bottom" id="FQb-yc-nim"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="cSU-yQ-eNv">
+                    <view key="view" contentMode="scaleToFill" id="Uos-aw-dWx">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ySE-uk-PS3">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                            </imageView>
-                        </subviews>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="ySE-uk-PS3" firstAttribute="top" secondItem="cSU-yQ-eNv" secondAttribute="top" id="egC-cW-JNp"/>
-                            <constraint firstAttribute="trailing" secondItem="ySE-uk-PS3" secondAttribute="trailing" id="klW-8x-1zg"/>
-                            <constraint firstItem="ySE-uk-PS3" firstAttribute="leading" secondItem="cSU-yQ-eNv" secondAttribute="leading" id="oql-9p-LAH"/>
-                            <constraint firstItem="ld2-C3-QF3" firstAttribute="top" secondItem="ySE-uk-PS3" secondAttribute="bottom" id="tPh-AQ-rsC"/>
-                        </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="uH3-MO-VaO"/>
                     <connections>
-                        <outlet property="imageStream" destination="ySE-uk-PS3" id="XvR-x6-FPf"/>
+                        <outlet property="imageView" destination="Uos-aw-dWx" id="W1p-uR-3Ck"/>
+                        <outlet property="view" destination="Uos-aw-dWx" id="Vz3-h4-lpm"/>
                     </connections>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Npu-OA-Snw" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1445" y="-74"/>
         </scene>
@@ -62,27 +53,17 @@
             <objects>
                 <viewController id="15R-VD-ult" customClass="StreamReceiveViewController" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="oiQ-ir-6Sg"/>
-                        <viewControllerLayoutGuide type="bottom" id="Qi9-OR-4ex"/>
+                        <viewControllerLayoutGuide type="top" id="5bs-F5-oMv"/>
+                        <viewControllerLayoutGuide type="bottom" id="xXo-d9-hLW"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="Hle-pO-r8k">
+                    <view key="view" contentMode="scaleToFill" id="fuV-tU-xb4">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="4ih-fa-IJT">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                            </imageView>
-                        </subviews>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="4ih-fa-IJT" firstAttribute="leading" secondItem="Hle-pO-r8k" secondAttribute="leading" id="IeZ-JN-UZt"/>
-                            <constraint firstItem="Qi9-OR-4ex" firstAttribute="top" secondItem="4ih-fa-IJT" secondAttribute="bottom" id="Ihk-4g-BWn"/>
-                            <constraint firstAttribute="trailing" secondItem="4ih-fa-IJT" secondAttribute="trailing" id="b4v-xt-fcv"/>
-                            <constraint firstItem="4ih-fa-IJT" firstAttribute="top" secondItem="Hle-pO-r8k" secondAttribute="top" id="ewo-MR-2P8"/>
-                        </constraints>
                     </view>
                     <connections>
-                        <outlet property="streamImage" destination="4ih-fa-IJT" id="VRm-ND-Krm"/>
+                        <outlet property="imageView" destination="fuV-tU-xb4" id="u2V-Jc-Z0c"/>
+                        <outlet property="view" destination="fuV-tU-xb4" id="9bz-Ug-Rt6"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Wtu-FG-MQh" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -100,7 +81,7 @@
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="vXZ-lx-hvc" kind="relationship" relationship="rootViewController" id="E2j-rL-Y4B"/>
+                        <segue destination="vXZ-lx-hvc" kind="relationship" relationship="rootViewController" id="Odd-SU-cPU"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Bzy-IV-38D" userLabel="First Responder" sceneMemberID="firstResponder"/>

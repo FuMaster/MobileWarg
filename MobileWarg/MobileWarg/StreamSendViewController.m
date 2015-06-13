@@ -6,10 +6,11 @@
 //  Copyright (c) 2015 MobileWarg. All rights reserved.
 //
 
+@import AVFoundation;
 #import "StreamSendViewController.h"
 
 @interface StreamSendViewController ()
-@property (weak, nonatomic) IBOutlet UIImageView *imageStream;
+@property (strong, nonatomic) IBOutlet UIView *imageView;
 
 @end
 
@@ -19,15 +20,38 @@
     [super viewDidLoad];
     
     if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Sorry, this application won't work because there is no camera." delegate:nil cancelButtonTitle:@"Confirm" otherButtonTitles:nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Sorry, this application won't work because camera does not exist." delegate:nil cancelButtonTitle:@"Confirm" otherButtonTitles:nil];
         [alert show];
     } else {
-        UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
-        imagePicker.delegate = self;
-        imagePicker.allowsEditing = false;
-        imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
+        // Create a capture session.
+        AVCaptureSession *captureSession = [[AVCaptureSession alloc] init];
+        captureSession.sessionPreset = AVCaptureSessionPresetMedium;
         
-        [self presentViewController:imagePicker animated:YES completion:NULL];
+        // Add capture device.
+        AVCaptureDevice *videoCaptureDevice = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
+        AVCaptureDeviceInput *videoInput = [AVCaptureDeviceInput deviceInputWithDevice:videoCaptureDevice error:nil];
+        
+        if (videoInput) {
+            // If capture device exists.
+            AVCaptureVideoDataOutput *outputData = [[AVCaptureVideoDataOutput alloc] init];
+            outputData.videoSettings = @{(NSString *)kCVPixelBufferPixelFormatTypeKey:@(kCVPixelFormatType_32BGRA)};
+            
+            // Add input and output.
+            [captureSession addInput:videoInput];
+            [captureSession addOutput:outputData];
+            
+            // Create preview layer.
+            AVCaptureVideoPreviewLayer *previewLayer = [AVCaptureVideoPreviewLayer layerWithSession:captureSession];
+            previewLayer.frame = self.imageView.bounds;
+            previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
+            [self.imageView.layer addSublayer:previewLayer];
+            
+            // Start running the capture session.
+            [captureSession startRunning];
+        } else {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Sorry, video input does not exist." delegate:nil cancelButtonTitle:@"Confirm" otherButtonTitles:nil];
+            [alert show];
+        }
     }
 }
 
