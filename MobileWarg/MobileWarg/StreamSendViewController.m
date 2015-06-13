@@ -36,6 +36,10 @@
     self.appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     [self setupMultipeerConnectivity];
     
+    [self setupCamera];
+}
+
+- (void) setupCamera {
     if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Sorry, this application won't work because camera does not exist." delegate:nil cancelButtonTitle:@"Confirm" otherButtonTitles:nil];
         [alert show];
@@ -68,11 +72,11 @@
                                                        object:nil];
             
             [self.imageView.layer addSublayer:self.previewLayer];
-
+            
             // Start running the capture session.
             [self.captureSession startRunning];
             
-                    } else {
+        } else {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Sorry, video input does not exist." delegate:nil cancelButtonTitle:@"Confirm" otherButtonTitles:nil];
             [alert show];
         }
