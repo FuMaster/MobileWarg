@@ -51,6 +51,7 @@
         <!--Stream Receive View Controller-->
         <scene sceneID="Rnf-gu-6Uu">
             <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Wtu-FG-MQh" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController id="15R-VD-ult" customClass="StreamReceiveViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="5bs-F5-oMv"/>
@@ -66,7 +67,6 @@
                         <outlet property="view" destination="fuV-tU-xb4" id="9bz-Ug-Rt6"/>
                     </connections>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Wtu-FG-MQh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1445" y="675"/>
         </scene>
@@ -80,13 +80,10 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="vXZ-lx-hvc" kind="relationship" relationship="rootViewController" id="Odd-SU-cPU"/>
-                    </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Bzy-IV-38D" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-308" y="317"/>
+            <point key="canvasLocation" x="-396" y="317"/>
         </scene>
     </scenes>
 </document>
