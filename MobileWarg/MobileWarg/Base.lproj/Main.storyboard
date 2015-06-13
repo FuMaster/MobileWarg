@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14D2134" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="OCF-ws-zse">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="OCF-ws-zse">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
@@ -18,7 +18,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="uH3-MO-VaO">
-                        <barButtonItem key="leftBarButtonItem" title="Send Sample Message" id="hak-Pa-cpD">
+                        <barButtonItem key="leftBarButtonItem" title="Start Sharing" id="hak-Pa-cpD">
                             <connections>
                                 <action selector="sendMessage:" destination="IxH-9P-OZT" id="3MI-IV-25Z"/>
                             </connections>
@@ -32,6 +32,7 @@
                     <connections>
                         <outlet property="imageView" destination="Uos-aw-dWx" id="W1p-uR-3Ck"/>
                         <outlet property="scanBtn" destination="VLM-jL-A9w" id="LjQ-Mu-pco"/>
+                        <outlet property="shareBtn" destination="hak-Pa-cpD" id="3GF-l7-9X8"/>
                         <outlet property="view" destination="Uos-aw-dWx" id="Vz3-h4-lpm"/>
                     </connections>
                 </viewController>

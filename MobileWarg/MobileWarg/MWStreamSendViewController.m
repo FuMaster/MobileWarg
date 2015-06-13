@@ -21,6 +21,7 @@
 @property (strong, nonatomic) NSOutputStream *outputStream;
 @property (assign, nonatomic) BOOL isConnectionEstablished;
 @property (strong, nonatomic) dispatch_queue_t videoQueue;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *shareBtn;
 
 - (IBAction)sendMessage:(id)sender;
 @end
@@ -31,6 +32,7 @@
     [super viewDidLoad];
     [self setupMultipeerConnectivity];
     [self setupCamera];
+    [self.shareBtn setEnabled:NO];
 }
 
 - (void) setupCamera {
@@ -85,6 +87,29 @@
     [manager setupPeerWithDisplayName:[UIDevice currentDevice].name];
     [manager setupSession];
     [manager advertiseSelf:true];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                          selector:@selector(connectionSuccess:)
+                                          name:@"MobileWarg_DidChangeStateNotification"
+                                          object:nil];
+    //if you specify nil for object, you get all the notifications with the matching name, regardless of who sent them
+}
+
+- (void) connectionSuccess: (NSNotification *) notification {
+    NSDictionary *dict = [notification userInfo];
+    NSString *state = [dict valueForKey:@"state"];
+    if (state.intValue == MCSessionStateConnected) {
+        MWMultipeerManager * manager = [MWMultipeerManager sharedManager];
+        [manager.browser dismissViewControllerAnimated:YES completion:nil];
+        
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"YES!"
+                                                  message:@"You have connected."
+                                                  delegate:nil
+                                                  cancelButtonTitle:@"Confirm"
+                                                  otherButtonTitles:nil];
+        [alert show];
+        [self.shareBtn setEnabled:YES];
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -134,12 +159,6 @@
     MWMultipeerManager * manager = [MWMultipeerManager sharedManager];
     self.isConnectionEstablished = YES;
     [manager.browser dismissViewControllerAnimated:YES completion:nil];
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"YES!"
-                                                    message:@"You have connected."
-                                                   delegate:nil
-                                          cancelButtonTitle:@"Confirm"
-                                          otherButtonTitles:nil];
-    [alert show];
 }
 
 - (void)browserViewControllerWasCancelled:(MCBrowserViewController *)browserViewController {
