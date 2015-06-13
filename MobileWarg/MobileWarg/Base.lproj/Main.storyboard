@@ -21,7 +21,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="494" y="317"/>
+            <point key="canvasLocation" x="1445" y="-93"/>
         </scene>
         <!--Stream Send View Controller-->
         <scene sceneID="yZx-ZF-cIQ">
@@ -36,7 +36,13 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" id="uH3-MO-VaO"/>
+                    <navigationItem key="navigationItem" id="uH3-MO-VaO">
+                        <barButtonItem key="rightBarButtonItem" title="Scan" id="VLM-jL-A9w">
+                            <connections>
+                                <segue destination="vXZ-lx-hvc" kind="show" id="W6P-qQ-N7w"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="imageView" destination="Uos-aw-dWx" id="W1p-uR-3Ck"/>
                         <outlet property="view" destination="Uos-aw-dWx" id="Vz3-h4-lpm"/>
@@ -44,7 +50,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Npu-OA-Snw" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1445" y="-74"/>
+            <point key="canvasLocation" x="409" y="317"/>
         </scene>
         <!--Stream Receive View Controller-->
         <scene sceneID="Rnf-gu-6Uu">
@@ -79,7 +85,7 @@
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="vXZ-lx-hvc" kind="relationship" relationship="rootViewController" id="4gV-yd-4Ai"/>
+                        <segue destination="IxH-9P-OZT" kind="relationship" relationship="rootViewController" id="qCr-3A-rr2"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Bzy-IV-38D" userLabel="First Responder" sceneMemberID="firstResponder"/>
