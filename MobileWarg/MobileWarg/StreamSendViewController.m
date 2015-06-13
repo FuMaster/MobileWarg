@@ -22,8 +22,9 @@
 @property (strong, nonatomic) AVCaptureSession *captureSession;
 @property (strong, nonatomic) AVCaptureVideoPreviewLayer *previewLayer;
 @property (strong, nonatomic) NSOutputStream *outputStream;
+@property (assign, nonatomic) BOOL isConnectionEstablished;
+
 - (IBAction)sendMessage:(id)sender;
-@property BOOL isConnectionEstablished;
 
 @end
 
@@ -126,6 +127,9 @@
 #pragma mark MCBrowserViewController Delegates
 - (void)browserViewControllerDidFinish:(MCBrowserViewController *)browserViewController {
     [self.appDelegate.mpcHandler.browser dismissViewControllerAnimated:YES completion:nil];
+    self.isConnectionEstablished = YES;
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"YES!" message:@"You have connected." delegate:nil cancelButtonTitle:@"Confirm" otherButtonTitles:nil];
+    [alert show];
 }
 
 - (void)browserViewControllerWasCancelled:(MCBrowserViewController *)browserViewController {
@@ -149,4 +153,5 @@
     } else {
     }
 }
+
 @end

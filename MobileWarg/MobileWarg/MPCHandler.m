@@ -48,12 +48,13 @@
 - (void)session:(MCSession *)session didReceiveData:(NSData *)data fromPeer:(MCPeerID *)peerID {
     NSDictionary *userInfo = @{ @"data": data,
                                 @"peerID": peerID };
+    NSString *dataString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    NSLog(@"%@", dataString);
     
     dispatch_async(dispatch_get_main_queue(), ^{
         [[NSNotificationCenter defaultCenter] postNotificationName:@"MobileWarg_DidReceiveDataNotification"
                                                             object:nil userInfo:userInfo];
     });
-    
 }
 
 //gets called when application has started receiving a resource (ie. file)
