@@ -25,6 +25,7 @@
     
     [self.appDelegate.mpcHandler setupPeerWithDisplayName:[UIDevice currentDevice].name];
     [self.appDelegate.mpcHandler setupSession];
+    [self.appDelegate.mpcHandler advertiseSelf:true];
     
     [self searchForPeers];
     
