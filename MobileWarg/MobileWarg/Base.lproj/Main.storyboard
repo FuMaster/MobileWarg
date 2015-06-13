@@ -1,28 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14E33b" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="OCF-ws-zse">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="OCF-ws-zse">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <scenes>
-        <!--Nearby Devices-->
-        <scene sceneID="ufC-wZ-h7g">
-            <objects>
-                <viewController id="vXZ-lx-hvc" customClass="ScannerViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="jyV-Pf-zRb"/>
-                        <viewControllerLayoutGuide type="bottom" id="2fi-mo-0CV"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="kh9-bI-dsS">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                    </view>
-                    <navigationItem key="navigationItem" title="Nearby Devices" id="RAH-WV-DIg"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1445" y="-93"/>
-        </scene>
         <!--Stream Send View Controller-->
         <scene sceneID="yZx-ZF-cIQ">
             <objects>
@@ -44,12 +25,13 @@
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="Scan" id="VLM-jL-A9w">
                             <connections>
-                                <segue destination="vXZ-lx-hvc" kind="show" id="W6P-qQ-N7w"/>
+                                <action selector="searchForPeers:" destination="IxH-9P-OZT" id="vv4-bd-mbh"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="imageView" destination="Uos-aw-dWx" id="W1p-uR-3Ck"/>
+                        <outlet property="scanBtn" destination="VLM-jL-A9w" id="LjQ-Mu-pco"/>
                         <outlet property="view" destination="Uos-aw-dWx" id="Vz3-h4-lpm"/>
                     </connections>
                 </viewController>
@@ -95,7 +77,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Bzy-IV-38D" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-396" y="317"/>
+            <point key="canvasLocation" x="-308" y="257"/>
         </scene>
     </scenes>
 </document>
