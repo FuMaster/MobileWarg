@@ -10,7 +10,6 @@
 
 @implementation MWMultipeerManager
 
-
 + (id)sharedManager {
     static MWMultipeerManager *sharedMyManager = nil;
     static dispatch_once_t onceToken;
@@ -36,12 +35,15 @@
 }
 
 - (void)setupBrowser {
-    self.browser = [[MCBrowserViewController alloc]  initWithServiceType:@"warg" session:_session];
+    self.browser = [[MCBrowserViewController alloc] initWithServiceType:@"warg"
+                                                                session:self.session];
 }
 
 - (void)advertiseSelf:(BOOL)advertise {
     if (advertise) {
-        self.advertiser = [[MCAdvertiserAssistant alloc] initWithServiceType:@"warg" discoveryInfo:nil session:self.session];
+        self.advertiser = [[MCAdvertiserAssistant alloc] initWithServiceType:@"warg"
+                                                               discoveryInfo:nil
+                                                                     session:self.session];
         [self.advertiser start];
     } else {
         [self.advertiser stop];

@@ -8,6 +8,7 @@
 
 #import "MWMultipeerManager.h"
 #import "MWStreamSendViewController.h"
+#import "MWMultipeerManager.h"
 
 @interface MWStreamSendViewController ()
 
