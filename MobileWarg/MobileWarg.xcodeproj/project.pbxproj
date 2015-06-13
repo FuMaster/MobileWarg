@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		21EBE8271B264943000EACD1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 21EBE8261B264943000EACD1 /* main.m */; };
 		21EBE82A1B264943000EACD1 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 21EBE8291B264943000EACD1 /* AppDelegate.m */; };
-		21EBE82D1B264943000EACD1 /* ScannerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 21EBE82C1B264943000EACD1 /* ScannerViewController.m */; };
 		21EBE8301B264943000EACD1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 21EBE82E1B264943000EACD1 /* Main.storyboard */; };
 		21EBE8321B264943000EACD1 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 21EBE8311B264943000EACD1 /* Images.xcassets */; };
 		21EBE8351B264943000EACD1 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 21EBE8331B264943000EACD1 /* LaunchScreen.xib */; };
@@ -35,8 +34,6 @@
 		21EBE8261B264943000EACD1 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		21EBE8281B264943000EACD1 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		21EBE8291B264943000EACD1 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		21EBE82B1B264943000EACD1 /* ScannerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ScannerViewController.h; sourceTree = "<group>"; };
-		21EBE82C1B264943000EACD1 /* ScannerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ScannerViewController.m; sourceTree = "<group>"; };
 		21EBE82F1B264943000EACD1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		21EBE8311B264943000EACD1 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		21EBE8341B264943000EACD1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
@@ -94,8 +91,6 @@
 				21EBE8291B264943000EACD1 /* AppDelegate.m */,
 				21EBE84D1B2651B3000EACD1 /* MPCHandler.h */,
 				21EBE84E1B2651B3000EACD1 /* MPCHandler.m */,
-				21EBE82B1B264943000EACD1 /* ScannerViewController.h */,
-				21EBE82C1B264943000EACD1 /* ScannerViewController.m */,
 				CD52786D1B2C967C00CBEB69 /* StreamReceiveViewController.h */,
 				CD52786E1B2C967C00CBEB69 /* StreamReceiveViewController.m */,
 				CD52786F1B2C967C00CBEB69 /* StreamSendViewController.h */,
@@ -235,7 +230,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				CD5278721B2C967C00CBEB69 /* StreamSendViewController.m in Sources */,
-				21EBE82D1B264943000EACD1 /* ScannerViewController.m in Sources */,
 				CD5278711B2C967C00CBEB69 /* StreamReceiveViewController.m in Sources */,
 				21EBE84F1B2651B3000EACD1 /* MPCHandler.m in Sources */,
 				21EBE82A1B264943000EACD1 /* AppDelegate.m in Sources */,

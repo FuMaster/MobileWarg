@@ -7,7 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <MultipeerConnectivity/MultipeerConnectivity.h>
 
-@interface StreamSendViewController : UIViewController <UINavigationControllerDelegate>
+@interface StreamSendViewController : UIViewController <MCBrowserViewControllerDelegate>
+
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *scanBtn;
+- (IBAction)searchForPeers:(id)sender;
 
 @end
