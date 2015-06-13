@@ -9,7 +9,7 @@
 #import "StreamReceiveViewController.h"
 
 @interface StreamReceiveViewController ()
-@property (weak, nonatomic) IBOutlet UIImageView *streamImage;
+@property (weak, nonatomic) IBOutlet UIImageView *imageStream;
 
 @end
 
@@ -17,7 +17,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+    
 }
 
 - (void)didReceiveMemoryWarning {

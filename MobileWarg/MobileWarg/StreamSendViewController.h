@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface StreamSendViewController : UIViewController
+@interface StreamSendViewController : UIViewController <UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
 @end
