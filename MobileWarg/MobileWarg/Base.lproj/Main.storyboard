@@ -37,6 +37,11 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="uH3-MO-VaO">
+                        <barButtonItem key="leftBarButtonItem" title="Send Sample Message" id="hak-Pa-cpD">
+                            <connections>
+                                <action selector="sendMessage:" destination="IxH-9P-OZT" id="3MI-IV-25Z"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="Scan" id="VLM-jL-A9w">
                             <connections>
                                 <segue destination="vXZ-lx-hvc" kind="show" id="W6P-qQ-N7w"/>

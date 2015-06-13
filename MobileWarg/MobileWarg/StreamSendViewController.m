@@ -7,10 +7,12 @@
 //
 
 @import AVFoundation;
+#import "AppDelegate.h"
 #import "StreamSendViewController.h"
 
 @interface StreamSendViewController ()
 
+@property (weak, nonatomic) AppDelegate *appDelegate;
 @property (strong, nonatomic) IBOutlet UIView *imageView;
 
 @property (strong, nonatomic) AVCaptureDevice *videoCaptureDevice;
@@ -18,6 +20,9 @@
 @property (strong, nonatomic) AVCaptureVideoDataOutput *outputData;
 @property (strong, nonatomic) AVCaptureSession *captureSession;
 @property (strong, nonatomic) AVCaptureVideoPreviewLayer *previewLayer;
+@property (strong, nonatomic) NSOutputStream *outputStream;
+- (IBAction)sendMessage:(id)sender;
+@property BOOL isConnectionEstablished;
 
 @end
 
@@ -59,10 +64,10 @@
             
             [self.imageView.layer addSublayer:self.previewLayer];
 
-            
             // Start running the capture session.
             [self.captureSession startRunning];
-        } else {
+            
+                    } else {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Sorry, video input does not exist." delegate:nil cancelButtonTitle:@"Confirm" otherButtonTitles:nil];
             [alert show];
         }
@@ -107,4 +112,21 @@
 }
 */
 
+- (IBAction)sendMessage:(id)sender {
+    if (self.isConnectionEstablished) {
+        // Reference to app delegate.
+        self.appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        
+        NSData *dataToSend = [@"This is sample text." dataUsingEncoding:NSUTF8StringEncoding];
+        NSArray *allPeers = self.appDelegate.mpcHandler.session.connectedPeers;
+        NSError *error;
+        
+        [self.appDelegate.mpcHandler.session sendData:dataToSend
+                                              toPeers:allPeers
+                                             withMode:MCSessionSendDataReliable
+                                                error:&error];
+        
+    } else {
+    }
+}
 @end
