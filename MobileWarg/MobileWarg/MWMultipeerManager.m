@@ -37,6 +37,7 @@
 - (void)setupBrowser {
     self.browser = [[MCBrowserViewController alloc] initWithServiceType:@"warg"
                                                                 session:self.session];
+    [self.browser setMaximumNumberOfPeers:1];
 }
 
 - (void)advertiseSelf:(BOOL)advertise {
