@@ -29,17 +29,12 @@
     [super viewDidLoad];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(connectionStateChange:)
+                                             selector:@selector(connectionStateChanged:)
                                                  name:@"MobileWarg_DidChangeStateNotification"
                                                object:nil];
     
     [self setupCamera];
     [self.outputData setSampleBufferDelegate:self queue:self.videoQueue];
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 - (void)setupCamera {
@@ -90,16 +85,19 @@
                       otherButtonTitles:nil] show];
 }
 
-- (void)connectionStateChange:(NSNotification *)notification {
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - NSNotificationCenter
+
+- (void)connectionStateChanged:(NSNotification *)notification {
     NSDictionary *dict = [notification userInfo];
     NSString *state = [dict valueForKey:@"state"];
     if (state.intValue == MCSessionStateNotConnected) {
-        [self connectionEnded];
+        //go back to last page
     }
-}
-
-- (void)connectionEnded {
-    //go back to last page
 }
 
 - (void)changedOrientation {
@@ -126,7 +124,8 @@
 
 #pragma mark - VideoStream
 
-- (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection{
+- (void)captureOutput:(AVCaptureOutput *)capture OutputdidOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
+       fromConnection:(AVCaptureConnection *)connection {
     //Temp
     BOOL isWarg = YES;
     
@@ -170,7 +169,7 @@
     }
 }
 
--(void)writeDataToBuffer:(NSData*)imageData{
+- (void)writeDataToBuffer:(NSData*)imageData {
     if(self.writeDataBuffer == nil){
         self.writeDataBuffer = [[NSMutableData alloc]init];
     }
@@ -180,7 +179,8 @@
     [self writeData:imageData withStream:manager.outputStream];
 }
 
--(void)writeData:(NSData*)imageData withStream:(NSOutputStream*)oStream{
+- (void)writeData:(NSData*)imageData withStream:(NSOutputStream*)oStream {
+
     if([oStream hasSpaceAvailable] && [_writeDataBuffer length] > 0){
         NSLog(@"In write data: has space available");
         NSUInteger length = [_writeDataBuffer length];
@@ -194,17 +194,7 @@
         }
     }
 }
-
-#pragma mark - MCBrowserViewControllerDelegate
-- (void)browserViewControllerDidFinish:(MCBrowserViewController *)browserViewController {
-    MWMultipeerManager * manager = [MWMultipeerManager sharedManager];
-    [manager.browser dismissViewControllerAnimated:YES completion:nil];
-}
-
-- (void)browserViewControllerWasCancelled:(MCBrowserViewController *)browserViewController {
-    MWMultipeerManager * manager = [MWMultipeerManager sharedManager];
-    [manager.browser dismissViewControllerAnimated:YES completion:nil];
-}
+    
 /*
 - (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection {
     NSLog(@"Sampled");
@@ -226,16 +216,4 @@
                      withMode:MCSessionSendDataReliable
                         error:nil];
 }*/
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
-
-
 @end
