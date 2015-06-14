@@ -114,7 +114,10 @@
     NSString *dataString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
     
     if ([dataString isEqualToString:@"Send Request"]) {
-        
+        NSLog(@"Received request to share data.");
+        // Switch view to ReceiveViewController.
+    } else {
+        // This is actual data.
     }
     
     dispatch_async(dispatch_get_main_queue(), ^{

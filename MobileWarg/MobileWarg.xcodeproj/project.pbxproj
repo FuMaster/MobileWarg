@@ -15,6 +15,7 @@
 		21EBE8411B264943000EACD1 /* MobileWargTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 21EBE8401B264943000EACD1 /* MobileWargTests.m */; };
 		21EBE84F1B2651B3000EACD1 /* MWMultipeerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 21EBE84E1B2651B3000EACD1 /* MWMultipeerManager.m */; };
 		CD5278721B2C967C00CBEB69 /* MWStreamSendViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CD5278701B2C967C00CBEB69 /* MWStreamSendViewController.m */; };
+		CD72ED421B2D0169009CD49D /* MWStreamReceiveViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CD72ED411B2D0169009CD49D /* MWStreamReceiveViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,6 +44,8 @@
 		21EBE84E1B2651B3000EACD1 /* MWMultipeerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWMultipeerManager.m; sourceTree = "<group>"; };
 		CD52786F1B2C967C00CBEB69 /* MWStreamSendViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWStreamSendViewController.h; sourceTree = "<group>"; };
 		CD5278701B2C967C00CBEB69 /* MWStreamSendViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWStreamSendViewController.m; sourceTree = "<group>"; };
+		CD72ED401B2D0169009CD49D /* MWStreamReceiveViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWStreamReceiveViewController.h; sourceTree = "<group>"; };
+		CD72ED411B2D0169009CD49D /* MWStreamReceiveViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWStreamReceiveViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,6 +91,8 @@
 				21EBE8291B264943000EACD1 /* AppDelegate.m */,
 				21EBE84D1B2651B3000EACD1 /* MWMultipeerManager.h */,
 				21EBE84E1B2651B3000EACD1 /* MWMultipeerManager.m */,
+				CD72ED401B2D0169009CD49D /* MWStreamReceiveViewController.h */,
+				CD72ED411B2D0169009CD49D /* MWStreamReceiveViewController.m */,
 				CD52786F1B2C967C00CBEB69 /* MWStreamSendViewController.h */,
 				CD5278701B2C967C00CBEB69 /* MWStreamSendViewController.m */,
 				21EBE82E1B264943000EACD1 /* Main.storyboard */,
@@ -224,6 +229,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CD72ED421B2D0169009CD49D /* MWStreamReceiveViewController.m in Sources */,
 				CD5278721B2C967C00CBEB69 /* MWStreamSendViewController.m in Sources */,
 				21EBE84F1B2651B3000EACD1 /* MWMultipeerManager.m in Sources */,
 				21EBE82A1B264943000EACD1 /* AppDelegate.m in Sources */,
