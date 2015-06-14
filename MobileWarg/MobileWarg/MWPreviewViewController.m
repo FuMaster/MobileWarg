@@ -155,7 +155,7 @@
         
         [[[UIAlertView alloc] initWithTitle:@"Warg Accepted"
                                     message:alertMessage
-                                   delegate:self
+                                   delegate:nil
                           cancelButtonTitle:@"Ok"
                           otherButtonTitles:nil] show];
         [self performSegueWithIdentifier:@"showStreamSend" sender:self];
@@ -215,7 +215,7 @@
 #pragma mark - UIAlertViewDelegate
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (buttonIndex == 0) {
+    if (buttonIndex == 1) {
         //Accepted warg request
         NSLog(@"Accepting warg request");
         MWMultipeerManager * manager = [MWMultipeerManager sharedManager];
