@@ -126,46 +126,42 @@
 
 - (void)captureOutput:(AVCaptureOutput *)capture OutputdidOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
        fromConnection:(AVCaptureConnection *)connection {
-    //Temp
-    BOOL isWarg = YES;
     
-    if(!isWarg) {
-        CVImageBufferRef imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
-        //Lock the base address of the pixel buffer
-        CVPixelBufferLockBaseAddress(imageBuffer, 0);
-        
-        //Get the number of bytes per row for the pixel buffer
-        size_t bytesPerRow = CVPixelBufferGetBytesPerRow(imageBuffer);
-        //Get the pixel buffer width and height
-        size_t width = CVPixelBufferGetWidth(imageBuffer);
-        size_t height = CVPixelBufferGetHeight(imageBuffer);
-        
-        //Create a device dependent RGB color space
-        CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
-        
-        //Get the base address of the pixel buffer
-        void *baseAddress = CVPixelBufferGetBaseAddress(imageBuffer);
-        
-        CGContextRef newContext = CGBitmapContextCreate(baseAddress, width, height, 8, bytesPerRow, colorSpace, kCGBitmapByteOrder32Little | kCGImageAlphaPremultipliedFirst);
-        CGImageRef newImage = CGBitmapContextCreateImage(newContext);
-        CVPixelBufferUnlockBaseAddress(imageBuffer, 0);
-        
-        //Make UIImage
-        UIImage *image = [[UIImage alloc] initWithCGImage:newImage];
-        
-        //release
-        CGContextRelease(newContext);
-        CGColorSpaceRelease(colorSpace);
-        CGImageRelease(newImage);
-        
-        MWMultipeerManager * manager = [MWMultipeerManager sharedManager];
-        
-        if(manager.outputStream && image){
-            NSData *imageData = UIImageJPEGRepresentation(image, 0.0);
-            //[self writeData:imageData withStream:outStream];
-            NSLog(@"imageData size: %lu", (unsigned long)[imageData length]);
-            [self writeDataToBuffer:imageData];
-        }
+    CVImageBufferRef imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
+    //Lock the base address of the pixel buffer
+    CVPixelBufferLockBaseAddress(imageBuffer, 0);
+    
+    //Get the number of bytes per row for the pixel buffer
+    size_t bytesPerRow = CVPixelBufferGetBytesPerRow(imageBuffer);
+    //Get the pixel buffer width and height
+    size_t width = CVPixelBufferGetWidth(imageBuffer);
+    size_t height = CVPixelBufferGetHeight(imageBuffer);
+    
+    //Create a device dependent RGB color space
+    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+    
+    //Get the base address of the pixel buffer
+    void *baseAddress = CVPixelBufferGetBaseAddress(imageBuffer);
+    
+    CGContextRef newContext = CGBitmapContextCreate(baseAddress, width, height, 8, bytesPerRow, colorSpace, kCGBitmapByteOrder32Little | kCGImageAlphaPremultipliedFirst);
+    CGImageRef newImage = CGBitmapContextCreateImage(newContext);
+    CVPixelBufferUnlockBaseAddress(imageBuffer, 0);
+    
+    //Make UIImage
+    UIImage *image = [[UIImage alloc] initWithCGImage:newImage];
+    
+    //release
+    CGContextRelease(newContext);
+    CGColorSpaceRelease(colorSpace);
+    CGImageRelease(newImage);
+    
+    MWMultipeerManager * manager = [MWMultipeerManager sharedManager];
+    
+    if(manager.outputStream && image){
+        NSData *imageData = UIImageJPEGRepresentation(image, 0.0);
+        //[self writeData:imageData withStream:outStream];
+        NSLog(@"imageData size: %lu", (unsigned long)[imageData length]);
+        [self writeDataToBuffer:imageData];
     }
 }
 
@@ -180,7 +176,7 @@
 }
 
 - (void)writeData:(NSData*)imageData withStream:(NSOutputStream*)oStream {
-
+    
     if([oStream hasSpaceAvailable] && [_writeDataBuffer length] > 0){
         NSLog(@"In write data: has space available");
         NSUInteger length = [_writeDataBuffer length];
@@ -194,26 +190,26 @@
         }
     }
 }
-    
+
 /*
-- (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection {
-    NSLog(@"Sampled");
-    CVImageBufferRef imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
-    CVPixelBufferLockBaseAddress(imageBuffer,0);
-    
-    size_t bytesPerRow = CVPixelBufferGetBytesPerRow(imageBuffer);
-    size_t width = CVPixelBufferGetWidth(imageBuffer);
-    size_t height = CVPixelBufferGetHeight(imageBuffer);
-    void *src_buff = CVPixelBufferGetBaseAddress(imageBuffer);
-    
-    NSData *data = [NSData dataWithBytes:src_buff length:bytesPerRow * height];
-    CVPixelBufferUnlockBaseAddress(imageBuffer, 0);
-    
-    MWMultipeerManager *manager = [MWMultipeerManager sharedManager];
-    NSArray *allPeers = manager.session.connectedPeers;
-    [manager.session sendData:data
-                      toPeers:allPeers
-                     withMode:MCSessionSendDataReliable
-                        error:nil];
-}*/
+ - (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection {
+ NSLog(@"Sampled");
+ CVImageBufferRef imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
+ CVPixelBufferLockBaseAddress(imageBuffer,0);
+ 
+ size_t bytesPerRow = CVPixelBufferGetBytesPerRow(imageBuffer);
+ size_t width = CVPixelBufferGetWidth(imageBuffer);
+ size_t height = CVPixelBufferGetHeight(imageBuffer);
+ void *src_buff = CVPixelBufferGetBaseAddress(imageBuffer);
+ 
+ NSData *data = [NSData dataWithBytes:src_buff length:bytesPerRow * height];
+ CVPixelBufferUnlockBaseAddress(imageBuffer, 0);
+ 
+ MWMultipeerManager *manager = [MWMultipeerManager sharedManager];
+ NSArray *allPeers = manager.session.connectedPeers;
+ [manager.session sendData:data
+ toPeers:allPeers
+ withMode:MCSessionSendDataReliable
+ error:nil];
+ }*/
 @end

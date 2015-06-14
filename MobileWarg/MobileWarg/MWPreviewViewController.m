@@ -158,7 +158,6 @@
                                    delegate:nil
                           cancelButtonTitle:@"Ok"
                           otherButtonTitles:nil] show];
-        [self performSegueWithIdentifier:@"showStreamSend" sender:self];
     }
 }
 
@@ -220,6 +219,8 @@
         NSLog(@"Accepting warg request");
         MWMultipeerManager * manager = [MWMultipeerManager sharedManager];
         [manager sendMessageToConnectedPeer:@"wargAccept"];
+        
+        [self performSegueWithIdentifier:@"showStreamSend" sender:self];
     }
 }
 
