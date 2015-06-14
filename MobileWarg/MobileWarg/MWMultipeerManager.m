@@ -39,6 +39,7 @@
 - (void)setupBrowser {
     self.browser = [[MCBrowserViewController alloc] initWithServiceType:@"warg"
                                                                 session:self.session];
+    [self.browser setMaximumNumberOfPeers:1];
 }
 
 - (void)advertiseSelf:(BOOL)advertise {
@@ -58,12 +59,13 @@
 - (void)session:(MCSession *)session peer:(MCPeerID *)peerID didChangeState:(MCSessionState)state {
     switch (state) {
         case MCSessionStateNotConnected: {
-            self.connectedPeerID = peerID;
+            self.connectedPeerID = nil;
             NSDictionary *userInfo = @{@"peerID":peerID, @"state":@(state)};
             dispatch_async(dispatch_get_main_queue(),^{
                 NSLog(@"Disconnected");
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"MobileWarg_DidChangeStateNotification"
-                                                                    object:nil userInfo:userInfo];
+                                                                    object:nil
+                                                                  userInfo:userInfo];
             });
         }
             break;
@@ -73,9 +75,10 @@
             self.connectedPeerID = peerID;
             NSDictionary *userInfo = @{@"peerID":peerID, @"state":@(state)};
             dispatch_async(dispatch_get_main_queue(),^{
-                NSLog(@"Connected to peer");
+                NSLog(@"Connected");
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"MobileWarg_DidChangeStateNotification"
-                                                                    object:nil userInfo:userInfo];
+                                                                    object:nil
+                                                                  userInfo:userInfo];
             });
         }
             break;
@@ -86,32 +89,30 @@
 
 //Called whenever device receives data from another peer
 - (void)session:(MCSession *)session didReceiveData:(NSData *)data fromPeer:(MCPeerID *)peerID {
-    NSDictionary *userInfo = @{ @"data": data,
-                                @"peerID": peerID };
-    NSString *dataString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
     
-    if ([dataString isEqualToString:@"Send Request"]) {
-        NSLog(@"Received request to share data.");
-        // Switch view to ReceiveViewController.
-        
-    } else {
-        // This is actual data.
-    }
+    NSString *dataString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    NSDictionary *userInfo = @{@"message":dataString,
+                                  @"peer":peerID};
     
     dispatch_async(dispatch_get_main_queue(), ^{
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"MobileWarg_DidReceiveDataNotification"
-                                                            object:nil userInfo:userInfo];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"MobileWarg_MessageRecivedFromPeer"
+                                                            object:nil
+                                                          userInfo:userInfo];
     });
 }
 
 //gets called when application has started receiving a resource (ie. file)
 //from another peer
-- (void)session:(MCSession *)session didStartReceivingResourceWithName:(NSString *)resourceName fromPeer:(MCPeerID *)peerID withProgress:(NSProgress *)progress {}
+- (void)session:(MCSession *)session didStartReceivingResourceWithName:(NSString *)resourceName
+       fromPeer:(MCPeerID *)peerID withProgress:(NSProgress *)progress {}
 
 - (void)session:(MCSession *)session didFinishReceivingResourceWithName:(NSString *)resourceName
        fromPeer:(MCPeerID *)peerID atURL:(NSURL *)localURL withError:(NSError *)error {}
 
 - (void)session:(MCSession *)session didReceiveStream:(NSInputStream *)stream
-       withName:(NSString *)streamName fromPeer:(MCPeerID *)peerID {}
+       withName:(NSString *)streamName fromPeer:(MCPeerID *)peerID {
+    self.inputStream = stream;
+    //
+}
 
 @end

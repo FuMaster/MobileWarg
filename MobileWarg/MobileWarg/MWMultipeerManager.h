@@ -15,6 +15,8 @@
 @property(nonatomic, strong) MCPeerID *connectedPeerID;
 @property(nonatomic, strong) MCSession *session;
 @property(nonatomic, strong) MCBrowserViewController *browser;
+@property(nonatomic, strong) NSInputStream *inputStream;
+@property(nonatomic, strong) NSOutputStream *outputStream;
 @property(nonatomic, strong) MCAdvertiserAssistant *advertiser;
 
 + (id)sharedManager;
@@ -22,5 +24,6 @@
 - (void)setupSession;
 - (void)setupBrowser;
 - (void)advertiseSelf:(BOOL)advertise;
+- (void)sendMessageToConnectedPeer:(NSString *)message;
 
 @end

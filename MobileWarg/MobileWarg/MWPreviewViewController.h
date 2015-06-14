@@ -10,6 +10,7 @@
 #import <AVFoundation/AVFoundation.h>
 #import <MultipeerConnectivity/MultipeerConnectivity.h>
 
-@interface MWPreviewViewController : UIViewController <MCBrowserViewControllerDelegate>
+@interface MWPreviewViewController : UIViewController <MCBrowserViewControllerDelegate,
+    UIAlertViewDelegate>
 
 @end

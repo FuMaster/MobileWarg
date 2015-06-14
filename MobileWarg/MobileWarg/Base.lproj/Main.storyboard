@@ -89,12 +89,12 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="Yk3-bI-9wR">
-                        <barButtonItem key="leftBarButtonItem" title="Share" id="yuB-Fh-Kvj">
+                        <barButtonItem key="leftBarButtonItem" title="Warg" id="yuB-Fh-Kvj">
                             <connections>
                                 <action selector="share:" destination="Iog-eh-ggf" id="5nl-Iu-saS"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="Scan" id="iPq-LU-eOy">
+                        <barButtonItem key="rightBarButtonItem" title="Connect" id="iPq-LU-eOy">
                             <connections>
                                 <action selector="navBarRightButtonPressed:" destination="Iog-eh-ggf" id="3OX-9U-obU"/>
                             </connections>

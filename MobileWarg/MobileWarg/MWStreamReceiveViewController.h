@@ -9,6 +9,6 @@
 #import <MultipeerConnectivity/MultipeerConnectivity.h>
 #import <UIKit/UIKit.h>
 
-@interface MWStreamReceiveViewController : UIViewController <MCSessionDelegate>
+@interface MWStreamReceiveViewController : UIViewController
 
 @end

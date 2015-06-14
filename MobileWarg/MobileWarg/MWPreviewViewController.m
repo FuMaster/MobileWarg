@@ -36,7 +36,7 @@
     [self.shareBtn setEnabled:NO];
 }
 
-- (void) setupCamera {
+- (void)setupCamera {
     if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Sorry, this application won't work because camera does not exist." delegate:nil cancelButtonTitle:@"Confirm" otherButtonTitles:nil];
         [alert show];
@@ -81,20 +81,26 @@
     }
 }
 
-- (void) setupMultipeerConnectivity {
+- (void)setupMultipeerConnectivity {
     MWMultipeerManager *manager = [MWMultipeerManager sharedManager];
     [manager setupPeerWithDisplayName:[UIDevice currentDevice].name];
     [manager setupSession];
     [manager advertiseSelf:true];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                          selector:@selector(connectionStateChange:)
-                                          name:@"MobileWarg_DidChangeStateNotification"
-                                          object:nil];
+                                             selector:@selector(connectionStateChange:)
+                                                 name:@"MobileWarg_DidChangeStateNotification"
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(messageRecived:)
+                                                 name:@"MobileWarg_MessageRecivedFromPeer"
+                                               object:nil];
+    
     //if you specify nil for object, you get all the notifications with the matching name, regardless of who sent them
 }
 
-- (void) connectionStateChange: (NSNotification *) notification {
+- (void)connectionStateChange:(NSNotification *)notification {
     NSDictionary *dict = [notification userInfo];
     NSString *state = [dict valueForKey:@"state"];
     if (state.intValue == MCSessionStateConnected) {
@@ -105,23 +111,40 @@
     }
 }
 
-- (void) connectionSuccess {
+- (void)connectionSuccess {
     [self.shareBtn setEnabled:YES];
     self.isConnectionEstablished = YES;
     [self.scanBtn setTitle:@"Disconnect"];
     
     MWMultipeerManager * manager = [MWMultipeerManager sharedManager];
     [manager.browser dismissViewControllerAnimated:YES completion:nil];
-        
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"YES!"
-                                              message:@"You have connected."
-                                              delegate:nil
-                                              cancelButtonTitle:@"Confirm"
-                                              otherButtonTitles:nil];
-    [alert show];
+    
+    [[[UIAlertView alloc] initWithTitle:@"Connected"
+                                message:[NSString stringWithFormat:@"Connected to %@",manager.connectedPeerID.displayName]
+                               delegate:nil
+                      cancelButtonTitle:@"Ok"
+                      otherButtonTitles:nil] show];
 }
 
-- (void) connectionEnded {
+- (void)messageRecived:(NSNotification *)notification {
+    NSDictionary *userInfo = notification.userInfo;
+    
+    MCPeerID *senderPeer = userInfo[@"peer"];
+    NSString *message = userInfo[@"message"];
+    
+    if ([message isEqualToString:@"wargRequest"]) {
+        
+        NSString *alertMessage = [NSString stringWithFormat:@"%@ wishes to warg into you",senderPeer.displayName];
+        
+        [[[UIAlertView alloc] initWithTitle:@"Warg Request"
+                                    message:alertMessage
+                                   delegate:self
+                          cancelButtonTitle:@"Decline"
+                          otherButtonTitles:@"Accept", nil] show];
+    }
+}
+
+- (void)connectionEnded {
     self.isConnectionEstablished = NO;
     [self.scanBtn setTitle:@"Scan"];
     [self.shareBtn setEnabled:NO];
@@ -132,8 +155,7 @@
     // Dispose of any resources that can be recreated.
 }
 
--(void) changedOrientation
-{
+-(void)changedOrientation {
     // Change the fit of the UI element.
     self.previewLayer.frame = self.imageView.bounds;
     
@@ -191,6 +213,14 @@
     }
 }
 
+
+#pragma mark - UIAlertViewDelegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 0) {
+        //Accepted warg request
+        NSLog(@"Accepted warg request");
+    }
+}
 
 
 @end
