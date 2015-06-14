@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <AVFoundation/AVFoundation.h>
 
-@interface MWStreamReceiveViewController : UIViewController
+@interface MWStreamReceiveViewController : UIViewController<NSStreamDelegate>
 
 @end
