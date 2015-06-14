@@ -16,7 +16,6 @@
 @property(nonatomic, strong) MCSession *session;
 @property(nonatomic, strong) MCBrowserViewController *browser;
 @property(nonatomic, strong) MCAdvertiserAssistant *advertiser;
-@property(nonatomic, strong) NSOutputStream *videoStream;
 
 + (id)sharedManager;
 - (void)setupPeerWithDisplayName: (NSString *)displayName;

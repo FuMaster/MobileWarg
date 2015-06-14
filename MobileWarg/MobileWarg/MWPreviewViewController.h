@@ -1,8 +1,8 @@
 //
-//  MWStreamSendViewController.h
+//  MWPreviewViewController.h
 //  MobileWarg
 //
-//  Created by David Jeong on 2015-06-14.
+//  Created by David Jeong on 2015. 6. 8..
 //  Copyright (c) 2015 MobileWarg. All rights reserved.
 //
 
@@ -10,6 +10,6 @@
 #import <AVFoundation/AVFoundation.h>
 #import <MultipeerConnectivity/MultipeerConnectivity.h>
 
-@interface MWStreamSendViewController : UIViewController <AVCaptureVideoDataOutputSampleBufferDelegate>
+@interface MWPreviewViewController : UIViewController <MCBrowserViewControllerDelegate>
 
 @end

@@ -6,7 +6,9 @@
 //  Copyright (c) 2015 MobileWarg. All rights reserved.
 //
 
+
 #import "MWMultipeerManager.h"
+#import "MWStreamReceiveViewController.h"
 
 @implementation MWMultipeerManager
 
@@ -51,28 +53,12 @@
     }
 }
 
-- (void)setupStream {
-    if (self.connectedPeerID) {
-        NSError *error;
-        self.videoStream = [self.session startStreamWithName:@"wargStream"
-                                                      toPeer:self.connectedPeerID
-                                                       error:&error];
-        if(error){
-            NSLog(@"Failed to setuo the output Stream");
-        }
-    } else {
-        NSLog(@"Haven't connected to receiving peer");
-    }
-}
-
 //Called everytime the connection state of a peer changes
 //3 states: not connected, connecting, connected
 - (void)session:(MCSession *)session peer:(MCPeerID *)peerID didChangeState:(MCSessionState)state {
-    
     switch (state) {
         case MCSessionStateNotConnected: {
             self.connectedPeerID = peerID;
-            
             NSDictionary *userInfo = @{@"peerID":peerID, @"state":@(state)};
             dispatch_async(dispatch_get_main_queue(),^{
                 NSLog(@"Disconnected");
@@ -81,30 +67,21 @@
             });
         }
             break;
-            
         case MCSessionStateConnecting:
             break;
-            
         case MCSessionStateConnected: {
-            
             self.connectedPeerID = peerID;
-            
             NSDictionary *userInfo = @{@"peerID":peerID, @"state":@(state)};
             dispatch_async(dispatch_get_main_queue(),^{
                 NSLog(@"Connected to peer");
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"MobileWarg_DidChangeStateNotification"
                                                                     object:nil userInfo:userInfo];
             });
-            
         }
             break;
-            
         default:
             break;
     }
-    
-    
-    
 }
 
 //Called whenever device receives data from another peer
@@ -116,6 +93,7 @@
     if ([dataString isEqualToString:@"Send Request"]) {
         NSLog(@"Received request to share data.");
         // Switch view to ReceiveViewController.
+        
     } else {
         // This is actual data.
     }
@@ -128,18 +106,12 @@
 
 //gets called when application has started receiving a resource (ie. file)
 //from another peer
-- (void)session:(MCSession *)session didStartReceivingResourceWithName:(NSString *)resourceName fromPeer:(MCPeerID *)peerID withProgress:(NSProgress *)progress {
-    
-}
+- (void)session:(MCSession *)session didStartReceivingResourceWithName:(NSString *)resourceName fromPeer:(MCPeerID *)peerID withProgress:(NSProgress *)progress {}
 
 - (void)session:(MCSession *)session didFinishReceivingResourceWithName:(NSString *)resourceName
-       fromPeer:(MCPeerID *)peerID atURL:(NSURL *)localURL withError:(NSError *)error {
-    
-}
+       fromPeer:(MCPeerID *)peerID atURL:(NSURL *)localURL withError:(NSError *)error {}
 
 - (void)session:(MCSession *)session didReceiveStream:(NSInputStream *)stream
-       withName:(NSString *)streamName fromPeer:(MCPeerID *)peerID {
-    
-}
+       withName:(NSString *)streamName fromPeer:(MCPeerID *)peerID {}
 
 @end
