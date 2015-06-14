@@ -12,7 +12,6 @@
 
 @interface MWStreamSendViewController : UIViewController <
 UIAlertViewDelegate,
-MCBrowserViewControllerDelegate,
 AVCaptureVideoDataOutputSampleBufferDelegate>
 
 @end

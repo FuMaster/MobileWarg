@@ -11,8 +11,8 @@
 
 @interface MWPreviewViewController ()
 
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *shareBtn;
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *scanBtn;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *wargButton;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *connectButton;
 @property (strong, nonatomic) IBOutlet UIView *imageView;
 @property (strong, nonatomic) AVCaptureDevice *videoCaptureDevice;
 @property (strong, nonatomic) AVCaptureDeviceInput *videoInput;
@@ -20,10 +20,7 @@
 @property (strong, nonatomic) AVCaptureSession *captureSession;
 @property (strong, nonatomic) AVCaptureVideoPreviewLayer *previewLayer;
 @property (assign, nonatomic) BOOL isConnectionEstablished;
-@property (strong, nonatomic) dispatch_queue_t videoQueue;
 
-- (IBAction)navBarRightButtonPressed:(id)sender;
-- (IBAction)share:(id)sender;
 @end
 
 @implementation MWPreviewViewController
@@ -33,14 +30,11 @@
     [super viewDidLoad];
     [self setupMultipeerConnectivity];
     [self setupCamera];
-    [self.shareBtn setEnabled:NO];
+    [self.wargButton setEnabled:NO];
 }
 
 - (void)setupCamera {
-    if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Sorry, this application won't work because camera does not exist." delegate:nil cancelButtonTitle:@"Confirm" otherButtonTitles:nil];
-        [alert show];
-    } else {
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
         // Create a capture session.
         self.captureSession = [[AVCaptureSession alloc] init];
         self.captureSession.sessionPreset = AVCaptureSessionPresetMedium;
@@ -72,23 +66,23 @@
             
             // Start running the capture session.
             [self.captureSession startRunning];
-            
-            self.videoQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0);
-        } else {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Sorry, video input does not exist." delegate:nil cancelButtonTitle:@"Confirm" otherButtonTitles:nil];
-            [alert show];
+            return;
         }
     }
+    
+    [[[UIAlertView alloc] initWithTitle:@"No Camera"
+                                message:@"There doesn't seem to be a camera on this device"
+                               delegate:nil
+                      cancelButtonTitle:@"Ok"
+                      otherButtonTitles:nil] show];
 }
 
 - (void)setupMultipeerConnectivity {
-    MWMultipeerManager *manager = [MWMultipeerManager sharedManager];
-    [manager setupPeerWithDisplayName:[UIDevice currentDevice].name];
-    [manager setupSession];
-    [manager advertiseSelf:true];
+    //Instantiates MWMultipeerManager
+    [MWMultipeerManager sharedManager];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(connectionStateChange:)
+                                             selector:@selector(connectionStateChanged:)
                                                  name:@"MobileWarg_DidChangeStateNotification"
                                                object:nil];
     
@@ -100,21 +94,10 @@
     //if you specify nil for object, you get all the notifications with the matching name, regardless of who sent them
 }
 
-- (void)connectionStateChange:(NSNotification *)notification {
-    NSDictionary *dict = [notification userInfo];
-    NSString *state = [dict valueForKey:@"state"];
-    if (state.intValue == MCSessionStateConnected) {
-        [self connectionSuccess];
-        
-    } else if (state.intValue == MCSessionStateNotConnected) {
-        [self connectionEnded];
-    }
-}
-
 - (void)connectionSuccess {
-    [self.shareBtn setEnabled:YES];
+    [self.wargButton setEnabled:YES];
     self.isConnectionEstablished = YES;
-    [self.scanBtn setTitle:@"Disconnect"];
+    [self.connectButton setTitle:@"Disconnect"];
     
     MWMultipeerManager * manager = [MWMultipeerManager sharedManager];
     [manager.browser dismissViewControllerAnimated:YES completion:nil];
@@ -124,6 +107,30 @@
                                delegate:nil
                       cancelButtonTitle:@"Ok"
                       otherButtonTitles:nil] show];
+}
+
+- (void)connectionEnded {
+    self.isConnectionEstablished = NO;
+    [self.connectButton setTitle:@"Scan"];
+    [self.wargButton setEnabled:NO];
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - NSNotificationCenter
+
+- (void)connectionStateChanged:(NSNotification *)notification {
+    NSDictionary *dict = [notification userInfo];
+    NSString *state = [dict valueForKey:@"state"];
+    if (state.intValue == MCSessionStateConnected) {
+        [self connectionSuccess];
+        
+    } else if (state.intValue == MCSessionStateNotConnected) {
+        [self connectionEnded];
+    }
 }
 
 - (void)messageRecived:(NSNotification *)notification {
@@ -141,18 +148,18 @@
                                    delegate:self
                           cancelButtonTitle:@"Decline"
                           otherButtonTitles:@"Accept", nil] show];
+        
+    } else if ([message isEqualToString:@"wargAccept"]) {
+        
+        NSString *alertMessage = [NSString stringWithFormat:@"%@ accepted your warg request.",senderPeer.displayName];
+        
+        [[[UIAlertView alloc] initWithTitle:@"Warg Accepted"
+                                    message:alertMessage
+                                   delegate:nil
+                          cancelButtonTitle:@"Ok"
+                          otherButtonTitles:nil] show];
+        [self performSegueWithIdentifier:@"showStreamSend" sender:self];
     }
-}
-
-- (void)connectionEnded {
-    self.isConnectionEstablished = NO;
-    [self.scanBtn setTitle:@"Scan"];
-    [self.shareBtn setEnabled:NO];
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 -(void)changedOrientation {
@@ -177,18 +184,16 @@
     }
 }
 
-#pragma mark MCBrowserViewController Delegates
-- (void)browserViewControllerDidFinish:(MCBrowserViewController *)browserViewController {
-    MWMultipeerManager * manager = [MWMultipeerManager sharedManager];
-    [manager.browser dismissViewControllerAnimated:YES completion:nil];
+#pragma mark - IBActions
+
+- (IBAction)warg:(id)sender {
+    if (self.isConnectionEstablished) {
+        MWMultipeerManager * manager = [MWMultipeerManager sharedManager];
+        [manager sendMessageToConnectedPeer:@"wargRequest"];
+    }
 }
 
-- (void)browserViewControllerWasCancelled:(MCBrowserViewController *)browserViewController {
-    MWMultipeerManager * manager = [MWMultipeerManager sharedManager];
-    [manager.browser dismissViewControllerAnimated:YES completion:nil];
-}
-
-- (IBAction)navBarRightButtonPressed:(id)sender {
+- (IBAction)connect:(id)sender {
     MWMultipeerManager * manager = [MWMultipeerManager sharedManager];
     
     if (self.isConnectionEstablished) {
@@ -207,20 +212,27 @@
     }
 }
 
-- (IBAction)share:(id)sender {
-    if (self.isConnectionEstablished) {
-        [self performSegueWithIdentifier:@"showStreamSend" sender:self];
-    }
-}
-
-
 #pragma mark - UIAlertViewDelegate
+
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (buttonIndex == 0) {
+    if (buttonIndex == 1) {
         //Accepted warg request
-        NSLog(@"Accepted warg request");
+        NSLog(@"Accepting warg request");
+        MWMultipeerManager * manager = [MWMultipeerManager sharedManager];
+        [manager sendMessageToConnectedPeer:@"wargAccept"];
     }
 }
 
+#pragma mark - MCBrowserViewControllerDelegate
+
+- (void)browserViewControllerDidFinish:(MCBrowserViewController *)browserViewController {
+    MWMultipeerManager * manager = [MWMultipeerManager sharedManager];
+    [manager.browser dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)browserViewControllerWasCancelled:(MCBrowserViewController *)browserViewController {
+    MWMultipeerManager * manager = [MWMultipeerManager sharedManager];
+    [manager.browser dismissViewControllerAnimated:YES completion:nil];
+}
 
 @end
