@@ -72,13 +72,13 @@
     
     switch (state) {
         case MCSessionStateNotConnected: {
-            self.connectedPeerID = peerID;
-            
+            self.connectedPeerID = nil;
             NSDictionary *userInfo = @{@"peerID":peerID, @"state":@(state)};
             dispatch_async(dispatch_get_main_queue(),^{
                 NSLog(@"Disconnected");
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"MobileWarg_DidChangeStateNotification"
-                                                                    object:nil userInfo:userInfo];
+                                                                    object:nil
+                                                                  userInfo:userInfo];
             });
         }
             break;
@@ -92,9 +92,10 @@
             
             NSDictionary *userInfo = @{@"peerID":peerID, @"state":@(state)};
             dispatch_async(dispatch_get_main_queue(),^{
-                NSLog(@"Connected to peer");
+                NSLog(@"Connected");
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"MobileWarg_DidChangeStateNotification"
-                                                                    object:nil userInfo:userInfo];
+                                                                    object:nil
+                                                                  userInfo:userInfo];
             });
             
         }
@@ -110,9 +111,10 @@
 
 //Called whenever device receives data from another peer
 - (void)session:(MCSession *)session didReceiveData:(NSData *)data fromPeer:(MCPeerID *)peerID {
-    NSDictionary *userInfo = @{ @"data": data,
-                                @"peerID": peerID };
+    
     NSString *dataString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    NSDictionary *userInfo = @{@"message":dataString,
+                                  @"peer":peerID};
     
     if ([dataString isEqualToString:@"Send Request"]) {
         NSLog(@"Received request to share data.");
@@ -122,8 +124,9 @@
     }
     
     dispatch_async(dispatch_get_main_queue(), ^{
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"MobileWarg_DidReceiveDataNotification"
-                                                            object:nil userInfo:userInfo];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"MobileWarg_MessageRecivedFromPeer"
+                                                            object:nil
+                                                          userInfo:userInfo];
     });
 }
 

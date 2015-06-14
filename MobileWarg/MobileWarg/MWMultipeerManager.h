@@ -9,6 +9,12 @@
 #import <Foundation/Foundation.h>
 #import <MultipeerConnectivity/MultipeerConnectivity.h>
 
+//@protocol MWMultipeerManagerDelegate <NSObject>
+//
+//-(void)receivedMessageFromConnectedPeer:(NSString *)message;
+//
+//@end
+
 @interface MWMultipeerManager : NSObject <MCSessionDelegate>
 
 @property(nonatomic, strong) MCPeerID *myPeerID;
@@ -23,5 +29,6 @@
 - (void)setupSession;
 - (void)setupBrowser;
 - (void)advertiseSelf:(BOOL)advertise;
+- (void)sendMessageToConnectedPeer:(NSString *)message;
 
 @end
