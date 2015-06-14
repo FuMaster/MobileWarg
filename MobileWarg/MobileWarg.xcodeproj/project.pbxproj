@@ -14,6 +14,7 @@
 		21EBE8351B264943000EACD1 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 21EBE8331B264943000EACD1 /* LaunchScreen.xib */; };
 		21EBE8411B264943000EACD1 /* MobileWargTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 21EBE8401B264943000EACD1 /* MobileWargTests.m */; };
 		21EBE84F1B2651B3000EACD1 /* MWMultipeerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 21EBE84E1B2651B3000EACD1 /* MWMultipeerManager.m */; };
+		A7869160A750E7DDEFC9505D /* libPods-MobileWarg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C528FE202BE821C1C7BC7B63 /* libPods-MobileWarg.a */; };
 		CD5278721B2C967C00CBEB69 /* MWPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CD5278701B2C967C00CBEB69 /* MWPreviewViewController.m */; };
 		CD72ED421B2D0169009CD49D /* MWStreamReceiveViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CD72ED411B2D0169009CD49D /* MWStreamReceiveViewController.m */; };
 		CD72ED511B2E153E009CD49D /* MWStreamSendViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CD72ED501B2E153E009CD49D /* MWStreamSendViewController.m */; };
@@ -43,6 +44,9 @@
 		21EBE8401B264943000EACD1 /* MobileWargTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MobileWargTests.m; sourceTree = "<group>"; };
 		21EBE84D1B2651B3000EACD1 /* MWMultipeerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWMultipeerManager.h; sourceTree = "<group>"; };
 		21EBE84E1B2651B3000EACD1 /* MWMultipeerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWMultipeerManager.m; sourceTree = "<group>"; };
+		42C56AC8BCD692E174DEE324 /* Pods-MobileWarg.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MobileWarg.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MobileWarg/Pods-MobileWarg.debug.xcconfig"; sourceTree = "<group>"; };
+		46BB32DCDA54194EF02CA94F /* Pods-MobileWarg.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MobileWarg.release.xcconfig"; path = "Pods/Target Support Files/Pods-MobileWarg/Pods-MobileWarg.release.xcconfig"; sourceTree = "<group>"; };
+		C528FE202BE821C1C7BC7B63 /* libPods-MobileWarg.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MobileWarg.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD52786F1B2C967C00CBEB69 /* MWPreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWPreviewViewController.h; sourceTree = "<group>"; };
 		CD5278701B2C967C00CBEB69 /* MWPreviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWPreviewViewController.m; sourceTree = "<group>"; };
 		CD72ED401B2D0169009CD49D /* MWStreamReceiveViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWStreamReceiveViewController.h; sourceTree = "<group>"; };
@@ -56,6 +60,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A7869160A750E7DDEFC9505D /* libPods-MobileWarg.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -69,12 +74,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1D79FE284DE33E07FDB72473 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				42C56AC8BCD692E174DEE324 /* Pods-MobileWarg.debug.xcconfig */,
+				46BB32DCDA54194EF02CA94F /* Pods-MobileWarg.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		21EBE8181B264943000EACD1 = {
 			isa = PBXGroup;
 			children = (
 				21EBE8231B264943000EACD1 /* MobileWarg */,
 				21EBE83D1B264943000EACD1 /* MobileWargTests */,
 				21EBE8221B264943000EACD1 /* Products */,
+				1D79FE284DE33E07FDB72473 /* Pods */,
+				9F8C4BC2C81FC2021685BE56 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -134,6 +150,14 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		9F8C4BC2C81FC2021685BE56 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C528FE202BE821C1C7BC7B63 /* libPods-MobileWarg.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -141,9 +165,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 21EBE8441B264943000EACD1 /* Build configuration list for PBXNativeTarget "MobileWarg" */;
 			buildPhases = (
+				98008376B9AFE33EDBF7091D /* Check Pods Manifest.lock */,
 				21EBE81D1B264943000EACD1 /* Sources */,
 				21EBE81E1B264943000EACD1 /* Frameworks */,
 				21EBE81F1B264943000EACD1 /* Resources */,
+				EB97622BC3CD56B640BDC098 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -228,6 +254,39 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		98008376B9AFE33EDBF7091D /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		EB97622BC3CD56B640BDC098 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MobileWarg/Pods-MobileWarg-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		21EBE81D1B264943000EACD1 /* Sources */ = {
@@ -363,6 +422,7 @@
 		};
 		21EBE8451B264943000EACD1 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 42C56AC8BCD692E174DEE324 /* Pods-MobileWarg.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = MobileWarg/Info.plist;
@@ -373,6 +433,7 @@
 		};
 		21EBE8461B264943000EACD1 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 46BB32DCDA54194EF02CA94F /* Pods-MobileWarg.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = MobileWarg/Info.plist;
