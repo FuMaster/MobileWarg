@@ -18,21 +18,21 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="uH3-MO-VaO">
-                        <barButtonItem key="leftBarButtonItem" title="Start Sharing" id="hak-Pa-cpD">
+                        <barButtonItem key="leftBarButtonItem" title="Share" id="hak-Pa-cpD">
                             <connections>
                                 <action selector="sendMessage:" destination="IxH-9P-OZT" id="3MI-IV-25Z"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="Scan" id="VLM-jL-A9w">
                             <connections>
-                                <action selector="searchForPeers:" destination="IxH-9P-OZT" id="vv4-bd-mbh"/>
+                                <action selector="navBarRightButtonPressed:" destination="IxH-9P-OZT" id="QvN-Kc-bER"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="imageView" destination="Uos-aw-dWx" id="W1p-uR-3Ck"/>
-                        <outlet property="scanBtn" destination="VLM-jL-A9w" id="LjQ-Mu-pco"/>
-                        <outlet property="shareBtn" destination="hak-Pa-cpD" id="3GF-l7-9X8"/>
+                        <outlet property="scanBtn" destination="VLM-jL-A9w" id="EFX-Uq-fo5"/>
+                        <outlet property="shareBtn" destination="hak-Pa-cpD" id="Reu-Ud-jAU"/>
                         <outlet property="view" destination="Uos-aw-dWx" id="Vz3-h4-lpm"/>
                     </connections>
                 </viewController>

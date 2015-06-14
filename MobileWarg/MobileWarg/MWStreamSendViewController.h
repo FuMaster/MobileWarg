@@ -12,7 +12,4 @@
 
 @interface MWStreamSendViewController : UIViewController <MCBrowserViewControllerDelegate, AVCaptureVideoDataOutputSampleBufferDelegate>
 
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *scanBtn;
-- (IBAction)searchForPeers:(id)sender;
-
 @end

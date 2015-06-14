@@ -12,6 +12,8 @@
 
 @interface MWStreamSendViewController ()
 
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *shareBtn;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *scanBtn;
 @property (strong, nonatomic) IBOutlet UIView *imageView;
 @property (strong, nonatomic) AVCaptureDevice *videoCaptureDevice;
 @property (strong, nonatomic) AVCaptureDeviceInput *videoInput;
@@ -21,8 +23,8 @@
 @property (strong, nonatomic) NSOutputStream *outputStream;
 @property (assign, nonatomic) BOOL isConnectionEstablished;
 @property (strong, nonatomic) dispatch_queue_t videoQueue;
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *shareBtn;
 
+- (IBAction)navBarRightButtonPressed:(id)sender;
 - (IBAction)sendMessage:(id)sender;
 @end
 
@@ -92,27 +94,43 @@
     [manager advertiseSelf:true];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                          selector:@selector(connectionSuccess:)
+                                          selector:@selector(connectionStateChange:)
                                           name:@"MobileWarg_DidChangeStateNotification"
                                           object:nil];
     //if you specify nil for object, you get all the notifications with the matching name, regardless of who sent them
 }
 
-- (void) connectionSuccess: (NSNotification *) notification {
+- (void) connectionStateChange: (NSNotification *) notification {
     NSDictionary *dict = [notification userInfo];
     NSString *state = [dict valueForKey:@"state"];
     if (state.intValue == MCSessionStateConnected) {
-        MWMultipeerManager * manager = [MWMultipeerManager sharedManager];
-        [manager.browser dismissViewControllerAnimated:YES completion:nil];
-        
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"YES!"
-                                                  message:@"You have connected."
-                                                  delegate:nil
-                                                  cancelButtonTitle:@"Confirm"
-                                                  otherButtonTitles:nil];
-        [alert show];
-        [self.shareBtn setEnabled:YES];
+        [self connectionSuccess];
+    } else if (state.intValue == MCSessionStateNotConnected) {
+        [self connectionEnded];
     }
+}
+
+- (void) connectionSuccess {
+    
+    [self.shareBtn setEnabled:YES];
+    self.isConnectionEstablished = YES;
+    [self.scanBtn setTitle:@"Disconnect"];
+    
+    MWMultipeerManager * manager = [MWMultipeerManager sharedManager];
+    [manager.browser dismissViewControllerAnimated:YES completion:nil];
+        
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"YES!"
+                                              message:@"You have connected."
+                                              delegate:nil
+                                              cancelButtonTitle:@"Confirm"
+                                              otherButtonTitles:nil];
+    [alert show];
+}
+
+- (void) connectionEnded {
+    self.isConnectionEstablished = NO;
+    [self.scanBtn setTitle:@"Scan"];
+    [self.shareBtn setEnabled:NO];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -143,30 +161,35 @@
     }
 }
 
-- (IBAction)searchForPeers:(id)sender {
-    
-    MWMultipeerManager * manager = [MWMultipeerManager sharedManager];
-    
-    if (manager.session != nil) {
-        [manager setupBrowser];
-        manager.browser.delegate = self;
-        
-        [self presentViewController:manager.browser
-                           animated:YES
-                         completion:nil];
-    }
-}
-
 #pragma mark MCBrowserViewController Delegates
 - (void)browserViewControllerDidFinish:(MCBrowserViewController *)browserViewController {
     MWMultipeerManager * manager = [MWMultipeerManager sharedManager];
-    self.isConnectionEstablished = YES;
     [manager.browser dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)browserViewControllerWasCancelled:(MCBrowserViewController *)browserViewController {
     MWMultipeerManager * manager = [MWMultipeerManager sharedManager];
     [manager.browser dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (IBAction)navBarRightButtonPressed:(id)sender {
+    MWMultipeerManager * manager = [MWMultipeerManager sharedManager];
+    
+    if (self.isConnectionEstablished) {
+        if (manager.session != nil) {
+            [manager.session disconnect];
+        }
+    } else {
+        if (manager.session != nil) {
+            [manager setupBrowser];
+            manager.browser.delegate = self;
+            
+            [self presentViewController:manager.browser
+                               animated:YES
+                             completion:nil];
+        }
+    }
+    
 }
 
 - (IBAction)sendMessage:(id)sender {

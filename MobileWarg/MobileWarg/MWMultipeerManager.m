@@ -70,7 +70,16 @@
 - (void)session:(MCSession *)session peer:(MCPeerID *)peerID didChangeState:(MCSessionState)state {
     
     switch (state) {
-        case MCSessionStateNotConnected:
+        case MCSessionStateNotConnected: {
+            self.connectedPeerID = peerID;
+            
+            NSDictionary *userInfo = @{@"peerID":peerID, @"state":@(state)};
+            dispatch_async(dispatch_get_main_queue(),^{
+                NSLog(@"Disconnected");
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"MobileWarg_DidChangeStateNotification"
+                                                                    object:nil userInfo:userInfo];
+            });
+        }
             break;
             
         case MCSessionStateConnecting:
