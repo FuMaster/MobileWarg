@@ -8,6 +8,7 @@
 
 #import "MWMultipeerManager.h"
 #import "MWPreviewViewController.h"
+#import "UIAlertView+BlocksKit.h"
 
 @interface MWPreviewViewController ()
 
@@ -111,7 +112,7 @@
 
 - (void)connectionEnded {
     self.isConnectionEstablished = NO;
-    [self.connectButton setTitle:@"Scan"];
+    [self.connectButton setTitle:@"Connect"];
     [self.wargButton setEnabled:NO];
 }
 
@@ -143,11 +144,13 @@
         
         NSString *alertMessage = [NSString stringWithFormat:@"%@ wishes to warg into you",senderPeer.displayName];
         
-        [[[UIAlertView alloc] initWithTitle:@"Warg Request"
-                                    message:alertMessage
-                                   delegate:self
-                          cancelButtonTitle:@"Decline"
-                          otherButtonTitles:@"Accept", nil] show];
+        [UIAlertView bk_showAlertViewWithTitle:@"Warg Request"
+                                       message:alertMessage
+                             cancelButtonTitle:@"Decline"
+                             otherButtonTitles:@[@"Accept"]
+                                       handler:^(UIAlertView *alertView, NSInteger buttonIndex) {
+                                           
+                                       }];
         
     } else if ([message isEqualToString:@"wargAccept"]) {
         
