@@ -103,7 +103,10 @@
     NSDictionary *userInfo = @{ @"data": data,
                                 @"peerID": peerID };
     NSString *dataString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-    NSLog(@"%@", dataString);
+    
+    if ([dataString isEqualToString:@"Send Request"]) {
+        
+    }
     
     dispatch_async(dispatch_get_main_queue(), ^{
         [[NSNotificationCenter defaultCenter] postNotificationName:@"MobileWarg_DidReceiveDataNotification"

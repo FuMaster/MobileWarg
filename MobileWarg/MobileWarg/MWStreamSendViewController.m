@@ -29,6 +29,9 @@
 @implementation MWStreamSendViewController
 
 - (void)viewDidLoad {
+    
+    self.title = @"Mobile Warg";
+    
     [super viewDidLoad];
     [self setupMultipeerConnectivity];
     [self setupCamera];
@@ -170,7 +173,7 @@
     if (self.isConnectionEstablished) {
         MWMultipeerManager * manager = [MWMultipeerManager sharedManager];
         
-        NSData *dataToSend = [@"This is sample text." dataUsingEncoding:NSUTF8StringEncoding];
+        NSData *dataToSend = [@"Send Request" dataUsingEncoding:NSUTF8StringEncoding];
         NSArray *allPeers = manager.session.connectedPeers;
         NSError *error;
         
@@ -178,7 +181,6 @@
                           toPeers:allPeers
                          withMode:MCSessionSendDataReliable
                             error:&error];
-        
     }
 }
 
