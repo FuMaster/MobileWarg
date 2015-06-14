@@ -6,6 +6,7 @@
 //  Copyright (c) 2015 MobileWarg. All rights reserved.
 //
 
+#import <MultipeerConnectivity/MultipeerConnectivity.h>
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
 

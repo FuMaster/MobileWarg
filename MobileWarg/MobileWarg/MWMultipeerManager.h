@@ -15,13 +15,15 @@
 @property(nonatomic, strong) MCPeerID *connectedPeerID;
 @property(nonatomic, strong) MCSession *session;
 @property(nonatomic, strong) MCBrowserViewController *browser;
+@property(nonatomic, strong) NSInputStream *inputStream;
+@property(nonatomic, strong) NSOutputStream *outputStream;
 @property(nonatomic, strong) MCAdvertiserAssistant *advertiser;
-@property(nonatomic, strong) NSOutputStream *videoStream;
 
 + (id)sharedManager;
 - (void)setupPeerWithDisplayName: (NSString *)displayName;
 - (void)setupSession;
 - (void)setupBrowser;
 - (void)advertiseSelf:(BOOL)advertise;
+- (void)sendMessageToConnectedPeer:(NSString *)message;
 
 @end

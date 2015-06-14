@@ -17,28 +17,15 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" id="uH3-MO-VaO">
-                        <barButtonItem key="leftBarButtonItem" title="Share" id="hak-Pa-cpD">
-                            <connections>
-                                <action selector="sendMessage:" destination="IxH-9P-OZT" id="3MI-IV-25Z"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="Scan" id="VLM-jL-A9w">
-                            <connections>
-                                <action selector="navBarRightButtonPressed:" destination="IxH-9P-OZT" id="QvN-Kc-bER"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" id="uH3-MO-VaO"/>
                     <connections>
-                        <outlet property="imageView" destination="Uos-aw-dWx" id="W1p-uR-3Ck"/>
-                        <outlet property="scanBtn" destination="VLM-jL-A9w" id="EFX-Uq-fo5"/>
-                        <outlet property="shareBtn" destination="hak-Pa-cpD" id="Reu-Ud-jAU"/>
+                        <outlet property="imageView" destination="Uos-aw-dWx" id="Cwu-3w-WQV"/>
                         <outlet property="view" destination="Uos-aw-dWx" id="Vz3-h4-lpm"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Npu-OA-Snw" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="369" y="257"/>
+            <point key="canvasLocation" x="1184" y="-159"/>
         </scene>
         <!--Stream Receive View Controller-->
         <scene sceneID="edO-nK-cda">
@@ -65,7 +52,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="E7g-y7-26y" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1040" y="257"/>
+            <point key="canvasLocation" x="1184" y="605"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="wx8-7z-eAp">
@@ -78,12 +65,55 @@
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="IxH-9P-OZT" kind="relationship" relationship="rootViewController" id="qCr-3A-rr2"/>
+                        <segue destination="Iog-eh-ggf" kind="relationship" relationship="rootViewController" id="AKS-b0-9dY"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Bzy-IV-38D" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-308" y="257"/>
+        </scene>
+        <!--Preview View Controller-->
+        <scene sceneID="fLs-W3-e11">
+            <objects>
+                <viewController id="Iog-eh-ggf" customClass="MWPreviewViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="jka-VC-EVc"/>
+                        <viewControllerLayoutGuide type="bottom" id="QDk-Nd-7q5"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="pDO-bU-q65">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="t7K-r9-x6q">
+                                <rect key="frame" x="-10" y="0.0" width="600" height="600"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="Yk3-bI-9wR">
+                        <barButtonItem key="leftBarButtonItem" title="Warg" id="yuB-Fh-Kvj">
+                            <connections>
+                                <action selector="share:" destination="Iog-eh-ggf" id="5nl-Iu-saS"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Connect" id="iPq-LU-eOy">
+                            <connections>
+                                <action selector="navBarRightButtonPressed:" destination="Iog-eh-ggf" id="3OX-9U-obU"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="imageView" destination="pDO-bU-q65" id="KN8-FD-yW4"/>
+                        <outlet property="scanBtn" destination="iPq-LU-eOy" id="aRQ-p6-b6J"/>
+                        <outlet property="shareBtn" destination="yuB-Fh-Kvj" id="7xP-58-Amp"/>
+                        <segue destination="IxH-9P-OZT" kind="show" identifier="showStreamSend" id="X0n-eY-TfX"/>
+                        <segue destination="OuF-Nc-95I" kind="show" identifier="showStreamReceive" id="xcW-fe-A23"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="EIe-wF-cOc" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="440" y="257"/>
         </scene>
     </scenes>
 </document>

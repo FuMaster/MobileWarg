@@ -21,6 +21,7 @@
 @implementation MWStreamReceiveViewController
 
 - (void)viewDidLoad {
+    self.title = @"Receiving feed.";
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
@@ -30,6 +31,8 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+
 
 /*
 #pragma mark - Navigation
