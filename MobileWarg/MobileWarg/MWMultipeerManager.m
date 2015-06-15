@@ -76,7 +76,7 @@
     if (self.connectedPeerID) {
         NSError *error;
         [self.session sendData:[message dataUsingEncoding:NSUTF8StringEncoding]
-                       toPeers:self.session.connectedPeers
+                       toPeers:@[self.connectedPeerID]
                       withMode:MCSessionSendDataReliable
                          error:&error];
         if (error) {

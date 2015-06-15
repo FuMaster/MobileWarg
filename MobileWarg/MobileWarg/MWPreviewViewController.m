@@ -171,7 +171,9 @@
                                                 //Accepted warg request
                                                 NSLog(@"Accepted warg request");
                                                 
-                                                [self performSegueWithIdentifier:@"showStreamReceive" sender:self];
+                                                [self performSegueWithIdentifier:@"showStreamSend" sender:self];
+                                                
+                                                //[self performSegueWithIdentifier:@"showStreamReceive" sender:self];
                                             }
                                         }];
     }
