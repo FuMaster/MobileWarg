@@ -139,7 +139,7 @@
     
     MCPeerID *senderPeer = userInfo[@"peer"];
     NSString *message = userInfo[@"message"];
-    
+    NSLog(@"Message:%@",message);
     if ([message isEqualToString:@"wargRequest"]) {
         
         NSString *alertMessage = [NSString stringWithFormat:@"%@ wishes to warg into you",senderPeer.displayName];
@@ -149,18 +149,31 @@
                              cancelButtonTitle:@"Decline"
                              otherButtonTitles:@[@"Accept"]
                                        handler:^(UIAlertView *alertView, NSInteger buttonIndex) {
-                                           
+                                           if (buttonIndex == 1) {
+                                               //Accepted warg request
+                                               NSLog(@"Accepting warg request");
+                                               MWMultipeerManager * manager = [MWMultipeerManager sharedManager];
+                                               [manager sendMessageToConnectedPeer:@"wargAccept"];
+                                               
+                                               [self performSegueWithIdentifier:@"showStreamSend" sender:self];
+                                           }
                                        }];
         
     } else if ([message isEqualToString:@"wargAccept"]) {
         
         NSString *alertMessage = [NSString stringWithFormat:@"%@ accepted your warg request.",senderPeer.displayName];
-        
-        [[[UIAlertView alloc] initWithTitle:@"Warg Accepted"
-                                    message:alertMessage
-                                   delegate:nil
-                          cancelButtonTitle:@"Ok"
-                          otherButtonTitles:nil] show];
+        [UIAlertView  bk_showAlertViewWithTitle:@"Warg Accepted"
+                                        message:alertMessage
+                              cancelButtonTitle:@"Ok"
+                              otherButtonTitles:nil
+                                        handler:^(UIAlertView *alertView, NSInteger buttonIndex) {
+                                            if (buttonIndex == 0) {
+                                                //Accepted warg request
+                                                NSLog(@"Accepted warg request");
+                                                
+                                                [self performSegueWithIdentifier:@"showStreamReceive" sender:self];
+                                            }
+                                        }];
     }
 }
 
