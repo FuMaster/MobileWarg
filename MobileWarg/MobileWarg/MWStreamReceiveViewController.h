@@ -6,9 +6,11 @@
 //  Copyright (c) 2015 MobileWarg. All rights reserved.
 //
 
-#import <MultipeerConnectivity/MultipeerConnectivity.h>
-#import <UIKit/UIKit.h>
 
-@interface MWStreamReceiveViewController : UIViewController<NSStreamDelegate>
+#import <UIKit/UIKit.h>
+#import <MultipeerConnectivity/MultipeerConnectivity.h>
+#import "MWMultipeerManager.h"
+
+@interface MWStreamReceiveViewController : UIViewController<MWMultipeerVideoReceiver>
 
 @end

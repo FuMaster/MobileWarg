@@ -1,5 +1,5 @@
 //
-//  MPCHandler.h
+//  MWMultipeerManager.h
 //  MobileWarg
 //
 //  Created by Lawrence Fu on 6/8/15.
@@ -9,15 +9,22 @@
 #import <Foundation/Foundation.h>
 #import <MultipeerConnectivity/MultipeerConnectivity.h>
 
+@protocol MWMultipeerVideoReceiver <NSObject>
+
+- (void)receiveImage:(UIImage*)image withFPS:(NSNumber*)fps;
+
+@end
+
 @interface MWMultipeerManager : NSObject <MCSessionDelegate>
 
 @property(nonatomic, strong) MCPeerID *myPeerID;
 @property(nonatomic, strong) MCPeerID *connectedPeerID;
 @property(nonatomic, strong) MCSession *session;
 @property(nonatomic, strong) MCBrowserViewController *browser;
-@property(nonatomic, strong) NSInputStream *inputStream;
-@property(nonatomic, strong) NSOutputStream *outputStream;
 @property(nonatomic, strong) MCAdvertiserAssistant *advertiser;
+@property(nonatomic, strong) id<MWMultipeerVideoReceiver> videoReceiver;
+@property(nonatomic, assign) BOOL isStreaming;
+
 
 + (id)sharedManager;
 - (void)setupPeerWithDisplayName: (NSString *)displayName;

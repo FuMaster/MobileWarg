@@ -1,5 +1,5 @@
 //
-//  PreviewViewController.m
+//  MWPreviewViewController.m
 //  MobileWarg
 //
 //  Created by David Jeong on 2015. 6. 8..
@@ -8,18 +8,13 @@
 
 #import "MWMultipeerManager.h"
 #import "MWPreviewViewController.h"
+#import "MWStreamReceiveViewController.h"
 #import "UIAlertView+BlocksKit.h"
 
 @interface MWPreviewViewController ()
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *wargButton;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *connectButton;
-@property (strong, nonatomic) IBOutlet UIView *imageView;
-@property (strong, nonatomic) AVCaptureDevice *videoCaptureDevice;
-@property (strong, nonatomic) AVCaptureDeviceInput *videoInput;
-@property (strong, nonatomic) AVCaptureVideoDataOutput *outputData;
-@property (strong, nonatomic) AVCaptureSession *captureSession;
-@property (strong, nonatomic) AVCaptureVideoPreviewLayer *previewLayer;
 @property (assign, nonatomic) BOOL isConnectionEstablished;
 
 @end
@@ -36,41 +31,21 @@
 
 - (void)setupCamera {
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-        // Create a capture session.
-        self.captureSession = [[AVCaptureSession alloc] init];
-        self.captureSession.sessionPreset = AVCaptureSessionPresetMedium;
-        
-        // Add capture device.
-        self.videoCaptureDevice = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
-        self.videoInput = [AVCaptureDeviceInput deviceInputWithDevice:self.videoCaptureDevice error:nil];
-        
-        if (self.videoInput) {
-            // If capture device exists.
-            self.outputData = [[AVCaptureVideoDataOutput alloc] init];
-            self.outputData.videoSettings = @{(NSString *)kCVPixelBufferPixelFormatTypeKey:@(kCVPixelFormatType_32BGRA)};
+        AVCaptureDevice *videoDevice = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
+        if(videoDevice) {
+            AVCaptureSession *captureSession = [[AVCaptureSession alloc] init];
             
-            // Add input and output.
-            [self.captureSession addInput:self.videoInput];
-            [self.captureSession addOutput:self.outputData];
+            AVCaptureDeviceInput *videoDeviceInput = [AVCaptureDeviceInput deviceInputWithDevice:videoDevice error:nil];
+            [captureSession addInput:videoDeviceInput];
             
-            // Create preview layer.
-            self.previewLayer = [AVCaptureVideoPreviewLayer layerWithSession:self.captureSession];
-            self.previewLayer.frame = self.imageView.bounds;
-            self.previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
-            
-            [[NSNotificationCenter defaultCenter] addObserver:self
-                                                     selector:@selector(changedOrientation)
-                                                         name:UIDeviceOrientationDidChangeNotification
-                                                       object:nil];
-            
-            [self.imageView.layer addSublayer:self.previewLayer];
-            
-            // Start running the capture session.
-            [self.captureSession startRunning];
+            AVCaptureVideoPreviewLayer *previewLayer = [AVCaptureVideoPreviewLayer layerWithSession:captureSession];
+            previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
+            previewLayer.frame = self.view.frame;
+            [self.view.layer addSublayer:previewLayer];
+            [captureSession startRunning];
             return;
         }
     }
-    
     [[[UIAlertView alloc] initWithTitle:@"No Camera"
                                 message:@"There doesn't seem to be a camera on this device"
                                delegate:nil
@@ -114,6 +89,20 @@
     self.isConnectionEstablished = NO;
     [self.connectButton setTitle:@"Connect"];
     [self.wargButton setEnabled:NO];
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    // Make sure your segue name in storyboard is the same as this line
+    if ([[segue identifier] isEqualToString:@"showStreamReceive"])
+    {
+        // Get reference to the destination view controller
+        MWStreamReceiveViewController *receiveViewController = [segue destinationViewController];
+        
+        MWMultipeerManager * manger = [MWMultipeerManager sharedManager];
+        manger.videoReceiver = receiveViewController;
+        manger.isStreaming = YES;
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -171,33 +160,9 @@
                                                 //Accepted warg request
                                                 NSLog(@"Accepted warg request");
                                                 
-                                                [self performSegueWithIdentifier:@"showStreamSend" sender:self];
-                                                
-                                                //[self performSegueWithIdentifier:@"showStreamReceive" sender:self];
+                                                [self performSegueWithIdentifier:@"showStreamReceive" sender:self];
                                             }
                                         }];
-    }
-}
-
--(void)changedOrientation {
-    // Change the fit of the UI element.
-    self.previewLayer.frame = self.imageView.bounds;
-    
-    UIDeviceOrientation deviceOrientation = [UIDevice currentDevice].orientation;
-    
-    // Switch statement
-    switch (deviceOrientation) {
-        case UIInterfaceOrientationLandscapeLeft: {
-            [self.previewLayer.connection setVideoOrientation:AVCaptureVideoOrientationLandscapeLeft];
-        } break;
-        case UIInterfaceOrientationLandscapeRight: {
-            [self.previewLayer.connection setVideoOrientation:AVCaptureVideoOrientationLandscapeRight];
-        } break;
-        case UIInterfaceOrientationPortrait:{
-            [self.previewLayer.connection setVideoOrientation:AVCaptureVideoOrientationPortrait];
-        } break;
-        default:
-            break;
     }
 }
 
@@ -226,19 +191,6 @@
                                animated:YES
                              completion:nil];
         }
-    }
-}
-
-#pragma mark - UIAlertViewDelegate
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (buttonIndex == 1) {
-        //Accepted warg request
-        NSLog(@"Accepting warg request");
-        MWMultipeerManager * manager = [MWMultipeerManager sharedManager];
-        [manager sendMessageToConnectedPeer:@"wargAccept"];
-        
-        [self performSegueWithIdentifier:@"showStreamSend" sender:self];
     }
 }
 

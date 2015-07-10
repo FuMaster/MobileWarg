@@ -1,5 +1,5 @@
 //
-//  MPCHandler.m
+//  MWMultipeerManager.m
 //  MobileWarg
 //
 //  Created by Lawrence Fu on 6/8/15.
@@ -45,20 +45,6 @@
     [self.browser setMaximumNumberOfPeers:1];
 }
 
-- (void)setupStream {
-    if (self.connectedPeerID) {
-        NSError *error;
-        self.outputStream = [self.session startStreamWithName:@"wargStream"
-                                                       toPeer:self.connectedPeerID
-                                                        error:&error];
-        if(error){
-            NSLog(@"Failed to setuo the output Stream");
-        }
-    } else {
-        NSLog(@"Haven't connected to receiving peer");
-    }
-}
-
 - (void)advertiseSelf:(BOOL)advertise {
     if (advertise) {
         self.advertiser = [[MCAdvertiserAssistant alloc] initWithServiceType:@"warg"
@@ -75,39 +61,51 @@
     
     if (self.connectedPeerID) {
         NSError *error;
-        [self.session sendData:[message dataUsingEncoding:NSUTF8StringEncoding]
+        
+        NSData *data = [NSKeyedArchiver archivedDataWithRootObject:message];
+        [self.session sendData:data
                        toPeers:@[self.connectedPeerID]
                       withMode:MCSessionSendDataReliable
                          error:&error];
         if (error) {
-            NSLog(@"sendMessageToConnectedPeer: %@",[error localizedDescription]);
+            NSLog(@"sendMessageToConnectedPeerError: %@",[error localizedDescription]);
         }
     }
 }
 
-- (void)session:(MCSession *)session didReceiveStream:(NSInputStream *)stream
-       withName:(NSString *)streamName fromPeer:(MCPeerID *)peerID {
-    self.inputStream = stream;
-    //
+#pragma mark - MCSessionDelegate
+
+- (void)session:(MCSession *)session
+ didReceiveData:(NSData *)data
+       fromPeer:(MCPeerID *)peerID {
+
+    id receivedObject = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+    
+    if(self.isStreaming) {
+        NSDictionary* dict = (NSDictionary*) [NSKeyedUnarchiver unarchiveObjectWithData:data];
+        UIImage* image = [UIImage imageWithData:dict[@"image"] scale:2.0];
+        NSNumber* framesPerSecond = dict[@"framesPerSecond"];
+        [self.videoReceiver receiveImage:image withFPS:framesPerSecond];
+        
+    } else {
+        if ([receivedObject isKindOfClass:[NSString class]]) {
+            NSString *dataString = receivedObject;
+            
+            NSDictionary *userInfo = @{@"message":dataString,
+                                       @"peer":peerID};
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"MobileWarg_MessageRecivedFromPeer"
+                                                                    object:nil
+                                                                  userInfo:userInfo];
+            });
+        }
+    }
 }
 
-//Called whenever device receives data from another peer
-- (void)session:(MCSession *)session didReceiveData:(NSData *)data fromPeer:(MCPeerID *)peerID {
-    
-    NSString *dataString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-    NSDictionary *userInfo = @{@"message":dataString,
-                               @"peer":peerID};
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"MobileWarg_MessageRecivedFromPeer"
-                                                            object:nil
-                                                          userInfo:userInfo];
-    });
-}
-
-//Called everytime the connection state of a peer changes
-//3 states: not connected, connecting, connected
-- (void)session:(MCSession *)session peer:(MCPeerID *)peerID didChangeState:(MCSessionState)state {
+- (void)session:(MCSession *)session
+           peer:(MCPeerID *)peerID
+ didChangeState:(MCSessionState)state {
     switch (state) {
         case MCSessionStateNotConnected: {
             self.connectedPeerID = nil;
@@ -138,9 +136,16 @@
     }
 }
 
+- (void)session:(MCSession *)session didReceiveStream:(NSInputStream *)stream
+       withName:(NSString *)streamName
+       fromPeer:(MCPeerID *)peerID{}
+
 - (void)session:(MCSession *)session didStartReceivingResourceWithName:(NSString *)resourceName
-       fromPeer:(MCPeerID *)peerID withProgress:(NSProgress *)progress {}
+       fromPeer:(MCPeerID *)peerID
+   withProgress:(NSProgress *)progress {}
 
 - (void)session:(MCSession *)session didFinishReceivingResourceWithName:(NSString *)resourceName
-       fromPeer:(MCPeerID *)peerID atURL:(NSURL *)localURL withError:(NSError *)error {}
+       fromPeer:(MCPeerID *)peerID
+          atURL:(NSURL *)localURL
+      withError:(NSError *)error {}
 @end

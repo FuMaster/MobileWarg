@@ -10,22 +10,22 @@
 #import "MWStreamSendViewController.h"
 
 @interface MWStreamSendViewController ()
-@property (strong, nonatomic) IBOutlet UIView *imageView;
-@property (strong, nonatomic) AVCaptureDevice *videoCaptureDevice;
+@property (strong, nonatomic) AVCaptureDevice *videoDevice;
+@property (strong, nonatomic) AVCaptureSession *videoSession;
 @property (strong, nonatomic) AVCaptureDeviceInput *videoInput;
-@property (strong, nonatomic) AVCaptureVideoDataOutput *outputData;
-@property (strong, nonatomic) AVCaptureSession *captureSession;
-@property (strong, nonatomic) AVCaptureVideoPreviewLayer *previewLayer;
+@property (strong, nonatomic) AVCaptureVideoDataOutput *videoDataOutput;
+@property (strong, nonatomic) AVCaptureVideoPreviewLayer *videoPreview;
+
 @property (assign, nonatomic) BOOL isConnectionEstablished;
 @property (strong, nonatomic) NSMutableData *writeDataBuffer;
-@property (strong, nonatomic) dispatch_queue_t videoQueue;
-
 @end
 
-@implementation MWStreamSendViewController
+@implementation MWStreamSendViewController {
+    dispatch_queue_t _videoQueue;
+}
 
 - (void)viewDidLoad {
-    self.title = @"Sending feed";
+    self.title = @"Sending Feed";
     [super viewDidLoad];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -33,47 +33,42 @@
                                                  name:@"MobileWarg_DidChangeStateNotification"
                                                object:nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(changedOrientation)
+                                                 name:UIDeviceOrientationDidChangeNotification
+                                               object:nil];
+    
+    [self.view layoutSubviews];
     [self setupCamera];
-    [self.outputData setSampleBufferDelegate:self queue:self.videoQueue];
 }
 
 - (void)setupCamera {
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-        // Create a capture session.
-        self.captureSession = [[AVCaptureSession alloc] init];
-        self.captureSession.sessionPreset = AVCaptureSessionPresetMedium;
         
-        // Add capture device.
-        self.videoCaptureDevice = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
-        self.videoInput = [AVCaptureDeviceInput deviceInputWithDevice:self.videoCaptureDevice error:nil];
+        self.videoDevice = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
         
-        if (self.videoInput) {
-            // If capture device exists.
-            self.outputData = [[AVCaptureVideoDataOutput alloc] init];
-            self.outputData.videoSettings = @{(NSString *)kCVPixelBufferPixelFormatTypeKey:@(kCVPixelFormatType_32BGRA)};
+        if(self.videoDevice) {
+            self.videoSession = [[AVCaptureSession alloc] init];
             
-            //[self.outputData setSampleBufferDelegate:self queue:dispatch_get_main_queue()];
-            self.videoQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0);
-            [self.outputData setSampleBufferDelegate:self queue:self.videoQueue];
+            self.videoInput = [AVCaptureDeviceInput deviceInputWithDevice:self.videoDevice error:nil];
+            [self.videoSession addInput:self.videoInput];
             
-            // Add input and output.
-            [self.captureSession addInput:self.videoInput];
-            [self.captureSession addOutput:self.outputData];
+            self.videoPreview = [AVCaptureVideoPreviewLayer layerWithSession:self.videoSession];
             
-            // Create preview layer.
-            self.previewLayer = [AVCaptureVideoPreviewLayer layerWithSession:self.captureSession];
-            self.previewLayer.frame = self.imageView.bounds;
-            self.previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
+            self.videoPreview.videoGravity = AVLayerVideoGravityResizeAspectFill;
+            self.videoPreview.frame = self.view.frame;
+            [self.view.layer addSublayer:self.videoPreview];
             
-            [[NSNotificationCenter defaultCenter] addObserver:self
-                                                     selector:@selector(changedOrientation)
-                                                         name:UIDeviceOrientationDidChangeNotification
-                                                       object:nil];
             
-            [self.imageView.layer addSublayer:self.previewLayer];
+            self.videoDataOutput = [[AVCaptureVideoDataOutput alloc] init];
             
-            // Start running the capture session.
-            [self.captureSession startRunning];
+            _videoQueue = dispatch_queue_create("com.mobilewarg.videoSenderQueue", DISPATCH_QUEUE_SERIAL);
+            [self.videoDataOutput setSampleBufferDelegate:self queue:_videoQueue];
+            self.videoDataOutput.alwaysDiscardsLateVideoFrames = YES;
+            
+            [self.videoSession addOutput:self.videoDataOutput];
+            
+            [self.videoSession startRunning];
             return;
         }
     }
@@ -102,20 +97,20 @@
 
 - (void)changedOrientation {
     // Change the fit of the UI element.
-    self.previewLayer.frame = self.imageView.bounds;
+    self.videoPreview.frame = self.view.bounds;
     
     UIDeviceOrientation deviceOrientation = [UIDevice currentDevice].orientation;
     
     // Switch statement
     switch (deviceOrientation) {
         case UIInterfaceOrientationLandscapeLeft: {
-            [self.previewLayer.connection setVideoOrientation:AVCaptureVideoOrientationLandscapeLeft];
+            [self.videoPreview.connection setVideoOrientation:AVCaptureVideoOrientationLandscapeLeft];
         } break;
         case UIInterfaceOrientationLandscapeRight: {
-            [self.previewLayer.connection setVideoOrientation:AVCaptureVideoOrientationLandscapeRight];
+            [self.videoPreview.connection setVideoOrientation:AVCaptureVideoOrientationLandscapeRight];
         } break;
         case UIInterfaceOrientationPortrait:{
-            [self.previewLayer.connection setVideoOrientation:AVCaptureVideoOrientationPortrait];
+            [self.videoPreview.connection setVideoOrientation:AVCaptureVideoOrientationPortrait];
         } break;
         default:
             break;
@@ -124,92 +119,54 @@
 
 #pragma mark - VideoStream
 
-- (void)captureOutput:(AVCaptureOutput *)capture OutputdidOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
+- (void)captureOutput:(AVCaptureOutput *)captureOutput
+didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
        fromConnection:(AVCaptureConnection *)connection {
     
-    CVImageBufferRef imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
-    //Lock the base address of the pixel buffer
-    CVPixelBufferLockBaseAddress(imageBuffer, 0);
+    NSNumber* timestamp = @(CMTimeGetSeconds(CMSampleBufferGetPresentationTimeStamp(sampleBuffer)));
     
-    //Get the number of bytes per row for the pixel buffer
-    size_t bytesPerRow = CVPixelBufferGetBytesPerRow(imageBuffer);
-    //Get the pixel buffer width and height
-    size_t width = CVPixelBufferGetWidth(imageBuffer);
-    size_t height = CVPixelBufferGetHeight(imageBuffer);
+    CVImageBufferRef cvImage = CMSampleBufferGetImageBuffer(sampleBuffer);
+    CGRect cropRect = AVMakeRectWithAspectRatioInsideRect(CGSizeMake(569, 320), CGRectMake(0,0, CVPixelBufferGetWidth(cvImage),CVPixelBufferGetHeight(cvImage)) );
+    CIImage *ciImage = [[CIImage alloc] initWithCVPixelBuffer:cvImage];
+    CIImage* croppedImage = [ciImage imageByCroppingToRect:cropRect];
     
-    //Create a device dependent RGB color space
-    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+    CIFilter *scaleFilter = [CIFilter filterWithName:@"CILanczosScaleTransform"];
+    [scaleFilter setValue:croppedImage forKey:@"inputImage"];
+    [scaleFilter setValue:[NSNumber numberWithFloat:0.25] forKey:@"inputScale"];
+    [scaleFilter setValue:[NSNumber numberWithFloat:1.0] forKey:@"inputAspectRatio"];
+    CIImage *finalImage = [scaleFilter valueForKey:@"outputImage"];
+    UIImage* cgBackedImage = [self cgImageBackedImageWithCIImage:finalImage];
     
-    //Get the base address of the pixel buffer
-    void *baseAddress = CVPixelBufferGetBaseAddress(imageBuffer);
+    NSData *imageData = UIImageJPEGRepresentation(cgBackedImage,0.2);
     
-    CGContextRef newContext = CGBitmapContextCreate(baseAddress, width, height, 8, bytesPerRow, colorSpace, kCGBitmapByteOrder32Little | kCGImageAlphaPremultipliedFirst);
-    CGImageRef newImage = CGBitmapContextCreateImage(newContext);
-    CVPixelBufferUnlockBaseAddress(imageBuffer, 0);
+    // maybe not always the correct input?  just using this to send current FPS...
     
-    //Make UIImage
-    UIImage *image = [[UIImage alloc] initWithCGImage:newImage];
-    
-    //release
-    CGContextRelease(newContext);
-    CGColorSpaceRelease(colorSpace);
-    CGImageRelease(newImage);
-    
-    MWMultipeerManager * manager = [MWMultipeerManager sharedManager];
-    
-    if(manager.outputStream && image){
-        NSData *imageData = UIImageJPEGRepresentation(image, 0.0);
-        //[self writeData:imageData withStream:outStream];
-        NSLog(@"imageData size: %lu", (unsigned long)[imageData length]);
-        [self writeDataToBuffer:imageData];
-    }
-}
-
-- (void)writeDataToBuffer:(NSData*)imageData {
-    if(self.writeDataBuffer == nil){
-        self.writeDataBuffer = [[NSMutableData alloc]init];
-    }
+    AVCaptureInputPort* inputPort = connection.inputPorts[0];
+    AVCaptureDeviceInput* deviceInput = (AVCaptureDeviceInput*) inputPort.input;
+    CMTime frameDuration = deviceInput.device.activeVideoMaxFrameDuration;
+    NSDictionary* dict = @{
+                           @"image": imageData,
+                           @"timestamp" : timestamp,
+                           @"framesPerSecond": @(frameDuration.timescale)
+                           };
+    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:dict];
     
     MWMultipeerManager * manager = [MWMultipeerManager sharedManager];
-    //[self packageDataWithHeader:imageData];
-    [self writeData:imageData withStream:manager.outputStream];
-}
-
-- (void)writeData:(NSData*)imageData withStream:(NSOutputStream*)oStream {
     
-    if([oStream hasSpaceAvailable] && [_writeDataBuffer length] > 0){
-        NSLog(@"In write data: has space available");
-        NSUInteger length = [_writeDataBuffer length];
-        NSUInteger bytesWritten = [oStream write:[_writeDataBuffer bytes] maxLength:length];
-        //NSLog(@"bytesWritten: %u", bytesWritten);
-        if(bytesWritten == -1){
-            NSLog(@"Error writing data");
-        }
-        else if(bytesWritten > 0){
-            [_writeDataBuffer replaceBytesInRange:NSMakeRange(0, bytesWritten) withBytes:NULL length:0];
-        }
+    if (manager.connectedPeerID) {
+        [manager.session sendData:data toPeers:@[manager.connectedPeerID] withMode:MCSessionSendDataReliable error:nil];
+    } else {
+        NSLog(@"Not Connected");
     }
 }
 
-/*
- - (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection {
- NSLog(@"Sampled");
- CVImageBufferRef imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
- CVPixelBufferLockBaseAddress(imageBuffer,0);
- 
- size_t bytesPerRow = CVPixelBufferGetBytesPerRow(imageBuffer);
- size_t width = CVPixelBufferGetWidth(imageBuffer);
- size_t height = CVPixelBufferGetHeight(imageBuffer);
- void *src_buff = CVPixelBufferGetBaseAddress(imageBuffer);
- 
- NSData *data = [NSData dataWithBytes:src_buff length:bytesPerRow * height];
- CVPixelBufferUnlockBaseAddress(imageBuffer, 0);
- 
- MWMultipeerManager *manager = [MWMultipeerManager sharedManager];
- NSArray *allPeers = manager.session.connectedPeers;
- [manager.session sendData:data
- toPeers:allPeers
- withMode:MCSessionSendDataReliable
- error:nil];
- }*/
+- (UIImage*) cgImageBackedImageWithCIImage:(CIImage*) ciImage {
+    
+    CIContext *context = [CIContext contextWithOptions:nil];
+    CGImageRef ref = [context createCGImage:ciImage fromRect:ciImage.extent];
+    UIImage* image = [UIImage imageWithCGImage:ref scale:[UIScreen mainScreen].scale orientation:UIImageOrientationRight];
+    CGImageRelease(ref);
+    
+    return image;
+}
 @end

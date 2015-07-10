@@ -10,8 +10,6 @@
 #import <AVFoundation/AVFoundation.h>
 #import <MultipeerConnectivity/MultipeerConnectivity.h>
 
-@interface MWStreamSendViewController : UIViewController <
-UIAlertViewDelegate,
-AVCaptureVideoDataOutputSampleBufferDelegate>
+@interface MWStreamSendViewController : UIViewController <AVCaptureVideoDataOutputSampleBufferDelegate>
 
 @end
