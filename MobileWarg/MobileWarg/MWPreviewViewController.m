@@ -33,8 +33,9 @@
 - (void)setupCamera {
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
         AVCaptureDevice *videoDevice = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
+        AVCaptureSession *captureSession = [[AVCaptureSession alloc]init];
         if(videoDevice) {
-            AVCaptureSession *captureSession = [[AVCaptureSession alloc] init];
+            captureSession = [[AVCaptureSession alloc] init];
             
             AVCaptureDeviceInput *videoDeviceInput = [AVCaptureDeviceInput deviceInputWithDevice:videoDevice error:nil];
             [captureSession addInput:videoDeviceInput];
@@ -194,6 +195,8 @@
         }
     }
 }
+
+
 
 #pragma mark - MCBrowserViewControllerDelegate
 

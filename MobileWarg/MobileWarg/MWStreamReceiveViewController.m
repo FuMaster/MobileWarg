@@ -54,11 +54,7 @@
     if([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook]) {
         
         SLComposeViewController *controller = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
-        
-        [controller setInitialText:@"Posted with MobileWarg app"];
-        [controller addURL:[NSURL URLWithString:@"http://www.mobilewarg.com"]];
         [controller addImage: image];
-        
         [self presentViewController:controller animated:YES completion:Nil];
         
     }
