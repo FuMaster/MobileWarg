@@ -13,4 +13,5 @@
 
 @interface MWStreamReceiveViewController : UIViewController<MWMultipeerVideoReceiver>
 
+
 @end

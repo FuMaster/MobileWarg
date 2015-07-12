@@ -15,6 +15,7 @@
 @interface MWStreamReceiveViewController ()
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *shareButton;
+@property (weak, nonatomic) IBOutlet UIButton *cameraCapture;
 
 @end
 
@@ -125,6 +126,7 @@
 }
 
 #pragma mark - IBActions
+
 - (IBAction)shareToFacebook:(id)sender {
     UIGraphicsBeginImageContextWithOptions(self.view.bounds.size, self.view.opaque, 0.0);
     [self.view.layer renderInContext:UIGraphicsGetCurrentContext()];
@@ -143,6 +145,11 @@
 //    if(controller != nil){
 //        [self presentViewController:controller animated:YES completion:Nil];
 //    }
+
+- (IBAction)capture:(id)sender {
+    MWMultipeerManager * manager = [MWMultipeerManager sharedManager];
+    [manager sendMessageToConnectedPeer:@"@Capture"];
+
 }
 
 

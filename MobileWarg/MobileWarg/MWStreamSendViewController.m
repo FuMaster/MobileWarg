@@ -15,6 +15,7 @@
 @property (strong, nonatomic) AVCaptureDeviceInput *videoInput;
 @property (strong, nonatomic) AVCaptureVideoDataOutput *videoDataOutput;
 @property (strong, nonatomic) AVCaptureVideoPreviewLayer *videoPreview;
+@property (strong, nonatomic) AVCaptureStillImageOutput *stillImageOutput;
 
 @property (assign, nonatomic) BOOL isConnectionEstablished;
 @property (strong, nonatomic) NSMutableData *writeDataBuffer;
@@ -36,6 +37,11 @@
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(changedOrientation)
                                                  name:UIDeviceOrientationDidChangeNotification
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(captureImage:)
+                                                 name:@"MobileWarg_CaptureImage"
                                                object:nil];
     
     [self.view layoutSubviews];
@@ -76,7 +82,6 @@
             self.videoPreview.frame = self.view.frame;
             [self.view.layer addSublayer:self.videoPreview];
             
-            
             self.videoDataOutput = [[AVCaptureVideoDataOutput alloc] init];
             
             _videoQueue = dispatch_queue_create("com.mobilewarg.videoSenderQueue", DISPATCH_QUEUE_SERIAL);
@@ -84,6 +89,16 @@
             self.videoDataOutput.alwaysDiscardsLateVideoFrames = YES;
             
             [self.videoSession addOutput:self.videoDataOutput];
+            
+            /*
+            AVCaptureStillImageOutput *stillImageOutput = [[AVCaptureStillImageOutput alloc] init];
+            if ([self.videoSession canAddOutput:stillImageOutput])
+            {
+                [stillImageOutput setOutputSettings:@{AVVideoCodecKey : AVVideoCodecJPEG}];
+                [self.videoSession addOutput:stillImageOutput];
+                [self setStillImageOutput:stillImageOutput];
+            }
+             */
             
             [self.videoSession startRunning];
             return;
@@ -104,7 +119,7 @@
 
 #pragma mark - NSNotificationCenter
 
-- (void)connectionStateChanged:(NSNotification *)notification {
+- (void) connectionStateChanged:(NSNotification *)notification {
     NSDictionary *dict = [notification userInfo];
     NSString *state = [dict valueForKey:@"state"];
     if (state.intValue == MCSessionStateNotConnected) {
@@ -112,7 +127,7 @@
     }
 }
 
-- (void)changedOrientation {
+- (void) changedOrientation {
     // Change the fit of the UI element.
     self.videoPreview.frame = self.view.bounds;
     
@@ -132,6 +147,27 @@
         default:
             break;
     }
+}
+
+- (void) captureImage {
+    NSLog(@"Take picture");
+    
+    // Flash set to Auto for Still Capture
+    [MWStreamSendViewController setFlashMode:AVCaptureFlashModeAuto forDevice:[[self videoDeviceInput] device]];
+    
+    // Capture a still image.
+    [[self stillImageOutput] captureStillImageAsynchronouslyFromConnection:[[self stillImageOutput] connectionWithMediaType:AVMediaTypeVideo] completionHandler:^(CMSampleBufferRef imageDataSampleBuffer, NSError *error) {
+        
+        if (imageDataSampleBuffer)
+        {
+            NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageDataSampleBuffer];
+            UIImage *image = [[UIImage alloc] initWithData:imageData];
+            [[[ALAssetsLibrary alloc] init] writeImageToSavedPhotosAlbum:[image CGImage] orientation:(ALAssetOrientation)[image imageOrientation] completionBlock:nil];
+        }
+    }];
+});
+
+
 }
 
 #pragma mark - VideoStream
@@ -186,4 +222,5 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     
     return image;
 }
+
 @end

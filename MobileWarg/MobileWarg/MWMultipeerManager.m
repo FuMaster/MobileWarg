@@ -81,6 +81,7 @@
 
     id receivedObject = [NSKeyedUnarchiver unarchiveObjectWithData:data];
     
+    // isStreaming is only true for receiver
     if(self.isStreaming) {
         NSDictionary* dict = (NSDictionary*) [NSKeyedUnarchiver unarchiveObjectWithData:data];
         UIImage* image = [UIImage imageWithData:dict[@"image"] scale:2.0];
@@ -91,14 +92,24 @@
         if ([receivedObject isKindOfClass:[NSString class]]) {
             NSString *dataString = receivedObject;
             
-            NSDictionary *userInfo = @{@"message":dataString,
-                                       @"peer":peerID};
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"MobileWarg_MessageRecivedFromPeer"
-                                                                    object:nil
-                                                                  userInfo:userInfo];
-            });
+            if( [dataString isEqualToString:@"Capture"]) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"MobileWarg_CaptureImage"
+                                                                        object: nil];
+                });
+                
+            } else {
+                
+                NSDictionary *userInfo = @{@"message":dataString,
+                                           @"peer":peerID};
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"MobileWarg_MessageRecivedFromPeer"
+                                                                        object:nil
+                                                                      userInfo:userInfo];
+                });
+            }
         }
     }
 }

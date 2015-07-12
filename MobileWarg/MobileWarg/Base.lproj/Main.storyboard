@@ -38,13 +38,34 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mEx-kq-wC2">
                                 <rect key="frame" x="0.0" y="64" width="600" height="536"/>
                             </imageView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FfE-Ad-3nj">
+                                <rect key="frame" x="0.0" y="540" width="600" height="60"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xcd-OR-qAi">
+                                        <rect key="frame" x="270" y="0.0" width="60" height="60"/>
+                                        <state key="normal" image="CameraCapture"/>
+                                        <connections>
+                                            <action selector="capture:" destination="OuF-Nc-95I" eventType="touchUpInside" id="L8p-sO-HLs"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" red="0.71859217171717171" green="0.71859217171717171" blue="0.71859217171717171" alpha="0.44" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="centerX" secondItem="xcd-OR-qAi" secondAttribute="centerX" id="Aph-pa-JHD"/>
+                                    <constraint firstAttribute="centerY" secondItem="xcd-OR-qAi" secondAttribute="centerY" id="NOH-Tg-oP1"/>
+                                    <constraint firstAttribute="height" constant="60" id="SnW-Wk-2R8"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="mEx-kq-wC2" firstAttribute="top" secondItem="aGF-c9-vff" secondAttribute="bottom" id="2Cd-sZ-uAh"/>
-                            <constraint firstItem="wTp-ur-3ix" firstAttribute="top" secondItem="mEx-kq-wC2" secondAttribute="bottom" id="NZ5-L8-mzA"/>
-                            <constraint firstAttribute="trailing" secondItem="mEx-kq-wC2" secondAttribute="trailing" id="pEe-Gb-gRS"/>
-                            <constraint firstItem="mEx-kq-wC2" firstAttribute="leading" secondItem="1cg-s4-Xhz" secondAttribute="leading" id="xrq-uJ-7Ow"/>
+                            <constraint firstItem="FfE-Ad-3nj" firstAttribute="leading" secondItem="1cg-s4-Xhz" secondAttribute="leading" id="7OA-9V-0h2"/>
+                            <constraint firstItem="wTp-ur-3ix" firstAttribute="top" secondItem="mEx-kq-wC2" secondAttribute="bottom" id="Lt0-gZ-Jhj"/>
+                            <constraint firstItem="mEx-kq-wC2" firstAttribute="leading" secondItem="1cg-s4-Xhz" secondAttribute="leading" id="Ttv-BG-9Nx"/>
+                            <constraint firstAttribute="trailing" secondItem="mEx-kq-wC2" secondAttribute="trailing" id="X1j-zf-AeL"/>
+                            <constraint firstItem="mEx-kq-wC2" firstAttribute="top" secondItem="aGF-c9-vff" secondAttribute="bottom" id="bc9-MA-y6I"/>
+                            <constraint firstAttribute="trailing" secondItem="FfE-Ad-3nj" secondAttribute="trailing" id="gDr-7I-hLK"/>
+                            <constraint firstItem="wTp-ur-3ix" firstAttribute="top" secondItem="FfE-Ad-3nj" secondAttribute="bottom" id="kiM-IL-Rfc"/>
                         </constraints>
                     </view>
                     <toolbarItems/>
@@ -57,6 +78,7 @@
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="cameraCapture" destination="xcd-OR-qAi" id="mKe-z7-32C"/>
                         <outlet property="imageView" destination="mEx-kq-wC2" id="dhT-tZ-CyP"/>
                         <outlet property="shareButton" destination="9aJ-n5-bU4" id="tlJ-qE-VNG"/>
                     </connections>
@@ -121,4 +143,7 @@
             <point key="canvasLocation" x="440" y="257"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="CameraCapture" width="60" height="60"/>
+    </resources>
 </document>
