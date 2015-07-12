@@ -42,14 +42,6 @@
     [super didReceiveMemoryWarning];
 }
 
-- (void)openShareDialog:(UIImage *)image {
-    
-    SLComposeViewController *controller = [MWFacebookManager openShareDialog:image];
-    if(controller != nil){
-       [self presentViewController:controller animated:YES completion:Nil];
-    }
-}
-
 #pragma mark - MWMultipeerVideoReceiver
 
 - (void)receiveImage:(UIImage*)image withFPS:(NSNumber*)fps{
