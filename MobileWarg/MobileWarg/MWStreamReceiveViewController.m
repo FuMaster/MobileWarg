@@ -8,6 +8,7 @@
 
 #import "MWStreamReceiveViewController.h"
 #import <FBSDKShareKit/FBSDKShareKit.h>
+#import "MWFacebookManager.h"
 
 @import Social;
 
@@ -41,29 +42,12 @@
     [super didReceiveMemoryWarning];
 }
 
-- (void)setupFacebookShare:(UIImage *)image {
-    FBSDKSharePhoto *photo = [[FBSDKSharePhoto alloc] init];
-    photo.image = image;
-    photo.userGenerated = YES;
-    FBSDKSharePhotoContent *content = [[FBSDKSharePhotoContent alloc] init];
-    content.photos = @[photo];
-    [self setupShareButton:content];
-}
-
-- (void)setupShareDialog:(UIImage *)image {
-    if([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook]) {
-        
-        SLComposeViewController *controller = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
-        [controller addImage: image];
-        [self presentViewController:controller animated:YES completion:Nil];
-        
+- (void)openShareDialog:(UIImage *)image {
+    
+    SLComposeViewController *controller = [MWFacebookManager openShareDialog:image];
+    if(controller != nil){
+       [self presentViewController:controller animated:YES completion:Nil];
     }
-}
-
-- (void)setupShareButton:(FBSDKSharePhotoContent *) content {
-    FBSDKShareButton *button = [[FBSDKShareButton alloc] init];
-    button.shareContent = content;
-    [self.view addSubview:button];
 }
 
 #pragma mark - MWMultipeerVideoReceiver
@@ -155,8 +139,16 @@
     
     UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
-    [self setupShareDialog:image];
     
+    FBSDKSharePhotoContent* content = [MWFacebookManager shareToFacebook:image];
+    [FBSDKShareDialog showFromViewController:self
+                                 withContent:content
+                                    delegate:nil];
+    
+//    SLComposeViewController *controller = [MWFacebookManager openShareDialog:image];
+//    if(controller != nil){
+//        [self presentViewController:controller animated:YES completion:Nil];
+//    }
 }
 
 

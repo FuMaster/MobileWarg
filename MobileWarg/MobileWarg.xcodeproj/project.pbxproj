@@ -16,6 +16,7 @@
 		21EBE84F1B2651B3000EACD1 /* MWMultipeerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 21EBE84E1B2651B3000EACD1 /* MWMultipeerManager.m */; };
 		296731FF1B53112000DFA7E1 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 296731FD1B53112000DFA7E1 /* FBSDKCoreKit.framework */; };
 		296732001B53112000DFA7E1 /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 296731FE1B53112000DFA7E1 /* FBSDKShareKit.framework */; };
+		296732031B5322A500DFA7E1 /* MWFacebookManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 296732021B5322A500DFA7E1 /* MWFacebookManager.m */; };
 		A7869160A750E7DDEFC9505D /* libPods-MobileWarg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C528FE202BE821C1C7BC7B63 /* libPods-MobileWarg.a */; };
 		CD5278721B2C967C00CBEB69 /* MWPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CD5278701B2C967C00CBEB69 /* MWPreviewViewController.m */; };
 		CD72ED421B2D0169009CD49D /* MWStreamReceiveViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CD72ED411B2D0169009CD49D /* MWStreamReceiveViewController.m */; };
@@ -48,6 +49,8 @@
 		21EBE84E1B2651B3000EACD1 /* MWMultipeerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWMultipeerManager.m; sourceTree = "<group>"; };
 		296731FD1B53112000DFA7E1 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
 		296731FE1B53112000DFA7E1 /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKShareKit.framework; sourceTree = "<group>"; };
+		296732011B5322A500DFA7E1 /* MWFacebookManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWFacebookManager.h; sourceTree = "<group>"; };
+		296732021B5322A500DFA7E1 /* MWFacebookManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWFacebookManager.m; sourceTree = "<group>"; };
 		42C56AC8BCD692E174DEE324 /* Pods-MobileWarg.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MobileWarg.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MobileWarg/Pods-MobileWarg.debug.xcconfig"; sourceTree = "<group>"; };
 		46BB32DCDA54194EF02CA94F /* Pods-MobileWarg.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MobileWarg.release.xcconfig"; path = "Pods/Target Support Files/Pods-MobileWarg/Pods-MobileWarg.release.xcconfig"; sourceTree = "<group>"; };
 		C528FE202BE821C1C7BC7B63 /* libPods-MobileWarg.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MobileWarg.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -116,6 +119,8 @@
 				21EBE8291B264943000EACD1 /* AppDelegate.m */,
 				21EBE84D1B2651B3000EACD1 /* MWMultipeerManager.h */,
 				21EBE84E1B2651B3000EACD1 /* MWMultipeerManager.m */,
+				296732011B5322A500DFA7E1 /* MWFacebookManager.h */,
+				296732021B5322A500DFA7E1 /* MWFacebookManager.m */,
 				CD72ED401B2D0169009CD49D /* MWStreamReceiveViewController.h */,
 				CD72ED411B2D0169009CD49D /* MWStreamReceiveViewController.m */,
 				CD72ED4F1B2E153E009CD49D /* MWStreamSendViewController.h */,
@@ -307,6 +312,7 @@
 				21EBE84F1B2651B3000EACD1 /* MWMultipeerManager.m in Sources */,
 				21EBE82A1B264943000EACD1 /* AppDelegate.m in Sources */,
 				21EBE8271B264943000EACD1 /* main.m in Sources */,
+				296732031B5322A500DFA7E1 /* MWFacebookManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
