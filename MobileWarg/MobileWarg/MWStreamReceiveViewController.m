@@ -8,6 +8,7 @@
 
 #import "MWStreamReceiveViewController.h"
 #import <FBSDKShareKit/FBSDKShareKit.h>
+#import "MWFacebookManager.h"
 
 @import Social;
 
@@ -41,36 +42,11 @@
     [super didReceiveMemoryWarning];
 }
 
-- (void)setupFacebookShare:(UIImage *)image {
-    FBSDKSharePhoto *photo = [[FBSDKSharePhoto alloc] init];
-    photo.image = image;
-    photo.userGenerated = YES;
+- (void)openShareDialog:(UIImage *)image {
     
-    FBSDKSharePhotoContent *content = [[FBSDKSharePhotoContent alloc] init];
-    content.photos = @[photo];
-    [FBSDKShareDialog showFromViewController:self
-                                 withContent:content
-                                    delegate:nil];
-}
-
-
-- (void)setupShareButton:(FBSDKSharePhotoContent *) content {
-    FBSDKShareButton *button = [[FBSDKShareButton alloc] init];
-    button.shareContent = content;
-    [self.view addSubview:button];
-}
-
-- (void)setupShareDialog:(UIImage *)image {
-    if([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook]) {
-        
-        SLComposeViewController *controller = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
-        
-        [controller setInitialText:@"Posted with MobileWarg app"];
-        [controller addURL:[NSURL URLWithString:@"http://www.mobilewarg.com"]];
-        [controller addImage: image];
-        
-        [self presentViewController:controller animated:YES completion:Nil];
-        
+    SLComposeViewController *controller = [MWFacebookManager openShareDialog:image];
+    if(controller != nil){
+       [self presentViewController:controller animated:YES completion:Nil];
     }
 }
 
@@ -163,8 +139,16 @@
     
     UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
-    [self setupFacebookShare:image];
     
+    FBSDKSharePhotoContent* content = [MWFacebookManager shareToFacebook:image];
+    [FBSDKShareDialog showFromViewController:self
+                                 withContent:content
+                                    delegate:nil];
+    
+//    SLComposeViewController *controller = [MWFacebookManager openShareDialog:image];
+//    if(controller != nil){
+//        [self presentViewController:controller animated:YES completion:Nil];
+//    }
 }
 
 
