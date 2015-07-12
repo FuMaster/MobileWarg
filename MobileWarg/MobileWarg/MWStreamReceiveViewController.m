@@ -7,9 +7,13 @@
 //
 
 #import "MWStreamReceiveViewController.h"
+#import <FBSDKShareKit/FBSDKShareKit.h>
+
+@import Social;
 
 @interface MWStreamReceiveViewController ()
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *shareButton;
 
 @end
 
@@ -35,6 +39,35 @@
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
+}
+
+- (void)setupFacebookShare:(UIImage *)image {
+    FBSDKSharePhoto *photo = [[FBSDKSharePhoto alloc] init];
+    photo.image = image;
+    photo.userGenerated = YES;
+    FBSDKSharePhotoContent *content = [[FBSDKSharePhotoContent alloc] init];
+    content.photos = @[photo];
+    [self setupShareButton:content];
+}
+
+- (void)setupShareDialog:(UIImage *)image {
+    if([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook]) {
+        
+        SLComposeViewController *controller = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
+        
+        [controller setInitialText:@"Posted with MobileWarg app"];
+        [controller addURL:[NSURL URLWithString:@"http://www.mobilewarg.com"]];
+        [controller addImage: image];
+        
+        [self presentViewController:controller animated:YES completion:Nil];
+        
+    }
+}
+
+- (void)setupShareButton:(FBSDKSharePhotoContent *) content {
+    FBSDKShareButton *button = [[FBSDKShareButton alloc] init];
+    button.shareContent = content;
+    [self.view addSubview:button];
 }
 
 #pragma mark - MWMultipeerVideoReceiver
@@ -117,6 +150,17 @@
     if (_playerClock) {
         [_playerClock invalidate];
     }
+}
+
+#pragma mark - IBActions
+- (IBAction)shareToFacebook:(id)sender {
+    UIGraphicsBeginImageContextWithOptions(self.view.bounds.size, self.view.opaque, 0.0);
+    [self.view.layer renderInContext:UIGraphicsGetCurrentContext()];
+    
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    [self setupShareDialog:image];
+    
 }
 
 

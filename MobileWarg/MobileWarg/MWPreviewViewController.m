@@ -10,13 +10,9 @@
 #import "MWPreviewViewController.h"
 #import "MWStreamReceiveViewController.h"
 #import "UIAlertView+BlocksKit.h"
-#import <FBSDKShareKit/FBSDKShareKit.h>
-
-@import Social;
 
 @interface MWPreviewViewController ()
 
-@property (weak, nonatomic) IBOutlet UIButton *takePictureAndShareButton;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *wargButton;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *connectButton;
 @property (assign, nonatomic) BOOL isConnectionEstablished;
@@ -32,35 +28,6 @@
     [self setupCamera];
     [self.wargButton setEnabled:NO];
     
-}
-
-- (void)setupFacebookShare:(UIImage *)image {
-    FBSDKSharePhoto *photo = [[FBSDKSharePhoto alloc] init];
-    photo.image = image;
-    photo.userGenerated = YES;
-    FBSDKSharePhotoContent *content = [[FBSDKSharePhotoContent alloc] init];
-    content.photos = @[photo];
-    [self setupShareButton:content];
-}
-
-- (void)setupShareDialog:(UIImage *)image {
-    if([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook]) {
-        
-        SLComposeViewController *controller = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
-        
-        [controller setInitialText:@"First post from my iPhone app"];
-        [controller addURL:[NSURL URLWithString:@"http://www.appcoda.com"]];
-        [controller addImage: image];
-        
-        [self presentViewController:controller animated:YES completion:Nil];
-        
-    }
-}
-
-- (void)setupShareButton:(FBSDKSharePhotoContent *) content {
-    FBSDKShareButton *button = [[FBSDKShareButton alloc] init];
-    button.shareContent = content;
-    [self.view addSubview:button];
 }
 
 - (void)setupCamera {
@@ -207,14 +174,6 @@
         MWMultipeerManager * manager = [MWMultipeerManager sharedManager];
         [manager sendMessageToConnectedPeer:@"wargRequest"];
     }
-}
-- (IBAction)takePictureAndShare:(id)sender {
-    UIGraphicsBeginImageContextWithOptions(self.view.bounds.size, self.view.opaque, 0.0);
-    [self.view.layer renderInContext:UIGraphicsGetCurrentContext()];
-    
-    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    [self setupShareDialog:image];
 }
 
 - (IBAction)connect:(id)sender {
