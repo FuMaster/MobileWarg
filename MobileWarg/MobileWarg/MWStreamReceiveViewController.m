@@ -132,11 +132,13 @@
     UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     
+    //opens facebook app to share
     FBSDKSharePhotoContent* content = [MWFacebookManager shareToFacebook:image];
     [FBSDKShareDialog showFromViewController:self
                                  withContent:content
                                     delegate:nil];
     
+    //opens popup dialog within our app to share
 //    SLComposeViewController *controller = [MWFacebookManager openShareDialog:image];
 //    if(controller != nil){
 //        [self presentViewController:controller animated:YES completion:Nil];
