@@ -45,9 +45,19 @@
     FBSDKSharePhoto *photo = [[FBSDKSharePhoto alloc] init];
     photo.image = image;
     photo.userGenerated = YES;
+    
     FBSDKSharePhotoContent *content = [[FBSDKSharePhotoContent alloc] init];
     content.photos = @[photo];
-    [self setupShareButton:content];
+    [FBSDKShareDialog showFromViewController:self
+                                 withContent:content
+                                    delegate:nil];
+}
+
+
+- (void)setupShareButton:(FBSDKSharePhotoContent *) content {
+    FBSDKShareButton *button = [[FBSDKShareButton alloc] init];
+    button.shareContent = content;
+    [self.view addSubview:button];
 }
 
 - (void)setupShareDialog:(UIImage *)image {
@@ -62,12 +72,6 @@
         [self presentViewController:controller animated:YES completion:Nil];
         
     }
-}
-
-- (void)setupShareButton:(FBSDKSharePhotoContent *) content {
-    FBSDKShareButton *button = [[FBSDKShareButton alloc] init];
-    button.shareContent = content;
-    [self.view addSubview:button];
 }
 
 #pragma mark - MWMultipeerVideoReceiver
@@ -159,7 +163,7 @@
     
     UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
-    [self setupShareDialog:image];
+    [self setupFacebookShare:image];
     
 }
 
