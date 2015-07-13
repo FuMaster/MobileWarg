@@ -105,7 +105,7 @@
                                            @"peer":peerID};
                 
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [[NSNotificationCenter defaultCenter] postNotificationName:@"MobileWarg_MessageRecivedFromPeer"
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"MobileWarg_MessageReceivedFromPeer"
                                                                         object:nil
                                                                       userInfo:userInfo];
                 });

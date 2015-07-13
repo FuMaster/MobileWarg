@@ -65,8 +65,8 @@
                                                object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(messageRecived:)
-                                                 name:@"MobileWarg_MessageRecivedFromPeer"
+                                             selector:@selector(messageReceived:)
+                                                 name:@"MobileWarg_MessageReceivedFromPeer"
                                                object:nil];
     
     //if you specify nil for object, you get all the notifications with the matching name, regardless of who sent them
@@ -125,7 +125,7 @@
     }
 }
 
-- (void)messageRecived:(NSNotification *)notification {
+- (void)messageReceived:(NSNotification *)notification {
     NSDictionary *userInfo = notification.userInfo;
     
     MCPeerID *senderPeer = userInfo[@"peer"];

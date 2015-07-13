@@ -145,10 +145,11 @@
 //    if(controller != nil){
 //        [self presentViewController:controller animated:YES completion:Nil];
 //    }
-
+}
+    
 - (IBAction)capture:(id)sender {
     MWMultipeerManager * manager = [MWMultipeerManager sharedManager];
-    [manager sendMessageToConnectedPeer:@"@Capture"];
+    [manager sendMessageToConnectedPeer:@"Capture"];
 
 }
 

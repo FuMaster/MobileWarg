@@ -40,7 +40,7 @@
                                                object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(captureImage:)
+                                             selector:@selector(takePhoto:)
                                                  name:@"MobileWarg_CaptureImage"
                                                object:nil];
     
@@ -48,19 +48,27 @@
     [self setupCamera];
 }
 
-- (void)takePhoto {
-    AVCaptureStillImageOutput *stillImageOutput = [[AVCaptureStillImageOutput alloc] init];
-    if ([self.videoSession canAddOutput:stillImageOutput]) {
-        [stillImageOutput setOutputSettings:@{AVVideoCodecKey : AVVideoCodecJPEG}];
-        [self.videoSession addOutput:stillImageOutput];
-    }
-    [stillImageOutput captureStillImageAsynchronouslyFromConnection:[stillImageOutput connectionWithMediaType:AVMediaTypeVideo] completionHandler:^(CMSampleBufferRef imageDataSampleBuffer, NSError *error) {
+- (void)takePhoto:(NSNotification *)notification {
+    NSLog(@"Take photo.");
+    
+    [ [self stillImageOutput] captureStillImageAsynchronouslyFromConnection:[ [self stillImageOutput] connectionWithMediaType:AVMediaTypeVideo] completionHandler:^(CMSampleBufferRef imageDataSampleBuffer, NSError *error) {
         
         if (imageDataSampleBuffer)
         {
             NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageDataSampleBuffer];
             UIImage *image = [[UIImage alloc] initWithData:imageData];
-            //[[[ALAssetsLibrary alloc] init] writeImageToSavedPhotosAlbum:[image CGImage] orientation:(ALAssetOrientation)[image imageOrientation] completionBlock:nil];
+            [[[ALAssetsLibrary alloc] init] writeImageToSavedPhotosAlbum:[image CGImage] orientation:(ALAssetOrientation)[image imageOrientation] completionBlock:nil];
+            
+            
+            MWMultipeerManager *manager = [MWMultipeerManager sharedManager];
+            
+            if (manager.connectedPeerID) {
+                [manager.session sendData:imageData toPeers:@[manager.connectedPeerID] withMode:MCSessionSendDataReliable error:nil];
+            } else {
+                NSLog(@"Not Connected");
+            }
+
+            
         }
     }];
 }
@@ -90,7 +98,6 @@
             
             [self.videoSession addOutput:self.videoDataOutput];
             
-            /*
             AVCaptureStillImageOutput *stillImageOutput = [[AVCaptureStillImageOutput alloc] init];
             if ([self.videoSession canAddOutput:stillImageOutput])
             {
@@ -98,7 +105,7 @@
                 [self.videoSession addOutput:stillImageOutput];
                 [self setStillImageOutput:stillImageOutput];
             }
-             */
+            
             
             [self.videoSession startRunning];
             return;
@@ -147,27 +154,6 @@
         default:
             break;
     }
-}
-
-- (void) captureImage {
-    NSLog(@"Take picture");
-    
-    // Flash set to Auto for Still Capture
-    [MWStreamSendViewController setFlashMode:AVCaptureFlashModeAuto forDevice:[[self videoDeviceInput] device]];
-    
-    // Capture a still image.
-    [[self stillImageOutput] captureStillImageAsynchronouslyFromConnection:[[self stillImageOutput] connectionWithMediaType:AVMediaTypeVideo] completionHandler:^(CMSampleBufferRef imageDataSampleBuffer, NSError *error) {
-        
-        if (imageDataSampleBuffer)
-        {
-            NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageDataSampleBuffer];
-            UIImage *image = [[UIImage alloc] initWithData:imageData];
-            [[[ALAssetsLibrary alloc] init] writeImageToSavedPhotosAlbum:[image CGImage] orientation:(ALAssetOrientation)[image imageOrientation] completionBlock:nil];
-        }
-    }];
-});
-
-
 }
 
 #pragma mark - VideoStream
