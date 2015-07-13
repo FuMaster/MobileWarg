@@ -49,7 +49,8 @@
 }
 
 - (void)takePhoto:(NSNotification *)notification {
-    NSLog(@"Take photo.");
+    MWMultipeerManager *manager = [MWMultipeerManager sharedManager];
+    manager.isVideo = NO;
     
     [ [self stillImageOutput] captureStillImageAsynchronouslyFromConnection:[ [self stillImageOutput] connectionWithMediaType:AVMediaTypeVideo] completionHandler:^(CMSampleBufferRef imageDataSampleBuffer, NSError *error) {
         
@@ -59,13 +60,13 @@
             UIImage *image = [[UIImage alloc] initWithData:imageData];
             [[[ALAssetsLibrary alloc] init] writeImageToSavedPhotosAlbum:[image CGImage] orientation:(ALAssetOrientation)[image imageOrientation] completionBlock:nil];
             
+            NSData *finalData = [NSKeyedArchiver archivedDataWithRootObject:image];
             
-            MWMultipeerManager *manager = [MWMultipeerManager sharedManager];
-            
-            if (manager.connectedPeerID) {
-                [manager.session sendData:imageData toPeers:@[manager.connectedPeerID] withMode:MCSessionSendDataReliable error:nil];
+            if (!manager.isVideo && manager.connectedPeerID) {
+                NSLog(@"Taking photo.");
+                [manager.session sendData:finalData toPeers:@[manager.connectedPeerID] withMode:MCSessionSendDataReliable error:nil];
             } else {
-                NSLog(@"Not Connected");
+                NSLog(@"Not sending photo");
             }
 
             
@@ -192,10 +193,11 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     
     MWMultipeerManager * manager = [MWMultipeerManager sharedManager];
     
-    if (manager.connectedPeerID) {
+    if (manager.isVideo && manager.connectedPeerID) {
+        NSLog(@"Sending video");
         [manager.session sendData:data toPeers:@[manager.connectedPeerID] withMode:MCSessionSendDataReliable error:nil];
     } else {
-        NSLog(@"Not Connected");
+        NSLog(@"Not sending video");
     }
 }
 

@@ -150,7 +150,7 @@
 - (IBAction)capture:(id)sender {
     MWMultipeerManager * manager = [MWMultipeerManager sharedManager];
     [manager sendMessageToConnectedPeer:@"Capture"];
-
+    manager.isStreaming = NO;
 }
 
 

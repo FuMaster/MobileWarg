@@ -6,6 +6,7 @@
 //  Copyright (c) 2015 MobileWarg. All rights reserved.
 //
 
+#import <AssetsLibrary/AssetsLibrary.h>
 #import <Foundation/Foundation.h>
 #import <MultipeerConnectivity/MultipeerConnectivity.h>
 
@@ -24,6 +25,7 @@
 @property(nonatomic, strong) MCAdvertiserAssistant *advertiser;
 @property(nonatomic, strong) id<MWMultipeerVideoReceiver> videoReceiver;
 @property(nonatomic, assign) BOOL isStreaming;
+@property(nonatomic, assign) BOOL isVideo;
 
 
 + (id)sharedManager;

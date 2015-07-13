@@ -16,6 +16,7 @@
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *wargButton;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *connectButton;
 @property (assign, nonatomic) BOOL isConnectionEstablished;
+@property (strong, nonatomic) AVCaptureVideoPreviewLayer *previewLayer;
 
 @end
 
@@ -27,6 +28,11 @@
     [self setupMultipeerConnectivity];
     [self setupCamera];
     [self.wargButton setEnabled:NO];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(changedOrientation)
+                                                 name:UIDeviceOrientationDidChangeNotification
+                                               object:nil];
     
 }
 
@@ -40,10 +46,10 @@
             AVCaptureDeviceInput *videoDeviceInput = [AVCaptureDeviceInput deviceInputWithDevice:videoDevice error:nil];
             [captureSession addInput:videoDeviceInput];
             
-            AVCaptureVideoPreviewLayer *previewLayer = [AVCaptureVideoPreviewLayer layerWithSession:captureSession];
-            previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
-            previewLayer.frame = self.view.frame;
-            [self.view.layer addSublayer:previewLayer];
+            self.previewLayer = [AVCaptureVideoPreviewLayer layerWithSession:captureSession];
+            self.previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
+            self.previewLayer.frame = self.view.frame;
+            [self.view.layer addSublayer:self.previewLayer];
             [captureSession startRunning];
             return;
         }
@@ -54,6 +60,29 @@
                       cancelButtonTitle:@"Ok"
                       otherButtonTitles:nil] show];
 }
+
+- (void) changedOrientation {
+    // Change the fit of the UI element.
+    self.previewLayer.frame = self.view.bounds;
+    
+    UIDeviceOrientation deviceOrientation = [UIDevice currentDevice].orientation;
+    
+    // Switch statement
+    switch (deviceOrientation) {
+        case UIInterfaceOrientationLandscapeLeft: {
+            [self.previewLayer.connection setVideoOrientation:AVCaptureVideoOrientationLandscapeLeft];
+        } break;
+        case UIInterfaceOrientationLandscapeRight: {
+            [self.previewLayer.connection setVideoOrientation:AVCaptureVideoOrientationLandscapeRight];
+        } break;
+        case UIInterfaceOrientationPortrait:{
+            [self.previewLayer.connection setVideoOrientation:AVCaptureVideoOrientationPortrait];
+        } break;
+        default:
+            break;
+    }
+}
+
 
 - (void)setupMultipeerConnectivity {
     //Instantiates MWMultipeerManager
@@ -79,6 +108,7 @@
     
     MWMultipeerManager * manager = [MWMultipeerManager sharedManager];
     [manager.browser dismissViewControllerAnimated:YES completion:nil];
+    manager.isVideo = YES;
     
     [[[UIAlertView alloc] initWithTitle:@"Connected"
                                 message:[NSString stringWithFormat:@"Connected to %@",manager.connectedPeerID.displayName]
@@ -91,6 +121,8 @@
     self.isConnectionEstablished = NO;
     [self.connectButton setTitle:@"Connect"];
     [self.wargButton setEnabled:NO];
+    MWMultipeerManager * manager = [MWMultipeerManager sharedManager];
+    manager.isVideo = NO;
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender

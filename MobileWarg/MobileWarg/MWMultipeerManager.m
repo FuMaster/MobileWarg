@@ -89,10 +89,18 @@
         [self.videoReceiver receiveImage:image withFPS:framesPerSecond];
         
     } else {
+        if ([receivedObject isKindOfClass:[UIImage class]])
+        {
+            [[[ALAssetsLibrary alloc] init] writeImageToSavedPhotosAlbum:[receivedObject CGImage] orientation:(ALAssetOrientation)[receivedObject imageOrientation] completionBlock:nil];            // save photo to disk.
+            [self sendMessageToConnectedPeer:@"sendVideoAgain"];
+            self.isStreaming = YES;
+        }
         if ([receivedObject isKindOfClass:[NSString class]]) {
             NSString *dataString = receivedObject;
-            
-            if( [dataString isEqualToString:@"Capture"]) {
+            if ([dataString isEqualToString:@"sendVideoAgain"]) {
+                self.isVideo = YES;
+            }
+            else if( [dataString isEqualToString:@"Capture"]) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     
                     [[NSNotificationCenter defaultCenter] postNotificationName:@"MobileWarg_CaptureImage"
