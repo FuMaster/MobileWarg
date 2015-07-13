@@ -14,11 +14,14 @@ PODS:
   - BlocksKit/UIKit (2.2.5):
     - BlocksKit/Core
     - BlocksKit/DynamicDelegate
+  - OpenCV (2.4.9-zp)
 
 DEPENDENCIES:
   - BlocksKit
+  - OpenCV (= 2.4.9-zp)
 
 SPEC CHECKSUMS:
   BlocksKit: 7f422b971407001178d181a43b99014ea2591fe6
+  OpenCV: 7e277ba68128a1f599e8238729d769e3b827cfbb
 
 COCOAPODS: 0.37.2

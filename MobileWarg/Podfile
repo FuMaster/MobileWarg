@@ -1,9 +1,12 @@
 # Uncomment this line to define a global platform for your project
 platform :ios, '8.3'
+source 'https://github.com/CocoaPods/Specs.git'
+source 'https://github.com/Zi0P4tch0/Specs.git'
 
 target 'MobileWarg' do
 
 pod 'BlocksKit'
+pod 'OpenCV', '2.4.9-zp'
 
 end
 
