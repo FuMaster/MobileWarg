@@ -91,6 +91,7 @@
     } else {
         if ([receivedObject isKindOfClass:[UIImage class]])
         {
+            self.capturedImage = receivedObject;
             [[[ALAssetsLibrary alloc] init] writeImageToSavedPhotosAlbum:[receivedObject CGImage] orientation:(ALAssetOrientation)[receivedObject imageOrientation] completionBlock:nil];            // save photo to disk.
             [self sendMessageToConnectedPeer:@"sendVideoAgain"];
             self.isStreaming = YES;

@@ -128,23 +128,20 @@
 #pragma mark - IBActions
 
 - (IBAction)shareToFacebook:(id)sender {
-    UIGraphicsBeginImageContextWithOptions(self.view.bounds.size, self.view.opaque, 0.0);
-    [self.view.layer renderInContext:UIGraphicsGetCurrentContext()];
+    MWMultipeerManager * manager = [MWMultipeerManager sharedManager];
+    [manager sendMessageToConnectedPeer:@"Capture"];
+    manager.isStreaming = NO;
     
-    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
+    // TODO Make this more elegant.
+    // The Multipeer manager sets streaming to yes.
+    while (manager.isStreaming == NO) { }
     
-    //opens facebook app to share
-    FBSDKSharePhotoContent* content = [MWFacebookManager shareToFacebook:image];
+    // Open FB APP to share.
+    FBSDKSharePhotoContent* content = [MWFacebookManager shareToFacebook:manager.capturedImage];
     [FBSDKShareDialog showFromViewController:self
                                  withContent:content
                                     delegate:nil];
     
-    //opens popup dialog within our app to share
-//    SLComposeViewController *controller = [MWFacebookManager openShareDialog:image];
-//    if(controller != nil){
-//        [self presentViewController:controller animated:YES completion:Nil];
-//    }
 }
     
 - (IBAction)capture:(id)sender {

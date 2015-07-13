@@ -26,6 +26,7 @@
 @property(nonatomic, strong) id<MWMultipeerVideoReceiver> videoReceiver;
 @property(nonatomic, assign) BOOL isStreaming;
 @property(nonatomic, assign) BOOL isVideo;
+@property(nonatomic, strong) UIImage* capturedImage;
 
 
 + (id)sharedManager;
