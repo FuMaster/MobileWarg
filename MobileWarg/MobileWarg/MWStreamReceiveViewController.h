@@ -11,7 +11,7 @@
 #import <MultipeerConnectivity/MultipeerConnectivity.h>
 #import "MWMultipeerManager.h"
 
-@interface MWStreamReceiveViewController : UIViewController<MWMultipeerVideoReceiver>
+@interface MWStreamReceiveViewController : UIViewController<UINavigationControllerDelegate, UIImagePickerControllerDelegate, MWMultipeerVideoReceiver>
 
 
 @end

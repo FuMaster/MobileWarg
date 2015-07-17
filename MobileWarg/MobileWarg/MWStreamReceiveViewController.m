@@ -14,8 +14,6 @@
 
 @interface MWStreamReceiveViewController ()
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *shareButton;
-@property (weak, nonatomic) IBOutlet UIButton *cameraCapture;
 
 @end
 
@@ -45,16 +43,16 @@
 
 #pragma mark - MWMultipeerVideoReceiver
 
-- (void)receiveImage:(UIImage*)image withFPS:(NSNumber*)fps{
-    _fps = fps;
-    if (!_playerClock || (_playerClock.timeInterval != (1.0/fps.floatValue))) {
+- (void)receiveVideoFrame:(NSDictionary *)videoFrame {
+    _fps = videoFrame[@"fps"];
+    if (!_playerClock || (_playerClock.timeInterval != (1.0/_fps.floatValue))) {
         
         dispatch_async(dispatch_get_main_queue(), ^{
             if (_playerClock) {
                 [_playerClock invalidate];
             }
             
-            NSTimeInterval timeInterval = 1.0 / [fps floatValue];
+            NSTimeInterval timeInterval = 1.0 / _fps.floatValue;
             _playerClock = [NSTimer scheduledTimerWithTimeInterval:timeInterval
                                                             target:self
                                                           selector:@selector(playerClockTick)
@@ -62,8 +60,7 @@
                                                            repeats:YES];
         });
     }
-    [_frames addObject:image];
-
+    [_frames addObject:[UIImage imageWithData:videoFrame[@"frame"]]];
 }
 
 
@@ -127,28 +124,45 @@
 
 #pragma mark - IBActions
 
-- (IBAction)shareToFacebook:(id)sender {
+- (IBAction)capture:(id)sender {
     MWMultipeerManager * manager = [MWMultipeerManager sharedManager];
-    [manager sendMessageToConnectedPeer:@"Capture"];
-    manager.isStreaming = NO;
+    [manager sendStringMessage:@"Capture"];
+}
+
+- (IBAction)shareToFacebook:(id)sender {
     
-    // TODO Make this more elegant.
-    // The Multipeer manager sets streaming to yes.
-    while (manager.isStreaming == NO) { }
+    if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeSavedPhotosAlbum]){
+        NSLog(@"No image picker");
+        [[[UIAlertView alloc] initWithTitle:@"No Photo Album"
+                                    message:nil
+                                   delegate:nil
+                          cancelButtonTitle:@"Ok"
+                          otherButtonTitles:nil] show];
+        return;
+    }
+    UIImagePickerController *mediaUI = [[UIImagePickerController alloc] init];
+    mediaUI.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
+    mediaUI.mediaTypes = [UIImagePickerController availableMediaTypesForSourceType:
+                          UIImagePickerControllerSourceTypeSavedPhotosAlbum];
+    mediaUI.allowsEditing = NO;
+    mediaUI.delegate = self;
+    [self presentViewController:mediaUI animated:YES completion:nil];
+}
+
+#pragma mark - UIImagePickerControllerDelegate
+
+- (void)imagePickerController:(UIImagePickerController *)picker
+didFinishPickingMediaWithInfo:(NSDictionary *)info {
+    
+    UIImage *image = info[UIImagePickerControllerOriginalImage];
+    
+    [self dismissViewControllerAnimated:YES completion:nil];
     
     // Open FB APP to share.
-    FBSDKSharePhotoContent* content = [MWFacebookManager shareToFacebook:manager.capturedImage];
+    FBSDKSharePhotoContent* content = [MWFacebookManager shareToFacebook:image];
     [FBSDKShareDialog showFromViewController:self
                                  withContent:content
                                     delegate:nil];
-    
 }
-    
-- (IBAction)capture:(id)sender {
-    MWMultipeerManager * manager = [MWMultipeerManager sharedManager];
-    [manager sendMessageToConnectedPeer:@"Capture"];
-    manager.isStreaming = NO;
-}
-
 
 @end

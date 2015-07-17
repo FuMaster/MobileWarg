@@ -10,9 +10,16 @@
 #import "MWMultipeerManager.h"
 #import "MWStreamReceiveViewController.h"
 
+
+typedef NS_ENUM(NSInteger, MWDataType) {
+    MWDataTypeVideoFrame,
+    MWDataTypeCapturedImage,
+    MWDataTypeStringMessage
+};
+
 @implementation MWMultipeerManager
 
-+ (id)sharedManager {
++ (MWMultipeerManager *)sharedManager {
     static MWMultipeerManager *sharedMyManager = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -26,6 +33,7 @@
         [self setupPeerWithDisplayName:[UIDevice currentDevice].name];
         [self setupSession];
         [self advertiseSelf:true];
+        [self setupBrowser];
     }
     return self;
 }
@@ -57,69 +65,91 @@
     }
 }
 
-- (void)sendMessageToConnectedPeer:(NSString *)message {
+#pragma mark - Sender Methods
+
+- (void)sendVideoFrame:(NSDictionary *)videoFrame {
+    
+    NSDictionary *dict = @{@"dataType":@(MWDataTypeVideoFrame),
+                           @"data":videoFrame};
+    
+    [self sendObjectToConnectedPeer:dict];
+}
+
+- (void)sendCapturedImage:(UIImage *)capturedImage {
+    
+    NSDictionary *dict = @{@"dataType":@(MWDataTypeCapturedImage),
+                           @"data":capturedImage};
+    
+    [self sendObjectToConnectedPeer:dict];
+}
+
+- (void)sendStringMessage:(NSString *)message {
+    
+    NSDictionary *dict = @{@"dataType":@(MWDataTypeStringMessage),
+                           @"data":message};
+    
+    [self sendObjectToConnectedPeer:dict];
+}
+
+- (void)sendObjectToConnectedPeer:(id)object {
+    
+    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:object];
     
     if (self.connectedPeerID) {
         NSError *error;
-        
-        NSData *data = [NSKeyedArchiver archivedDataWithRootObject:message];
         [self.session sendData:data
                        toPeers:@[self.connectedPeerID]
                       withMode:MCSessionSendDataReliable
                          error:&error];
         if (error) {
-            NSLog(@"sendMessageToConnectedPeerError: %@",[error localizedDescription]);
+            NSLog(@"Send Data Failed : %@",[error localizedDescription]);
         }
+    } else {
+        NSLog(@"Peer not Connected");
     }
 }
 
 #pragma mark - MCSessionDelegate
 
 - (void)session:(MCSession *)session
- didReceiveData:(NSData *)data
+ didReceiveData:(NSData *)archivedData
        fromPeer:(MCPeerID *)peerID {
-
-    id receivedObject = [NSKeyedUnarchiver unarchiveObjectWithData:data];
     
-    // isStreaming is only true for receiver
-    if(self.isStreaming) {
-        NSDictionary* dict = (NSDictionary*) [NSKeyedUnarchiver unarchiveObjectWithData:data];
-        UIImage* image = [UIImage imageWithData:dict[@"image"] scale:2.0];
-        NSNumber* framesPerSecond = dict[@"framesPerSecond"];
-        [self.videoReceiver receiveImage:image withFPS:framesPerSecond];
-        
-    } else {
-        if ([receivedObject isKindOfClass:[UIImage class]])
-        {
-            self.capturedImage = receivedObject;
-            [[[ALAssetsLibrary alloc] init] writeImageToSavedPhotosAlbum:[receivedObject CGImage] orientation:(ALAssetOrientation)[receivedObject imageOrientation] completionBlock:nil];            // save photo to disk.
-            [self sendMessageToConnectedPeer:@"sendVideoAgain"];
-            self.isStreaming = YES;
+    NSDictionary *dict = (NSDictionary *)[NSKeyedUnarchiver unarchiveObjectWithData:archivedData];
+    MWDataType type = [dict[@"dataType"] integerValue];
+    id object = dict[@"data"];
+    
+    switch (type) {
+        case MWDataTypeVideoFrame:
+            [self.videoReceiver receiveVideoFrame:(NSDictionary*)object];
+            break;
+            
+        case MWDataTypeCapturedImage: {
+            UIImage *image = (UIImage *)object;
+            [[[ALAssetsLibrary alloc] init] writeImageToSavedPhotosAlbum:[image CGImage]
+                                                             orientation:(ALAssetOrientation)[image imageOrientation]
+                                                         completionBlock:nil];
+            break;
         }
-        if ([receivedObject isKindOfClass:[NSString class]]) {
-            NSString *dataString = receivedObject;
-            if ([dataString isEqualToString:@"sendVideoAgain"]) {
-                self.isVideo = YES;
-            }
-            else if( [dataString isEqualToString:@"Capture"]) {
+        case MWDataTypeStringMessage: {
+            NSString *message = object;
+            if( [message isEqualToString:@"Capture"]) {
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    
                     [[NSNotificationCenter defaultCenter] postNotificationName:@"MobileWarg_CaptureImage"
-                                                                        object: nil];
+                                                                        object:nil];
                 });
-                
             } else {
-                
-                NSDictionary *userInfo = @{@"message":dataString,
-                                           @"peer":peerID};
-                
+                NSDictionary *userInfo = @{@"message":message, @"peer":peerID};
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [[NSNotificationCenter defaultCenter] postNotificationName:@"MobileWarg_MessageReceivedFromPeer"
                                                                         object:nil
                                                                       userInfo:userInfo];
                 });
             }
+            break;
         }
+        default:
+            break;
     }
 }
 
@@ -169,3 +199,4 @@
           atURL:(NSURL *)localURL
       withError:(NSError *)error {}
 @end
+

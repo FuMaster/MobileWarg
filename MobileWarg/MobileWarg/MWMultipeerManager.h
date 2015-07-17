@@ -12,7 +12,7 @@
 
 @protocol MWMultipeerVideoReceiver <NSObject>
 
-- (void)receiveImage:(UIImage*)image withFPS:(NSNumber*)fps;
+- (void)receiveVideoFrame:(NSDictionary *)videoFrame;
 
 @end
 
@@ -24,16 +24,15 @@
 @property(nonatomic, strong) MCBrowserViewController *browser;
 @property(nonatomic, strong) MCAdvertiserAssistant *advertiser;
 @property(nonatomic, strong) id<MWMultipeerVideoReceiver> videoReceiver;
-@property(nonatomic, assign) BOOL isStreaming;
-@property(nonatomic, assign) BOOL isVideo;
-@property(nonatomic, strong) UIImage* capturedImage;
 
-
-+ (id)sharedManager;
++ (MWMultipeerManager *)sharedManager;
 - (void)setupPeerWithDisplayName: (NSString *)displayName;
 - (void)setupSession;
 - (void)setupBrowser;
 - (void)advertiseSelf:(BOOL)advertise;
-- (void)sendMessageToConnectedPeer:(NSString *)message;
+
+- (void)sendVideoFrame:(NSDictionary *)videoFrame;
+- (void)sendCapturedImage:(UIImage *)capturedImage;
+- (void)sendStringMessage:(NSString *)message;
 
 @end

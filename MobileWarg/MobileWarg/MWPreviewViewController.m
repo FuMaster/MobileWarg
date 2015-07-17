@@ -15,7 +15,6 @@
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *wargButton;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *connectButton;
-@property (assign, nonatomic) BOOL isConnectionEstablished;
 @property (strong, nonatomic) AVCaptureVideoPreviewLayer *previewLayer;
 
 @end
@@ -33,7 +32,6 @@
                                              selector:@selector(changedOrientation)
                                                  name:UIDeviceOrientationDidChangeNotification
                                                object:nil];
-    
 }
 
 - (void)setupCamera {
@@ -103,12 +101,10 @@
 
 - (void)connectionSuccess {
     [self.wargButton setEnabled:YES];
-    self.isConnectionEstablished = YES;
     [self.connectButton setTitle:@"Disconnect"];
     
     MWMultipeerManager * manager = [MWMultipeerManager sharedManager];
     [manager.browser dismissViewControllerAnimated:YES completion:nil];
-    manager.isVideo = YES;
     
     [[[UIAlertView alloc] initWithTitle:@"Connected"
                                 message:[NSString stringWithFormat:@"Connected to %@",manager.connectedPeerID.displayName]
@@ -118,24 +114,18 @@
 }
 
 - (void)connectionEnded {
-    self.isConnectionEstablished = NO;
     [self.connectButton setTitle:@"Connect"];
     [self.wargButton setEnabled:NO];
-    MWMultipeerManager * manager = [MWMultipeerManager sharedManager];
-    manager.isVideo = NO;
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     // Make sure your segue name in storyboard is the same as this line
-    if ([[segue identifier] isEqualToString:@"showStreamReceive"])
-    {
+    if ([segue.identifier isEqualToString:@"showStreamReceive"]){
         // Get reference to the destination view controller
-        MWStreamReceiveViewController *receiveViewController = [segue destinationViewController];
+        MWStreamReceiveViewController *receiveViewController = segue.destinationViewController;
         
-        MWMultipeerManager * manger = [MWMultipeerManager sharedManager];
-        manger.videoReceiver = receiveViewController;
-        manger.isStreaming = YES;
+        [MWMultipeerManager sharedManager].videoReceiver = receiveViewController;
     }
 }
 
@@ -151,7 +141,6 @@
     NSString *state = [dict valueForKey:@"state"];
     if (state.intValue == MCSessionStateConnected) {
         [self connectionSuccess];
-        
     } else if (state.intValue == MCSessionStateNotConnected) {
         [self connectionEnded];
     }
@@ -175,9 +164,7 @@
                                            if (buttonIndex == 1) {
                                                //Accepted warg request
                                                NSLog(@"Accepting warg request");
-                                               MWMultipeerManager * manager = [MWMultipeerManager sharedManager];
-                                               [manager sendMessageToConnectedPeer:@"wargAccept"];
-                                               
+                                               [[MWMultipeerManager sharedManager] sendStringMessage:@"wargAccept"];
                                                [self performSegueWithIdentifier:@"showStreamSend" sender:self];
                                            }
                                        }];
@@ -203,32 +190,21 @@
 #pragma mark - IBActions
 
 - (IBAction)warg:(id)sender {
-    if (self.isConnectionEstablished) {
-        MWMultipeerManager * manager = [MWMultipeerManager sharedManager];
-        [manager sendMessageToConnectedPeer:@"wargRequest"];
-    }
+    [[MWMultipeerManager sharedManager] sendStringMessage:@"wargRequest"];
 }
 
 - (IBAction)connect:(id)sender {
     MWMultipeerManager * manager = [MWMultipeerManager sharedManager];
     
-    if (self.isConnectionEstablished) {
-        if (manager.session != nil) {
-            [manager.session disconnect];
-        }
+    if ([manager.session.connectedPeers count] == 0) {
+        manager.browser.delegate = self;
+        [self presentViewController:manager.browser
+                           animated:YES
+                         completion:nil];
     } else {
-        if (manager.session != nil) {
-            [manager setupBrowser];
-            manager.browser.delegate = self;
-            
-            [self presentViewController:manager.browser
-                               animated:YES
-                             completion:nil];
-        }
+        [manager.session disconnect];
     }
 }
-
-
 
 #pragma mark - MCBrowserViewControllerDelegate
 

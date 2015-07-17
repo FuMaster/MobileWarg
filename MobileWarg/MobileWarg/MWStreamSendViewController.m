@@ -49,29 +49,19 @@
 }
 
 - (void)takePhoto:(NSNotification *)notification {
-    MWMultipeerManager *manager = [MWMultipeerManager sharedManager];
-    manager.isVideo = NO;
-    
-    [ [self stillImageOutput] captureStillImageAsynchronouslyFromConnection:[ [self stillImageOutput] connectionWithMediaType:AVMediaTypeVideo] completionHandler:^(CMSampleBufferRef imageDataSampleBuffer, NSError *error) {
-        
-        if (imageDataSampleBuffer)
-        {
+    void (^completionHandler)(CMSampleBufferRef, NSError*) = ^(CMSampleBufferRef imageDataSampleBuffer, NSError *error) {
+        if(imageDataSampleBuffer){
             NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageDataSampleBuffer];
             UIImage *image = [[UIImage alloc] initWithData:imageData];
-            [[[ALAssetsLibrary alloc] init] writeImageToSavedPhotosAlbum:[image CGImage] orientation:(ALAssetOrientation)[image imageOrientation] completionBlock:nil];
+            [[[ALAssetsLibrary alloc] init] writeImageToSavedPhotosAlbum:image.CGImage
+                                                             orientation:(ALAssetOrientation)image.imageOrientation
+                                                         completionBlock:nil];
             
-            NSData *finalData = [NSKeyedArchiver archivedDataWithRootObject:image];
-            
-            if (!manager.isVideo && manager.connectedPeerID) {
-                NSLog(@"Taking photo.");
-                [manager.session sendData:finalData toPeers:@[manager.connectedPeerID] withMode:MCSessionSendDataReliable error:nil];
-            } else {
-                NSLog(@"Not sending photo");
-            }
-
-            
+            [[MWMultipeerManager sharedManager] sendCapturedImage:image];
         }
-    }];
+    };
+    [self.stillImageOutput captureStillImageAsynchronouslyFromConnection:[self.stillImageOutput connectionWithMediaType:AVMediaTypeVideo]
+                                                       completionHandler:completionHandler];
 }
 
 - (void)setupCamera {
@@ -127,7 +117,7 @@
 
 #pragma mark - NSNotificationCenter
 
-- (void) connectionStateChanged:(NSNotification *)notification {
+- (void)connectionStateChanged:(NSNotification *)notification {
     NSDictionary *dict = [notification userInfo];
     NSString *state = [dict valueForKey:@"state"];
     if (state.intValue == MCSessionStateNotConnected) {
@@ -135,7 +125,7 @@
     }
 }
 
-- (void) changedOrientation {
+- (void)changedOrientation {
     // Change the fit of the UI element.
     self.videoPreview.frame = self.view.bounds;
     
@@ -163,8 +153,6 @@
 didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
        fromConnection:(AVCaptureConnection *)connection {
     
-    NSNumber* timestamp = @(CMTimeGetSeconds(CMSampleBufferGetPresentationTimeStamp(sampleBuffer)));
-    
     CVImageBufferRef cvImage = CMSampleBufferGetImageBuffer(sampleBuffer);
     CGRect cropRect = AVMakeRectWithAspectRatioInsideRect(CGSizeMake(569, 320), CGRectMake(0,0, CVPixelBufferGetWidth(cvImage),CVPixelBufferGetHeight(cvImage)) );
     CIImage *ciImage = [[CIImage alloc] initWithCVPixelBuffer:cvImage];
@@ -183,25 +171,17 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     
     AVCaptureInputPort* inputPort = connection.inputPorts[0];
     AVCaptureDeviceInput* deviceInput = (AVCaptureDeviceInput*) inputPort.input;
+    
+    
     CMTime frameDuration = deviceInput.device.activeVideoMaxFrameDuration;
-    NSDictionary* dict = @{
-                           @"image": imageData,
-                           @"timestamp" : timestamp,
-                           @"framesPerSecond": @(frameDuration.timescale)
-                           };
-    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:dict];
     
-    MWMultipeerManager * manager = [MWMultipeerManager sharedManager];
+    NSDictionary *videoFrame = @{@"frame":imageData,
+                                 @"fps":@(frameDuration.timescale)};
     
-    if (manager.isVideo && manager.connectedPeerID) {
-        NSLog(@"Sending video");
-        [manager.session sendData:data toPeers:@[manager.connectedPeerID] withMode:MCSessionSendDataReliable error:nil];
-    } else {
-        NSLog(@"Not sending video");
-    }
+    [[MWMultipeerManager sharedManager] sendVideoFrame:videoFrame];
 }
 
-- (UIImage*) cgImageBackedImageWithCIImage:(CIImage*) ciImage {
+- (UIImage *)cgImageBackedImageWithCIImage:(CIImage *)ciImage {
     
     CIContext *context = [CIContext contextWithOptions:nil];
     CGImageRef ref = [context createCGImage:ciImage fromRect:ciImage.extent];

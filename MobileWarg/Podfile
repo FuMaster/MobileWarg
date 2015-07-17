@@ -7,6 +7,8 @@ target 'MobileWarg' do
 
 pod 'BlocksKit'
 pod 'OpenCV', '2.4.9-zp'
+pod 'FBSDKCoreKit'
+pod 'FBSDKShareKit'
 
 end
 
