@@ -105,6 +105,8 @@
             self.imageView.image = _frames[0];
             [_frames removeObjectAtIndex:0];
             
+            MWFaceDetection *detectionManager = [MWFaceDetection detectionManager];
+            [detectionManager processImage:self.imageView.image];
             
         } else {
             _isPlaying = NO;

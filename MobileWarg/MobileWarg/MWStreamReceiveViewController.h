@@ -9,6 +9,7 @@
 
 #import <UIKit/UIKit.h>
 #import <MultipeerConnectivity/MultipeerConnectivity.h>
+#import "MWFaceDetection.h"
 #import "MWMultipeerManager.h"
 
 @interface MWStreamReceiveViewController : UIViewController<UINavigationControllerDelegate, UIImagePickerControllerDelegate, MWMultipeerVideoReceiver>
