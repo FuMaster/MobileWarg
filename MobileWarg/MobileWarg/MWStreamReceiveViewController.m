@@ -101,8 +101,8 @@
 //                    }
 //                }
 //            }
-            
-            self.imageView.image = _frames[0];
+            MWFaceDetection *detectionManager = [MWFaceDetection detectionManager];
+            self.imageView.image = [detectionManager processImage:_frames[0]];
             [_frames removeObjectAtIndex:0];
             
             
