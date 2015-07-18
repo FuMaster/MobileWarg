@@ -60,7 +60,11 @@
                                                            repeats:YES];
         });
     }
-    [_frames addObject:[UIImage imageWithData:videoFrame[@"frame"]]];
+    if ([_frames count] == 0) {
+        [_frames addObject:[UIImage imageWithData:videoFrame[@"frame"]]];
+    } else {
+        [_frames replaceObjectAtIndex:0 withObject:[UIImage imageWithData:videoFrame[@"frame"]]];
+    }
 }
 
 
