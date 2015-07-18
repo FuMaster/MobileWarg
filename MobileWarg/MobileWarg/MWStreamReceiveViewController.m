@@ -105,12 +105,9 @@
 //                    }
 //                }
 //            }
-            
-            self.imageView.image = _frames[0];
-            [_frames removeObjectAtIndex:0];
-            
             MWFaceDetection *detectionManager = [MWFaceDetection detectionManager];
-            [detectionManager processImage:self.imageView.image];
+            self.imageView.image = [detectionManager processImage:_frames[0]];
+            [_frames removeObjectAtIndex:0];
             
         } else {
             _isPlaying = NO;

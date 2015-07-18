@@ -173,7 +173,7 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     AVCaptureDeviceInput* deviceInput = (AVCaptureDeviceInput*) inputPort.input;
     
     
-    CMTime frameDuration = deviceInput.device.activeVideoMaxFrameDuration;
+    CMTime frameDuration = deviceInput.device.activeVideoMinFrameDuration;
     
     NSDictionary *videoFrame = @{@"frame":imageData,
                                  @"fps":@(frameDuration.timescale)};

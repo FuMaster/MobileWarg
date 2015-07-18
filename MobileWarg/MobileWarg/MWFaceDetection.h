@@ -12,6 +12,6 @@
 @interface MWFaceDetection : NSObject
 
 + (MWFaceDetection *)detectionManager;
-- (void) processImage:(UIImage *)image;
+- (UIImage *) processImage:(UIImage *)image;
 
 @end

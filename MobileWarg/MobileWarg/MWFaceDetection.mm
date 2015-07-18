@@ -66,27 +66,69 @@ CascadeClassifier face_cascade;
     return cvMat;
 }
 
-- (void) processImage:(UIImage *)image {
+- (UIImage *) processImage:(UIImage *)image {
+    NSLog(@"Start");
     Mat temp = [self cvMatFromUIImage:image];
-    [self processMatImage:temp];
+    [self processMatImage:&temp];
+    NSLog(@"End");
+    return [self UIImageFromCVMat:temp];
 }
 
-- (void) processMatImage:(Mat &)image
+- (void) processMatImage:(Mat *)image
 {
     vector<cv::Rect> faces;
     Mat frame_gray;
     
-    cvtColor(image, frame_gray, CV_BGRA2GRAY);
+    cvtColor(*image, frame_gray, CV_BGRA2GRAY);
     equalizeHist(frame_gray, frame_gray);
     
     face_cascade.detectMultiScale(frame_gray, faces, 1.1, 2, 0 | CV_HAAR_SCALE_IMAGE, cv::Size(100, 100));
     
     for(unsigned int i = 0; i < faces.size(); ++i) {
-        rectangle(image, cv::Point(faces[i].x, faces[i].y),
+        NSLog(@"Found face.");
+        rectangle(*image, cv::Point(faces[i].x, faces[i].y),
                   cv::Point(faces[i].x + faces[i].width, faces[i].y + faces[i].height),
                   cv::Scalar(0,255,255));
     }
 }
+
+-(UIImage *)UIImageFromCVMat:(cv::Mat)cvMat
+{
+    NSData *data = [NSData dataWithBytes:cvMat.data length:cvMat.elemSize()*cvMat.total()];
+    CGColorSpaceRef colorSpace;
+    
+    if (cvMat.elemSize() == 1) {
+        colorSpace = CGColorSpaceCreateDeviceGray();
+    } else {
+        colorSpace = CGColorSpaceCreateDeviceRGB();
+    }
+    
+    CGDataProviderRef provider = CGDataProviderCreateWithCFData((__bridge CFDataRef)data);
+    
+    // Creating CGImage from cv::Mat
+    CGImageRef imageRef = CGImageCreate(cvMat.cols,                                 //width
+                                        cvMat.rows,                                 //height
+                                        8,                                          //bits per component
+                                        8 * cvMat.elemSize(),                       //bits per pixel
+                                        cvMat.step[0],                            //bytesPerRow
+                                        colorSpace,                                 //colorspace
+                                        kCGImageAlphaNone|kCGBitmapByteOrderDefault,// bitmap info
+                                        provider,                                   //CGDataProviderRef
+                                        NULL,                                       //decode
+                                        false,                                      //should interpolate
+                                        kCGRenderingIntentDefault                   //intent
+                                        );
+    
+    
+    // Getting UIImage from CGImage
+    UIImage *finalImage = [UIImage imageWithCGImage:imageRef];
+    CGImageRelease(imageRef);
+    CGDataProviderRelease(provider);
+    CGColorSpaceRelease(colorSpace);
+    
+    return finalImage;
+}
+
 #endif
 
 
