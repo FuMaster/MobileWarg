@@ -105,7 +105,6 @@
             self.imageView.image = [detectionManager processImage:_frames[0]];
             [_frames removeObjectAtIndex:0];
             
-            
         } else {
             _isPlaying = NO;
         }
