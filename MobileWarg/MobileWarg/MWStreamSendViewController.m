@@ -171,18 +171,7 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     
     NSData *imageData = UIImageJPEGRepresentation(cgBackedImage,0.2);
     
-    // maybe not always the correct input?  just using this to send current FPS...
-    
-    AVCaptureInputPort* inputPort = connection.inputPorts[0];
-    AVCaptureDeviceInput* deviceInput = (AVCaptureDeviceInput*) inputPort.input;
-    
-    
-    CMTime frameDuration = deviceInput.device.activeVideoMaxFrameDuration;
-    
-    NSDictionary *videoFrame = @{@"frame":imageData,
-                                 @"fps":@(frameDuration.timescale)};
-    
-    [[MWMultipeerManager sharedManager] sendVideoFrame:videoFrame];
+    [[MWMultipeerManager sharedManager] sendVideoFrame:imageData];
 }
 
 - (UIImage *)cgImageBackedImageWithCIImage:(CIImage *)ciImage {

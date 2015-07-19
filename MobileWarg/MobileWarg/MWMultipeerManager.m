@@ -67,7 +67,7 @@ typedef NS_ENUM(NSInteger, MWDataType) {
 
 #pragma mark - Sender Methods
 
-- (void)sendVideoFrame:(NSDictionary *)videoFrame {
+- (void)sendVideoFrame:(NSData *)videoFrame {
     
     NSDictionary *dict = @{@"dataType":@(MWDataTypeVideoFrame),
                            @"data":videoFrame};
