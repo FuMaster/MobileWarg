@@ -7,10 +7,6 @@
 //
 
 #import "MWStreamReceiveViewController.h"
-#import <FBSDKShareKit/FBSDKShareKit.h>
-#import "MWFacebookManager.h"
-
-@import Social;
 
 @interface MWStreamReceiveViewController ()
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
@@ -166,6 +162,31 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
     [FBSDKShareDialog showFromViewController:self
                                  withContent:content
                                     delegate:nil];
+    
+    //opens popup dialog within our app to share
+//    SLComposeViewController *controller = [MWFacebookManager openShareDialog:image];
+//    if(controller != nil){
+//        [self presentViewController:controller animated:YES completion:Nil];
+//    }
+}
+
+#pragma mark - FBSDKSharingDelegate
+
+- (void)sharer:(id<FBSDKSharing>)sharer didCompleteWithResults:(NSDictionary *)results
+{
+    NSLog(@"COMPLETED");
+    for(NSString *key in [results allKeys])
+    {
+        NSLog(@"%@", [results objectForKey:key]);
+    }
+}
+- (void)sharer:(id<FBSDKSharing>)sharer didFailWithError:(NSError *)error
+{
+    NSLog(@"%@", error);
+}
+- (void)sharerDidCancel:(id<FBSDKSharing>)sharer
+{
+    NSLog(@"CANCELLED");
 }
 
 @end

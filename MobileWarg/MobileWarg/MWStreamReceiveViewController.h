@@ -11,8 +11,12 @@
 #import <MultipeerConnectivity/MultipeerConnectivity.h>
 #import "MWFaceDetection.h"
 #import "MWMultipeerManager.h"
+#import <FBSDKShareKit/FBSDKShareKit.h>
+#import "MWFacebookManager.h"
 
-@interface MWStreamReceiveViewController : UIViewController<UINavigationControllerDelegate, UIImagePickerControllerDelegate, MWMultipeerVideoReceiver>
+@import Social;
+
+@interface MWStreamReceiveViewController : UIViewController<UINavigationControllerDelegate, UIImagePickerControllerDelegate, MWMultipeerVideoReceiver, FBSDKSharingDelegate>
 
 
 @end
