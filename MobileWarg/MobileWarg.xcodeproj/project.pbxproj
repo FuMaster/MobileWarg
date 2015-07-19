@@ -15,6 +15,7 @@
 		21EBE8411B264943000EACD1 /* MobileWargTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 21EBE8401B264943000EACD1 /* MobileWargTests.m */; };
 		21EBE84F1B2651B3000EACD1 /* MWMultipeerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 21EBE84E1B2651B3000EACD1 /* MWMultipeerManager.m */; };
 		296732031B5322A500DFA7E1 /* MWFacebookManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 296732021B5322A500DFA7E1 /* MWFacebookManager.m */; };
+		536FB0FD1B5C240C00B5A507 /* bill.png in Resources */ = {isa = PBXBuildFile; fileRef = 536FB0FC1B5C240C00B5A507 /* bill.png */; };
 		53C8363F1B5AD1D6006EBA8B /* MWFaceDetection.mm in Sources */ = {isa = PBXBuildFile; fileRef = 53C8363E1B5AD1D6006EBA8B /* MWFaceDetection.mm */; };
 		53C836431B5ADB01006EBA8B /* haarcascade_frontalface_alt.xml in Resources */ = {isa = PBXBuildFile; fileRef = 53C836421B5ADB01006EBA8B /* haarcascade_frontalface_alt.xml */; };
 		A7869160A750E7DDEFC9505D /* libPods-MobileWarg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C528FE202BE821C1C7BC7B63 /* libPods-MobileWarg.a */; };
@@ -51,6 +52,7 @@
 		296732021B5322A500DFA7E1 /* MWFacebookManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWFacebookManager.m; sourceTree = "<group>"; };
 		42C56AC8BCD692E174DEE324 /* Pods-MobileWarg.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MobileWarg.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MobileWarg/Pods-MobileWarg.debug.xcconfig"; sourceTree = "<group>"; };
 		46BB32DCDA54194EF02CA94F /* Pods-MobileWarg.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MobileWarg.release.xcconfig"; path = "Pods/Target Support Files/Pods-MobileWarg/Pods-MobileWarg.release.xcconfig"; sourceTree = "<group>"; };
+		536FB0FC1B5C240C00B5A507 /* bill.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bill.png; sourceTree = "<group>"; };
 		53C8363D1B5AD1D6006EBA8B /* MWFaceDetection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWFaceDetection.h; sourceTree = "<group>"; };
 		53C8363E1B5AD1D6006EBA8B /* MWFaceDetection.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MWFaceDetection.mm; sourceTree = "<group>"; };
 		53C836421B5ADB01006EBA8B /* haarcascade_frontalface_alt.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = haarcascade_frontalface_alt.xml; sourceTree = "<group>"; };
@@ -114,6 +116,7 @@
 		21EBE8231B264943000EACD1 /* MobileWarg */ = {
 			isa = PBXGroup;
 			children = (
+				536FB0FC1B5C240C00B5A507 /* bill.png */,
 				21EBE8281B264943000EACD1 /* AppDelegate.h */,
 				21EBE8291B264943000EACD1 /* AppDelegate.m */,
 				21EBE84D1B2651B3000EACD1 /* MWMultipeerManager.h */,
@@ -255,6 +258,7 @@
 			files = (
 				21EBE8301B264943000EACD1 /* Main.storyboard in Resources */,
 				21EBE8351B264943000EACD1 /* LaunchScreen.xib in Resources */,
+				536FB0FD1B5C240C00B5A507 /* bill.png in Resources */,
 				53C836431B5ADB01006EBA8B /* haarcascade_frontalface_alt.xml in Resources */,
 				21EBE8321B264943000EACD1 /* Images.xcassets in Resources */,
 			);

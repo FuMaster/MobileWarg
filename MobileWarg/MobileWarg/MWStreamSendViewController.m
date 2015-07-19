@@ -6,6 +6,7 @@
 //  Copyright (c) 2015 MobileWarg. All rights reserved.
 //
 
+#import "MWFaceDetection.h"
 #import "MWMultipeerManager.h"
 #import "MWStreamSendViewController.h"
 
@@ -164,6 +165,9 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     [scaleFilter setValue:[NSNumber numberWithFloat:1.0] forKey:@"inputAspectRatio"];
     CIImage *finalImage = [scaleFilter valueForKey:@"outputImage"];
     UIImage* cgBackedImage = [self cgImageBackedImageWithCIImage:finalImage];
+    
+    MWFaceDetection *detectionManager = [MWFaceDetection detectionManager];
+    cgBackedImage = [detectionManager processImage:cgBackedImage];
     
     NSData *imageData = UIImageJPEGRepresentation(cgBackedImage,0.2);
     
