@@ -59,7 +59,7 @@
                       otherButtonTitles:nil] show];
 }
 
-- (void) changedOrientation {
+- (void)changedOrientation {
     // Change the fit of the UI element.
     self.previewLayer.frame = self.view.bounds;
     
@@ -80,7 +80,6 @@
             break;
     }
 }
-
 
 - (void)setupMultipeerConnectivity {
     //Instantiates MWMultipeerManager
@@ -118,8 +117,7 @@
     [self.wargButton setEnabled:NO];
 }
 
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     // Make sure your segue name in storyboard is the same as this line
     if ([segue.identifier isEqualToString:@"showStreamReceive"]){
         // Get reference to the destination view controller
