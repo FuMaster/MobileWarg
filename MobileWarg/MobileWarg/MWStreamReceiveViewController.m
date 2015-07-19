@@ -156,16 +156,16 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
     [self dismissViewControllerAnimated:YES completion:nil];
     
     // Open FB APP to share.
-    FBSDKSharePhotoContent* content = [MWFacebookManager shareToFacebook:image];
-    [FBSDKShareDialog showFromViewController:self
-                                 withContent:content
-                                    delegate:nil];
+//    FBSDKSharePhotoContent* content = [MWFacebookManager shareToFacebook:image];
+//    [FBSDKShareDialog showFromViewController:self
+//                                 withContent:content
+//                                    delegate:nil];
     
     //opens popup dialog within our app to share
-//    SLComposeViewController *controller = [MWFacebookManager openShareDialog:image];
-//    if(controller != nil){
-//        [self presentViewController:controller animated:YES completion:Nil];
-//    }
+    SLComposeViewController *controller = [MWFacebookManager openShareDialog:image];
+    if(controller != nil){
+        [self presentViewController:controller animated:YES completion:Nil];
+    }
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
