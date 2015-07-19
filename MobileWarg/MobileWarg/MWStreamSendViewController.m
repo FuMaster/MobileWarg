@@ -45,6 +45,11 @@
                                                  name:@"MobileWarg_CaptureImage"
                                                object:nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(flashlight:)
+                                                 name:@"MobileWarg_flashlight"
+                                               object:nil];
+    
     [self.view layoutSubviews];
     [self setupCamera];
 }
@@ -63,6 +68,18 @@
     };
     [self.stillImageOutput captureStillImageAsynchronouslyFromConnection:[self.stillImageOutput connectionWithMediaType:AVMediaTypeVideo]
                                                        completionHandler:completionHandler];
+}
+
+- (void)flashlight:(NSNotification *)notification {
+    if (self.videoDevice.hasTorch) {
+        [self.videoDevice lockForConfiguration:nil];
+        if (self.videoDevice.torchMode == AVCaptureTorchModeOn) {
+            self.videoDevice.torchMode = AVCaptureTorchModeOff;
+        } else {
+            [self.videoDevice setTorchModeOnWithLevel:1 error:nil];
+        }
+        [self.videoDevice unlockForConfiguration];
+    }
 }
 
 - (void)setupCamera {

@@ -35,8 +35,10 @@
 #pragma mark - IBActions
 
 - (IBAction)capture:(id)sender {
-    MWMultipeerManager * manager = [MWMultipeerManager sharedManager];
-    [manager sendStringMessage:@"Capture"];
+    [[MWMultipeerManager sharedManager] sendStringMessage:@"Capture"];
+}
+- (IBAction)flashlight:(id)sender {
+    [[MWMultipeerManager sharedManager] sendStringMessage:@"flashlight"];
 }
 
 - (IBAction)shareToFacebook:(id)sender {

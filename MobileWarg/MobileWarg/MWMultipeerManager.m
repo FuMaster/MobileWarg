@@ -138,6 +138,11 @@ typedef NS_ENUM(NSInteger, MWDataType) {
                     [[NSNotificationCenter defaultCenter] postNotificationName:@"MobileWarg_CaptureImage"
                                                                         object:nil];
                 });
+            } else if([message isEqualToString:@"flashlight"]) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"MobileWarg_flashlight"
+                                                                        object:nil];
+                });
             } else {
                 NSDictionary *userInfo = @{@"message":message, @"peer":peerID};
                 dispatch_async(dispatch_get_main_queue(), ^{

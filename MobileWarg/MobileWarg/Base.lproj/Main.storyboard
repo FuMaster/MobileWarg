@@ -61,6 +61,9 @@
                                         <state key="normal" title="flash" image="flash">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
+                                        <connections>
+                                            <action selector="flashlight:" destination="OuF-Nc-95I" eventType="touchUpInside" id="vs6-e1-lmA"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" red="0.71859217171717171" green="0.71859217171717171" blue="0.71859217171717171" alpha="0.44" colorSpace="calibratedRGB"/>
