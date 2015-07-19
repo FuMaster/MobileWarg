@@ -168,6 +168,10 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
 //    }
 }
 
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
 #pragma mark - FBSDKSharingDelegate
 
 - (void)sharer:(id<FBSDKSharing>)sharer didCompleteWithResults:(NSDictionary *)results
