@@ -159,7 +159,7 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
     FBSDKSharePhotoContent* content = [MWFacebookManager shareToFacebook:image];
     [FBSDKShareDialog showFromViewController:self
                                  withContent:content
-                                    delegate:nil];
+                                    delegate:self];
     
     //opens popup dialog within our app to share
 //    SLComposeViewController *controller = [MWFacebookManager openShareDialog:image];
