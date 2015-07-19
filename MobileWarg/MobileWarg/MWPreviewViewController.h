@@ -9,8 +9,11 @@
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
 #import <MultipeerConnectivity/MultipeerConnectivity.h>
+#import <FBSDKShareKit/FBSDKShareKit.h>
 
-@interface MWPreviewViewController : UIViewController <MCBrowserViewControllerDelegate>
-
-
+@interface MWPreviewViewController : UIViewController <
+UINavigationControllerDelegate,
+UIImagePickerControllerDelegate,
+MCBrowserViewControllerDelegate,
+FBSDKSharingDelegate>
 @end

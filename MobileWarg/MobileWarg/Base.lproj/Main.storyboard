@@ -145,6 +145,22 @@
                                 <action selector="warg:" destination="Iog-eh-ggf" id="BOk-FT-yWu"/>
                             </connections>
                         </barButtonItem>
+                        <view key="titleView" contentMode="scaleToFill" id="BKG-l3-JSc">
+                            <rect key="frame" x="62" y="-24.5" width="178" height="93"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <subviews>
+                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cbe-bH-XqU">
+                                    <rect key="frame" x="8" y="31" width="40" height="30"/>
+                                    <state key="normal" title="Share">
+                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="share:" destination="Iog-eh-ggf" eventType="touchUpInside" id="Hf6-wj-81J"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        </view>
                         <barButtonItem key="rightBarButtonItem" title="Connect" id="iPq-LU-eOy">
                             <connections>
                                 <action selector="connect:" destination="Iog-eh-ggf" id="PIA-mi-76r"/>

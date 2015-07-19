@@ -204,6 +204,46 @@
     }
 }
 
+- (IBAction)share:(id)sender {
+    
+    if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeSavedPhotosAlbum]){
+        NSLog(@"No image picker");
+        [[[UIAlertView alloc] initWithTitle:@"No Photo Album"
+                                    message:nil
+                                   delegate:nil
+                          cancelButtonTitle:@"Ok"
+                          otherButtonTitles:nil] show];
+        return;
+    }
+    UIImagePickerController *mediaUI = [[UIImagePickerController alloc] init];
+    mediaUI.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
+    mediaUI.mediaTypes = [UIImagePickerController availableMediaTypesForSourceType:
+                          UIImagePickerControllerSourceTypeSavedPhotosAlbum];
+    mediaUI.allowsEditing = NO;
+    mediaUI.delegate = self;
+    [self presentViewController:mediaUI animated:YES completion:nil];
+}
+
+#pragma mark - UIImagePickerControllerDelegate
+
+- (void)imagePickerController:(UIImagePickerController *)picker
+didFinishPickingMediaWithInfo:(NSDictionary *)info {
+    
+    UIImage *image = info[UIImagePickerControllerOriginalImage];
+    
+    [self dismissViewControllerAnimated:YES completion:nil];
+    
+    // Open FB APP to share.
+    FBSDKSharePhotoContent* content = [MWFacebookManager shareToFacebook:image];
+    [FBSDKShareDialog showFromViewController:self
+                                 withContent:content
+                                    delegate:nil];
+}
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
 #pragma mark - MCBrowserViewControllerDelegate
 
 - (void)browserViewControllerDidFinish:(MCBrowserViewController *)browserViewController {

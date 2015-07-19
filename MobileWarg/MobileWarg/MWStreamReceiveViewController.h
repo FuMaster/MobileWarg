@@ -15,7 +15,9 @@
 
 @import Social;
 
-@interface MWStreamReceiveViewController : UIViewController<UINavigationControllerDelegate, UIImagePickerControllerDelegate, MWMultipeerVideoReceiver, FBSDKSharingDelegate>
-
-
+@interface MWStreamReceiveViewController : UIViewController<
+UINavigationControllerDelegate,
+UIImagePickerControllerDelegate,
+MWMultipeerVideoReceiver,
+FBSDKSharingDelegate>
 @end
