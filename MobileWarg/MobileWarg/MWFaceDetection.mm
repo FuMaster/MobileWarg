@@ -67,11 +67,12 @@ CascadeClassifier face_cascade;
 }
 
 - (UIImage *) processImage:(UIImage *)image {
-    NSLog(@"Start");
     Mat temp = [self cvMatFromUIImage:image];
     [self processMatImage:&temp];
-    NSLog(@"End");
-    return [self UIImageFromCVMat:temp];
+    cv::Mat newMat;
+    transpose(temp, newMat);
+    flip(newMat, newMat,1);
+    return [self UIImageFromCVMat:newMat];
 }
 
 - (void) processMatImage:(Mat *)image
