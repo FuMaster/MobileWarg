@@ -31,7 +31,7 @@
 - (void)setupBrowser;
 - (void)advertiseSelf:(BOOL)advertise;
 
-- (void)sendVideoFrame:(NSDictionary *)videoFrame;
+- (void)sendVideoFrame:(NSData *)videoFrame;
 - (void)sendCapturedImage:(UIImage *)capturedImage;
 - (void)sendStringMessage:(NSString *)message;
 
