@@ -21,7 +21,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Npu-OA-Snw" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="986" y="-120"/>
+            <point key="canvasLocation" x="892" y="-120"/>
         </scene>
         <!--Stream Receive View Controller-->
         <scene sceneID="edO-nK-cda">
@@ -42,7 +42,10 @@
                                 <rect key="frame" x="0.0" y="508" width="320" height="60"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xcd-OR-qAi">
-                                        <rect key="frame" x="130" y="0.0" width="60" height="60"/>
+                                        <rect key="frame" x="80" y="0.0" width="60" height="60"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="60" id="xj7-b4-cDo"/>
+                                        </constraints>
                                         <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                         <state key="normal" image="CameraCapture"/>
                                         <state key="selected" image="CameraCapture"/>
@@ -50,12 +53,25 @@
                                             <action selector="capture:" destination="OuF-Nc-95I" eventType="touchUpInside" id="L8p-sO-HLs"/>
                                         </connections>
                                     </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="y3M-u6-R2q">
+                                        <rect key="frame" x="180" y="0.0" width="60" height="60"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="60" id="9cF-oZ-UEY"/>
+                                        </constraints>
+                                        <state key="normal" title="flash" image="flash">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" red="0.71859217171717171" green="0.71859217171717171" blue="0.71859217171717171" alpha="0.44" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="centerX" secondItem="xcd-OR-qAi" secondAttribute="centerX" id="Aph-pa-JHD"/>
-                                    <constraint firstAttribute="centerY" secondItem="xcd-OR-qAi" secondAttribute="centerY" id="NOH-Tg-oP1"/>
+                                    <constraint firstItem="xcd-OR-qAi" firstAttribute="top" secondItem="FfE-Ad-3nj" secondAttribute="top" id="5a9-iS-T1K"/>
+                                    <constraint firstAttribute="bottom" secondItem="y3M-u6-R2q" secondAttribute="bottom" id="9dg-WY-HbN"/>
+                                    <constraint firstAttribute="bottom" secondItem="xcd-OR-qAi" secondAttribute="bottom" id="CWF-3m-nTj"/>
                                     <constraint firstAttribute="height" constant="60" id="SnW-Wk-2R8"/>
+                                    <constraint firstItem="y3M-u6-R2q" firstAttribute="top" secondItem="FfE-Ad-3nj" secondAttribute="top" id="bYs-Zd-kg0"/>
+                                    <constraint firstAttribute="centerX" secondItem="y3M-u6-R2q" secondAttribute="centerX" constant="-50" id="ldO-zn-4wG"/>
+                                    <constraint firstAttribute="centerX" secondItem="xcd-OR-qAi" secondAttribute="centerX" constant="50" id="vCw-TZ-bIa"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -84,7 +100,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="E7g-y7-26y" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="892" y="669"/>
+            <point key="canvasLocation" x="962" y="656"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="wx8-7z-eAp">
@@ -104,7 +120,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Bzy-IV-38D" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-308" y="257"/>
+            <point key="canvasLocation" x="32" y="265"/>
         </scene>
         <!--Preview View Controller-->
         <scene sceneID="fLs-W3-e11">
@@ -141,10 +157,11 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="EIe-wF-cOc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="440" y="257"/>
+            <point key="canvasLocation" x="456" y="265"/>
         </scene>
     </scenes>
     <resources>
         <image name="CameraCapture" width="60" height="60"/>
+        <image name="flash" width="128" height="128"/>
     </resources>
 </document>
