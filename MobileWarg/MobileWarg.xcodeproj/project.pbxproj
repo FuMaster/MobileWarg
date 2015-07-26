@@ -15,6 +15,8 @@
 		21EBE8411B264943000EACD1 /* MobileWargTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 21EBE8401B264943000EACD1 /* MobileWargTests.m */; };
 		21EBE84F1B2651B3000EACD1 /* MWMultipeerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 21EBE84E1B2651B3000EACD1 /* MWMultipeerManager.m */; };
 		296732031B5322A500DFA7E1 /* MWFacebookManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 296732021B5322A500DFA7E1 /* MWFacebookManager.m */; };
+		533657371B655372009132C4 /* MWPhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 533657361B655372009132C4 /* MWPhotoViewController.m */; };
+		533657391B65626B009132C4 /* doge_repeat.png in Resources */ = {isa = PBXBuildFile; fileRef = 533657381B65626B009132C4 /* doge_repeat.png */; };
 		53C8363F1B5AD1D6006EBA8B /* MWFaceDetection.mm in Sources */ = {isa = PBXBuildFile; fileRef = 53C8363E1B5AD1D6006EBA8B /* MWFaceDetection.mm */; };
 		53C836431B5ADB01006EBA8B /* haarcascade_frontalface_alt.xml in Resources */ = {isa = PBXBuildFile; fileRef = 53C836421B5ADB01006EBA8B /* haarcascade_frontalface_alt.xml */; };
 		A7869160A750E7DDEFC9505D /* libPods-MobileWarg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C528FE202BE821C1C7BC7B63 /* libPods-MobileWarg.a */; };
@@ -51,6 +53,9 @@
 		296732021B5322A500DFA7E1 /* MWFacebookManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWFacebookManager.m; sourceTree = "<group>"; };
 		42C56AC8BCD692E174DEE324 /* Pods-MobileWarg.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MobileWarg.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MobileWarg/Pods-MobileWarg.debug.xcconfig"; sourceTree = "<group>"; };
 		46BB32DCDA54194EF02CA94F /* Pods-MobileWarg.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MobileWarg.release.xcconfig"; path = "Pods/Target Support Files/Pods-MobileWarg/Pods-MobileWarg.release.xcconfig"; sourceTree = "<group>"; };
+		533657351B655372009132C4 /* MWPhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWPhotoViewController.h; sourceTree = "<group>"; };
+		533657361B655372009132C4 /* MWPhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWPhotoViewController.m; sourceTree = "<group>"; };
+		533657381B65626B009132C4 /* doge_repeat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = doge_repeat.png; sourceTree = "<group>"; };
 		53C8363D1B5AD1D6006EBA8B /* MWFaceDetection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWFaceDetection.h; sourceTree = "<group>"; };
 		53C8363E1B5AD1D6006EBA8B /* MWFaceDetection.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MWFaceDetection.mm; sourceTree = "<group>"; };
 		53C836421B5ADB01006EBA8B /* haarcascade_frontalface_alt.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = haarcascade_frontalface_alt.xml; sourceTree = "<group>"; };
@@ -122,6 +127,8 @@
 				296732021B5322A500DFA7E1 /* MWFacebookManager.m */,
 				53C8363D1B5AD1D6006EBA8B /* MWFaceDetection.h */,
 				53C8363E1B5AD1D6006EBA8B /* MWFaceDetection.mm */,
+				533657351B655372009132C4 /* MWPhotoViewController.h */,
+				533657361B655372009132C4 /* MWPhotoViewController.m */,
 				CD72ED401B2D0169009CD49D /* MWStreamReceiveViewController.h */,
 				CD72ED411B2D0169009CD49D /* MWStreamReceiveViewController.m */,
 				CD72ED4F1B2E153E009CD49D /* MWStreamSendViewController.h */,
@@ -129,6 +136,7 @@
 				CD52786F1B2C967C00CBEB69 /* MWPreviewViewController.h */,
 				CD5278701B2C967C00CBEB69 /* MWPreviewViewController.m */,
 				21EBE82E1B264943000EACD1 /* Main.storyboard */,
+				533657381B65626B009132C4 /* doge_repeat.png */,
 				21EBE8311B264943000EACD1 /* Images.xcassets */,
 				21EBE8331B264943000EACD1 /* LaunchScreen.xib */,
 				53C836421B5ADB01006EBA8B /* haarcascade_frontalface_alt.xml */,
@@ -253,6 +261,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				533657391B65626B009132C4 /* doge_repeat.png in Resources */,
 				21EBE8301B264943000EACD1 /* Main.storyboard in Resources */,
 				21EBE8351B264943000EACD1 /* LaunchScreen.xib in Resources */,
 				53C836431B5ADB01006EBA8B /* haarcascade_frontalface_alt.xml in Resources */,
@@ -313,6 +322,7 @@
 				21EBE84F1B2651B3000EACD1 /* MWMultipeerManager.m in Sources */,
 				21EBE82A1B264943000EACD1 /* AppDelegate.m in Sources */,
 				21EBE8271B264943000EACD1 /* main.m in Sources */,
+				533657371B655372009132C4 /* MWPhotoViewController.m in Sources */,
 				53C8363F1B5AD1D6006EBA8B /* MWFaceDetection.mm in Sources */,
 				296732031B5322A500DFA7E1 /* MWFacebookManager.m in Sources */,
 			);

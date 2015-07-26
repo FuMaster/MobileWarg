@@ -69,10 +69,7 @@ CascadeClassifier face_cascade;
 - (UIImage *) processImage:(UIImage *)image {
     Mat temp = [self cvMatFromUIImage:image];
     [self processMatImage:&temp];
-    cv::Mat newMat;
-    transpose(temp, newMat);
-    flip(newMat, newMat,1);
-    return [self UIImageFromCVMat:newMat];
+    return [self UIImageFromCVMat:temp];
 }
 
 - (void) processMatImage:(Mat *)image
@@ -83,7 +80,7 @@ CascadeClassifier face_cascade;
     cvtColor(*image, frame_gray, CV_BGRA2GRAY);
     equalizeHist(frame_gray, frame_gray);
     
-    face_cascade.detectMultiScale(frame_gray, faces, 1.1, 2, 0 | CV_HAAR_SCALE_IMAGE, cv::Size(100, 100));
+    face_cascade.detectMultiScale(frame_gray, faces, 1.1, 3, 0 | CV_HAAR_SCALE_IMAGE, cv::Size(3, 3));
     
     for(unsigned int i = 0; i < faces.size(); ++i) {
         NSLog(@"Found face.");

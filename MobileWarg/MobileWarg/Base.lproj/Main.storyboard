@@ -23,6 +23,64 @@
             </objects>
             <point key="canvasLocation" x="892" y="-120"/>
         </scene>
+        <!--Photo View Controller-->
+        <scene sceneID="zJU-lj-GXM">
+            <objects>
+                <viewController id="zg7-qB-bNR" customClass="MWPhotoViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="P1C-lh-5l7"/>
+                        <viewControllerLayoutGuide type="bottom" id="uYc-9Z-1IF"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="mNI-qQ-DTu">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="qUU-oC-mJC">
+                                <rect key="frame" x="0.0" y="64" width="320" height="455"/>
+                                <gestureRecognizers/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="0Ob-4a-UfR" appends="YES" id="dCK-GF-B93"/>
+                                </connections>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="qUU-oC-mJC" firstAttribute="leading" secondItem="mNI-qQ-DTu" secondAttribute="leading" id="3CT-Ur-Bgp"/>
+                            <constraint firstAttribute="trailing" secondItem="qUU-oC-mJC" secondAttribute="trailing" id="VTR-qt-fyr"/>
+                            <constraint firstItem="qUU-oC-mJC" firstAttribute="top" secondItem="P1C-lh-5l7" secondAttribute="bottom" id="WQL-Fp-hca"/>
+                            <constraint firstItem="uYc-9Z-1IF" firstAttribute="top" secondItem="qUU-oC-mJC" secondAttribute="bottom" id="vv8-Zc-GIf"/>
+                        </constraints>
+                    </view>
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" id="SXg-wk-TJr">
+                        <barButtonItem key="leftBarButtonItem" title="Back" id="ONi-Ys-3r2">
+                            <connections>
+                                <action selector="goBack:" destination="zg7-qB-bNR" id="fn0-aO-bHz"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Select" id="0y0-Nj-4uy">
+                            <connections>
+                                <action selector="selectPhoto:" destination="zg7-qB-bNR" id="gVT-LU-puv"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="imageView" destination="qUU-oC-mJC" id="CG3-uW-qa1"/>
+                        <outlet property="tapRecognizer" destination="0Ob-4a-UfR" id="LK8-AN-W9z"/>
+                        <segue destination="Z8U-uL-lGj" kind="unwind" identifier="unwindToPreviewController" unwindAction="unwindToPreviewController:" id="b6E-uV-v7t"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="iL3-mi-Pz2" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="Z8U-uL-lGj" userLabel="Exit" sceneMemberID="exit"/>
+                <tapGestureRecognizer id="0Ob-4a-UfR">
+                    <connections>
+                        <action selector="tapOnScreen:" destination="zg7-qB-bNR" id="ufL-qV-XTF"/>
+                    </connections>
+                </tapGestureRecognizer>
+            </objects>
+            <point key="canvasLocation" x="456" y="1055"/>
+        </scene>
         <!--Stream Receive View Controller-->
         <scene sceneID="edO-nK-cda">
             <objects>
@@ -137,6 +195,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <gestureRecognizers/>
                     </view>
                     <navigationItem key="navigationItem" id="Yk3-bI-9wR">
                         <nil key="title"/>
@@ -146,7 +205,7 @@
                             </connections>
                         </barButtonItem>
                         <view key="titleView" contentMode="scaleToFill" id="BKG-l3-JSc">
-                            <rect key="frame" x="62" y="-24.5" width="178" height="93"/>
+                            <rect key="frame" x="62" y="-25" width="178" height="93"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cbe-bH-XqU">
@@ -172,6 +231,7 @@
                         <outlet property="wargButton" destination="yuB-Fh-Kvj" id="Pjc-M6-31m"/>
                         <segue destination="IxH-9P-OZT" kind="show" identifier="showStreamSend" id="X0n-eY-TfX"/>
                         <segue destination="OuF-Nc-95I" kind="show" identifier="showStreamReceive" id="xcW-fe-A23"/>
+                        <segue destination="zg7-qB-bNR" kind="show" identifier="showPhotoDetails" id="T2m-OT-iZ5"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="EIe-wF-cOc" userLabel="First Responder" sceneMemberID="firstResponder"/>
