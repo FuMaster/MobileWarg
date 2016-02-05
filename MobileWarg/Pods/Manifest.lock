@@ -14,22 +14,15 @@ PODS:
   - BlocksKit/UIKit (2.2.5):
     - BlocksKit/Core
     - BlocksKit/DynamicDelegate
-  - Bolts (1.2.0):
-    - Bolts/AppLinks (= 1.2.0)
-    - Bolts/Tasks (= 1.2.0)
-  - Bolts/AppLinks (1.2.0):
+  - Bolts (1.6.0):
+    - Bolts/AppLinks (= 1.6.0)
+    - Bolts/Tasks (= 1.6.0)
+  - Bolts/AppLinks (1.6.0):
     - Bolts/Tasks
-  - Bolts/Tasks (1.2.0)
-  - FBSDKCoreKit (4.4.0):
-    - Bolts (~> 1.1)
-    - FBSDKCoreKit/arc (= 4.4.0)
-    - FBSDKCoreKit/no-arc (= 4.4.0)
-  - FBSDKCoreKit/arc (4.4.0):
-    - Bolts (~> 1.1)
-  - FBSDKCoreKit/no-arc (4.4.0):
-    - Bolts (~> 1.1)
-    - FBSDKCoreKit/arc
-  - FBSDKShareKit (4.4.0):
+  - Bolts/Tasks (1.6.0)
+  - FBSDKCoreKit (4.9.1):
+    - Bolts (~> 1.5)
+  - FBSDKShareKit (4.9.1):
     - FBSDKCoreKit
   - OpenCV (2.4.9-zp)
 
@@ -41,9 +34,9 @@ DEPENDENCIES:
 
 SPEC CHECKSUMS:
   BlocksKit: 7f422b971407001178d181a43b99014ea2591fe6
-  Bolts: d176cb1e0012175589e389a9db49b85e27787576
-  FBSDKCoreKit: 75bdd75c980e811db218488d99dd93b7740f4474
-  FBSDKShareKit: a42865f20ba2d1cc548c4d0f73ad22cff6377ddb
+  Bolts: f52a250053bb517ca874523c3913776359ab3def
+  FBSDKCoreKit: aee20b6d9855f15b618d4fddd1a5ad45f5a4a59d
+  FBSDKShareKit: b8c8ef0ed173f9fc1b3c8df384a0202ce53008d4
   OpenCV: 7e277ba68128a1f599e8238729d769e3b827cfbb
 
-COCOAPODS: 0.37.2
+COCOAPODS: 0.38.0
